@@ -1,0 +1,135 @@
+# Design notes for weblog
+
+## Questions
+
+Q: How does things like hierarchical nav work with
+generated content? e.g. the manual pages on the swipl site
+A: The meta info is on a separate predicate, there's no reason
+that pred can't be complex. Certainly the handler meta pred
+itself should handle 'prefix'.
+
+Q: Should the hierarchy be split between pages and chunks?
+A:probably not. Too many places where this distinction's going to
+make things awkward.
+eg. directory menu.
+Needs to be a unified way of naming everything in the site.
+
+Q: Is it important to know how many items there are without
+generating them all?
+A: Yup. It is. 
+
+## My Code Chunks
+
+### Disclosure
+
+Anything that discloses should be able to be marked for premium content
+
+### Hierarchy
+
+It's beginning to look like a unified way of enumerating a site hierarchy is an important thing to have. This is an information hierarchy, rather than a page hierarchy. E.g. a set of search results, shown 10 per page, would be a flat list of items, rather than a list of pages each with 10 items.
+
+### Page Chunk
+
+Ajax response with a chunk of a page, used for example for Accordion.
+
+So, for example, accordion pattern could be 
+
+\accordion([\a_section, \b_section, \c_section])
+
+where the section content is actually generated within some ajax response.
+
+### Discovery mode
+
+It would be very cool to have a mode that added text attributes to most items so you could find out where information came from
+
+### Handler Meta
+
+Unified system for attaching meta information to handlers.
+
+#### Handler Meta Information
+
+ * Label - this is the default 'name' for the page (eg in the title)
+ * tree navigation hierarchical navigation
+ * K=V tags for Welie:faceted navigation, search, etc.
+ * sequences (for wizards, stepping)
+ * is this handler discoverable?
+ * security - accessible by <role list>
+ * home page flag ("I am the home page")
+ * mini-page (e.g. for minesweeping)
+ 
+#### Uses of Handler meta info
+ 
+  * debug page with all handlers
+  * site map
+  * access control
+  * navigation
+
+### In-page hierarchy
+
+introspectable page definition, separates content organization from presentation
+within the context of a single page.
+
+Could be meta info on tags?
+Is the # anchor system useful here?
+
+Used by:
+ 
+* Welie:Accordion  (non ajax version)
+
+### Special Content
+
+#### Interactive Map 
+
+#### Graphs
+
+## Pattern selector
+
+Having selection advice on on the site would be very useful.
+Might even have a 'usage warn' mode like the debug mode that would
+add 'such and such pattern might be better here' advice
+
+
+## My Pattern List
+
+### Navigation
+
+Are the navigation patterns best served by being site nav vs. in page section nav?
+e.g. Directory Navigation might be on a very long page
+
+What about the multi-frame nav pattern common to, say, javadoc style browsers?
+
+
+#### Welie:Accordion
+
+User opens one panel at a time
+
+Uses:
+Hierarchical in-page organization
+
+#### Welie:Headerless Menu
+
+Combine menus in a vertical menu using different visual clues instead of headers 
+
+Uses:
+Hierarchical site organization
+Labels
+
+#### Welie: Breadcrumb
+
+Uses:
+Hierarchical site organization
+Labels
+
+### Debug
+
+#### debug page with all handlers
+
+#### debug page with broken links
+
+#### site spider
+
+#### syntax error flag
+
+errors discovered during generation of page should produce a callout box describing error on the generation page, not a failure.
+
+ 
