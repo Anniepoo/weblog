@@ -1,0 +1,48 @@
+a: including \login_box in our DOM give you this box
+depending on if logged in
+
+t: well, there's a session check, right?
+ 
+a: yes, there needs to be some model for "logged in"
+can we just destroy the session when someone logs out?
+or even offer manual session creation on login?
+
+
+t: currently a sessio nis created on login, and yeah, we can destroy on logout
+
+a: some people wont' want that - liek a shopping site where you can put stuff in
+cart when logged out
+
+a: swipl by default always makes a session
+
+qa: also, how is 'remember me on this computer?' implemented?
+
+expire date on cookies,
+
+a suggests using library(options) and option remember(forever) or
+remember(30) to get the check
+should it be checked by default?
+
+a. suggests this should be looked at on web pattern sites and big web sites
+
+t: classis list of options in login_box
+
+t: some questions about how to implement the remember
+
+a: cookies , use mailman to send it to head
+
+t: should logout box replace login by default?
+
+some discussion of this, needs research, t says sometimes want
+to 
+
+t never seen a persisting login so far
+
+discussion of how github does it
+
+sdiscussion of how the app dev handles different behavior depending on 
+if we're logged in
+
+and how much inheritance/granularity we need to support for layout of the login/logout boxes
+
+
