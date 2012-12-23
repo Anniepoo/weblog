@@ -34,7 +34,7 @@ say_hi(_Request) :-
 	       html(html(
 		[head(title('Howdy')),
 		 body([h1('A Simple Web Page'),
-		       div(class=container,[\login_box]),
+		       div(class=container,[\login_box([])]),
 		       p('With some text')])])),
 	       TokenizedHtml,
 	       []),
