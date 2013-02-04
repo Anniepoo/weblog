@@ -20,8 +20,6 @@ http:location(admin, '/admin' , []).
 user:file_search_path(weblog, '.').
 user:file_search_path(weblogtest, '.').
 
-:- ensure_loaded(weblogdemo).
-
 
 
 

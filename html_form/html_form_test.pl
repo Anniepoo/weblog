@@ -1,5 +1,7 @@
 :- module(html_form_test,
 	  [
+	   test_form_content//1,
+	   test_landing_page_content//1
 
 	  ]).
 

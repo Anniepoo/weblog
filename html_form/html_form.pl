@@ -13,7 +13,11 @@
 			form_invalidate/0,
 			length_input_minmax/2,
 			numeric_minmax/2,
-			value/1
+			value/1,
+			length_input_minmax/5,
+			numeric_minmax/5,
+			value/4
+
 		       ]).
 
 :- use_module(library(http/http_parameters)).
@@ -96,6 +100,8 @@ login_form(Request) -->
 
 % these just suppress some annoying warnings
 :- dynamic length_input_minmax/2, numeric_minmax/2, value/1.
+:- dynamic length_input_minmax/5, numeric_minmax/5, value/4.
+
 %
 %  Handler for a form to be validated.
 %%  validated_form(+FormReplyGoal:goal, +LandingReplyGoal:goal) is det
@@ -137,7 +143,7 @@ has_invalid_entries  :-
 	debug(html_form, 'form has invalid entries~n' , []),
 	!.
 
-%%  error_message(+Options:list, +termHtml:termerized_html)// is semidet
+%  error_message(+Options:list, +termHtml:termerized_html)// semidet
 % DCG to include an error message that will only expand beyond
 % nothing if the entry is invalid.
 %

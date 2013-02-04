@@ -1,4 +1,4 @@
-:- module(debug, [pldoc/0,respond/0]).
+:- module(debug, [pldoc/0, portray_list_innerds/1]).
 /**   <module> Consult me to bring up normal dev environment.
 
    To run the server, query autostart/0.
@@ -6,6 +6,7 @@
    pldoc server on http://127.0.0.1:4040/help/source
 
    @copyright Copyright (C) 2012, University of Houston
+   Released under the LGPL as part of the Weblog project
 */
 
 % Needed for http:location/3, don't remove even if red!!!
@@ -28,10 +29,25 @@ http:location(pldoc, root('help/source'), [priority(10)]).
 :- set_prolog_flag(debugger_print_options,
 	[backquoted_string(true), max_depth(9999),
 	 portray(true), spacing(next_argument)]).
+user:portray([H|T]) :-
+	write('['),
+	portray_list_innerds([H|T]),
+	write(']').
+
+portray_list_innerds([]).
+portray_list_innerds([H]) :-
+	print(H).
+portray_list_innerds([H|T]) :-
+	print(H),
+	write(','),
+	portray_list_innerds(T).
+
 
 :- ensure_loaded(load).
 :- ensure_loaded(weblog(debug_page/debug_page)).
 :- ensure_loaded(weblogtest(html_form/html_form_test)).
+
+:- ensure_loaded(weblogdemo).
 
 %%	pldoc is det
 %
