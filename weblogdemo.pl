@@ -1,6 +1,6 @@
 :- module(weblogdemo, [
 	start/0,
-        autostart/0,
+        weblog_demo/0,
 	server_port/1,
         stop_server/0,
 	bye/0,
@@ -57,7 +57,7 @@ start:-
 
 start:-
 	html_set_options([dialect(xhtml)]),
-	format(user_error, 'Starting hhp virtual server\n', []),
+	format(user_error, 'Starting weblog demo server\n', []),
 	server_port(Port),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),
 	assert(started),
@@ -72,7 +72,7 @@ start:-
 % * various debug messages are turned on
 % * services are set to 'simulate'
 %
-autostart :-
+weblog_demo:-
        start,
        server_port(Port),
        format(string(S), 'http://127.0.0.1:~w/' , [Port]),
@@ -122,5 +122,5 @@ index_page(_Request) :-
 	    title('Weblog Demo'),
 	    [
 	    h1('Weblog demo page'),
-	    p('Some day this will show cool weblog demos')
+	    p(a(href=location_by_id(testform), 'Demo validated form'))
 	     ]).
