@@ -57,7 +57,11 @@ pldoc :-
 	doc_server(4040),
 	www_open_url('http://127.0.0.1:4040/help/source').
 
+:- writeln('\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\
+%                                           %\n\
+%    To run the pldoc server query pldoc    %\n\
+%  To run the weblogdemo query weblog_demo  %\n\
+%                                           %\n\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
 
-
-:- writeln('To run the pldoc server query pldoc').
-:- writeln('To run the weblogdemo query weblog_demo').

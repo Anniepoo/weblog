@@ -33,6 +33,10 @@
 % logging - turns on and gets http_log
 :- use_module(library(http/http_log)).
 
+:- ensure_loaded(weblog(debug_page/debug_page)).
+:- ensure_loaded(weblogtest(html_form/html_form_test)).
+:- use_module(weblog(info/google/maps/gmap)).
+
 % flag to ensure we only start server once
 :- dynamic started/0.
 
@@ -56,7 +60,9 @@ start:-
 	format(user_error, 'Already running - browse http://127.0.0.1:~w/\n', [Port]).
 
 start:-
-	html_set_options([dialect(xhtml)]),
+	% for unclear reasons, uncommenting this breaks the google maps
+	% demo
+%	html_set_options([dialect(xhtml)]),
 	format(user_error, 'Starting weblog demo server\n', []),
 	server_port(Port),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),
@@ -122,5 +128,23 @@ index_page(_Request) :-
 	    title('Weblog Demo'),
 	    [
 	    h1('Weblog demo page'),
-	    p(a(href=location_by_id(testform), 'Demo validated form'))
+	    p(a(href=location_by_id(testform), 'Demo validated form')),
+	    p(a(href=location_by_id(googlemap), 'Demo Google Map'))
 	     ]).
+
+:- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
+
+google_map_handler(_Request) :-
+	reply_html_page(
+	    title('Google Map Demo'),
+	    [
+	    h1('Google Map demo page'),
+	     p('Weblog contributors'),
+	    \gmap([
+		      point(37.482214,-122.176552),     % Annie
+		      point(37.969368,23.732979),       % Acropolis
+		      point(52.334434,4.863596),        % VNU
+		      point(29.720576,-95.34296)        % Univ. of Houston
+		       ])
+	    ]).
+
