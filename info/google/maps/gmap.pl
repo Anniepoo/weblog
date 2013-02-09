@@ -13,8 +13,12 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(settings)).
 
-:- setting(key, atom, 'AIzaSyD2BfdFtyGXcVtACmZ4tbmGLoUDV-m20RI',
+:- include('googlekey.pl').
+/*
+ googlekey should contain a single directive like
+:- setting(key, atom, 'yourgooglekey',
 	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').
+*/
 :- setting(script, atom, 'http://maps.google.com/maps?file=api&v=2&sensor=false',
 	   'Address of Google map script').
 
