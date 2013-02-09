@@ -37,6 +37,7 @@
 :- ensure_loaded(weblogtest(html_form/html_form_test)).
 :- use_module(weblog(info/google/maps/gmap)).
 
+
 % flag to ensure we only start server once
 :- dynamic started/0.
 
