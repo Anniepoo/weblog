@@ -48,9 +48,6 @@ direct_table_cells(Tag, [H|T]) -->
 	html([Cell]),
 	direct_table_cells(Tag, T).
 
-:- html_meta wl_table(3, +).
-:- meta_predicate wl_table(3, +, ?, ?).
-
 remove_duplicates(A, B) :-
 	rdup(A, [], BRev),
 	reverse(BRev, B).
@@ -63,6 +60,7 @@ rdup([H|T], SoFar, Return) :-
 	\+ member(H, SoFar),
 	rdup(T, [H|SoFar], Return).
 
+:- html_meta wl_table(3, +, ?, ?).
 
 %%	wl_table(+DataGen:goal, +OptionListIn:list)// is semidet
 %

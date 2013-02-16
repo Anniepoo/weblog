@@ -21,6 +21,7 @@
    @author Anne Ogborn
    @copyright Copyright (c) 2012, University of Houston
    @license This code governed by the Cogbot New BSD License
+   @tbd figure out why google maps isn't happy with xhtml
 
 */
 
@@ -34,6 +35,8 @@
 :- use_module(library(http/http_log)).
 % needed to handle params in some of the demo pages
 :- use_module(library(http/http_parameters)).
+% needed by tables demo
+:- use_module(library(clpfd)).
 
 :- ensure_loaded(weblog(debug_page/debug_page)).
 :- ensure_loaded(weblogtest(html_form/html_form_test)).
@@ -92,7 +95,6 @@ normal_debug :-
        debug(html_form),
        debug(http(request)).
 
-
 %%	stop_server is det
 %
 %	Stop the web server
@@ -145,14 +147,20 @@ demo_item(Item) -->
 	{
 	    demo_label(Item, Label)
 	    ;
-	    atom_concat('No Label For ', Item, Label)
+	    atom_concat('Oops, No Label For ', Item, Label)
 	},
 	html([
 	    p(a(href=location_by_id(Item), ['Demo ', Label]))
 	     ]).
 
+%
+%         it's ugly having all this in one file, but
+%         I haven't decided how to architect breaking it up yet
+%         so bear with me here
+
 demo_label(testform, 'Validated Form').
 demo_label(googlemap, 'Google Map').
+demo_label(table, 'Table Generation').
 
 :- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
 
@@ -184,43 +192,53 @@ table_handler(_Request) :-
 		 ['Bob Burns', 23, 45, 77, 45],
 		 ['Charlie Clark', 99, 100, 89, 94]
 		      ]),
+	     hr([]),
 	     p('Table From Facts'),
-	     \wl_table(grades, []),
+	     \wl_table(grades_table_cells, []),
+	     hr([]),
 	     p('Table From Facts with Column Names'),
-	     \wl_table(grades, [header(weblogdemo:grade_labels)]),
+	     \wl_table(grades_table_cells, [header(weblogdemo:grade_labels)]),
+	     hr([]),
 	     p('Table From Facts without Header'),
-	     \wl_table(grades, [header(none)])
+	     \wl_table(grades_table_cells, [header(none)])
 	    ]).
 
 grade_labels(name, 'Student').
 grade_labels(quiz1, 'Quiz 1').
 grade_labels(quiz2, 'Quiz 2').
-grade_labels(midterm, 'Midterm Exam').
-grade_labels(final, 'Final Exam').
+grade_labels(midterm, 'Midterm').
+grade_labels(final, 'Final').
 
-grades(Name, name, Name) :- student_name(Name).
-grades(Name, Assignment, Value) :-
-	student_name(Name),
-	member(Assignment, [quiz1, quiz2, midterm, final]),
-	atom_concat('student_', Assignment, Functor),
-	call(Functor, Name, Value).
+%  Note that we're styling the text before returning
+%
+grades_table_cells(Name, name, b(Name)) :- grade(Name, _, _).
+grades_table_cells(Name, Assignment, em(Value)) :-
+	grade(Name, Assignment, Value),
+	Value < 60.
+grades_table_cells(Name, Assignment, Value) :-
+	grade(Name, Assignment, Value).
 
-student_name('Arnie Adams').
-student_name('Brenda Burns').
-student_name('Cindy Cameo').
-student_name('Dwight Dangerman').
-student_quiz1(Name, Grade) :-
-	atom_codes(Name, [G|_]),
-	Grade is (G - 0'A) * 7.
-student_quiz2(Name, Grade) :-
-	atom_codes(Name, [G|_]),
-	Grade is (G - 0'A) * 3 + 45.
-student_midterm(Name, Grade) :-
-	atom_codes(Name, [G|_]),
-	Grade is (G - 0'A) * 4 + 30.
-student_final(Name, Grade) :-
-	atom_codes(Name, [G|_]),
-	Grade is (G - 0'A) * 3 + 55.
+
+grade('Arnie Adams', quiz1, 45).
+grade('Arnie Adams', quiz2, 65).
+grade('Arnie Adams', midterm, 85).
+grade('Arnie Adams', final, 45).
+
+grade('Brenda Burns', quiz1, 83).
+grade('Brenda Burns', quiz2, 85).
+grade('Brenda Burns', midterm, 95).
+grade('Brenda Burns', final, 95).
+
+grade('Cindy Cameo', quiz1, 40).
+%   missing value
+grade('Cindy Cameo', midterm, 39).
+grade('Cindy Cameo', final, 29).
+
+grade('Dwight Dangerman', quiz1, 78).
+grade('Dwight Dangerman', quiz2, 98).
+grade('Dwight Dangerman', midterm, 85).
+grade('Dwight Dangerman', final, 90).
+
 
 
 
