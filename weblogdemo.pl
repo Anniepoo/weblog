@@ -32,11 +32,14 @@
 :- use_module(library(http/html_write)).
 % logging - turns on and gets http_log
 :- use_module(library(http/http_log)).
+% needed to handle params in some of the demo pages
+:- use_module(library(http/http_parameters)).
 
 :- ensure_loaded(weblog(debug_page/debug_page)).
 :- ensure_loaded(weblogtest(html_form/html_form_test)).
 :- use_module(weblog(info/google/maps/gmap)).
 :- use_module(weblog(formatting/basics)).
+:- use_module(weblog(formatting/tables)).
 
 % flag to ensure we only start server once
 :- dynamic started/0.
@@ -129,9 +132,27 @@ index_page(_Request) :-
 	    title('Weblog Demo'),
 	    [
 	    h1('Weblog demo page'),
-	    p(a(href=location_by_id(testform), 'Demo validated form')),
-	    p(a(href=location_by_id(googlemap), 'Demo Google Map'))
+	    \demo_item(testform),
+	    \demo_item(googlemap),
+	    \demo_item(table)
+	    ]).
+
+%%	demo_item(+Item:location_id)
+%
+%	Pass the location id and it generates the demo badge
+%
+demo_item(Item) -->
+	{
+	    demo_label(Item, Label)
+	    ;
+	    atom_concat('No Label For ', Item, Label)
+	},
+	html([
+	    p(a(href=location_by_id(Item), ['Demo ', Label]))
 	     ]).
+
+demo_label(testform, 'Validated Form').
+demo_label(googlemap, 'Google Map').
 
 :- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
 
@@ -148,4 +169,60 @@ google_map_handler(_Request) :-
 		      point(29.720576,-95.34296)        % Univ. of Houston
 		       ])
 	    ]).
+
+:- http_handler(root(table), table_handler, [id(table)]).
+
+table_handler(_Request) :-
+	reply_html_page(
+	    title('Table Demo'),
+	    [
+	     h1('Table Demo'),
+	     p('Table from nested list data'),
+	     \wl_direct_table([
+		 head(['Name', 'Quiz1', 'Quiz2', 'Midterm', 'Final']),
+		 ['Abigail Ames', 73, 84, 92, 87],
+		 ['Bob Burns', 23, 45, 77, 45],
+		 ['Charlie Clark', 99, 100, 89, 94]
+		      ]),
+	     p('Table From Facts'),
+	     \wl_table(grades, []),
+	     p('Table From Facts with Column Names'),
+	     \wl_table(grades, [header(weblogdemo:grade_labels)]),
+	     p('Table From Facts without Header'),
+	     \wl_table(grades, [header(none)])
+	    ]).
+
+grade_labels(name, 'Student').
+grade_labels(quiz1, 'Quiz 1').
+grade_labels(quiz2, 'Quiz 2').
+grade_labels(midterm, 'Midterm Exam').
+grade_labels(final, 'Final Exam').
+
+grades(Name, name, Name) :- student_name(Name).
+grades(Name, Assignment, Value) :-
+	student_name(Name),
+	member(Assignment, [quiz1, quiz2, midterm, final]),
+	atom_concat('student_', Assignment, Functor),
+	call(Functor, Name, Value).
+
+student_name('Arnie Adams').
+student_name('Brenda Burns').
+student_name('Cindy Cameo').
+student_name('Dwight Dangerman').
+student_quiz1(Name, Grade) :-
+	atom_codes(Name, [G|_]),
+	Grade is (G - 0'A) * 7.
+student_quiz2(Name, Grade) :-
+	atom_codes(Name, [G|_]),
+	Grade is (G - 0'A) * 3 + 45.
+student_midterm(Name, Grade) :-
+	atom_codes(Name, [G|_]),
+	Grade is (G - 0'A) * 4 + 30.
+student_final(Name, Grade) :-
+	atom_codes(Name, [G|_]),
+	Grade is (G - 0'A) * 3 + 55.
+
+
+
+
 
