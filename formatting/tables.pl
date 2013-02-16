@@ -9,6 +9,7 @@ controlling layout
 
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
+:- use_module(library(http/http_wrapper), [http_current_request/1]).
 
 %%	wl_direct_table(+Data:listoflists)// is semidet
 %
@@ -21,20 +22,29 @@ controlling layout
 %
 %	fails silently if it can't parse the data
 %
+%	The generated html sets the class of body
+%	rows to even or odd alternately to allow
+%	alternate row styling
+%
 wl_direct_table([]) --> [].
 wl_direct_table([H|T]) -->
-         html([table(\direct_table_body([H|T]))]).
+         html([table(\direct_table_body(1, [H|T]))]).
 
-direct_table_body([]) --> [].
-direct_table_body([H|T]) -->
+direct_table_body(_, []) --> [].
+direct_table_body(RowNum, [H|T]) -->
 	 {
-	     is_list(H)
+	     is_list(H),
+	     NewRowNum is RowNum + 1,
+	     (	 0 =:= RowNum mod 2
+	     ->	 EvenOdd = even
+	     ;	 EvenOdd = odd
+	     )
 	 },
-         html(tr(\direct_table_cells(td, H))),
-	 direct_table_body(T).
-direct_table_body([head(HR)|T]) -->
+         html(tr(class=EvenOdd, \direct_table_cells(td, H))),
+	 direct_table_body(NewRowNum, T).
+direct_table_body(RowNum, [head(HR)|T]) -->
 	direct_header_row(HR),
-	direct_table_body(T).
+	direct_table_body(RowNum, T).
 
 direct_header_row([]) --> [].
 direct_header_row([H|T]) -->
@@ -82,7 +92,6 @@ rdup([H|T], SoFar, Return) :-
 %
 wl_table(DataGen, OptionListIn) -->
 	{
-	 debug(weblog, 'reached wl_table~n', []),
 	    meta_options(is_meta, OptionListIn, OptionList),
 	    option(header(HeaderGoal) , OptionList, = ),
 	    bagof(Key, Column^Value^call(DataGen, Key, Column, Value), DupKeyList),
@@ -91,7 +100,7 @@ wl_table(DataGen, OptionListIn) -->
 	    remove_duplicates(DupColumnList, ColumnList)
 	},
 	html([table([tr(\table_header(HeaderGoal, ColumnList)),
-		     \table_body(KeyList, ColumnList, DataGen)])]).
+		     \table_body(1, KeyList, ColumnList, DataGen)])]).
 
 :- html_meta table_header(2, +).
 
@@ -109,12 +118,19 @@ table_header(HeaderGoal, [H|T]) -->
 	},
 	html([th(Label), \table_header(HeaderGoal, T)]).
 
-:- html_meta   table_body(+, +, 3).
+:- html_meta   table_body(+, +, +, 3).
 
-table_body([], _ColumnList, _DataGen) --> [].
-table_body([H|T], ColumnList, DataGen) -->
-	html(tr(\table_row(H, ColumnList, DataGen))),
-	table_body(T, ColumnList, DataGen).
+table_body(_RowNum, [], _ColumnList, _DataGen) --> [].
+table_body(RowNum, [H|T], ColumnList, DataGen) -->
+	 {
+	     NewRowNum is RowNum + 1,
+	     (	 0 =:= RowNum mod 2
+	     ->	 EvenOdd = even
+	     ;	 EvenOdd = odd
+	     )
+	 },
+	html(tr(class=EvenOdd, \table_row(H, ColumnList, DataGen))),
+	table_body(NewRowNum, T, ColumnList, DataGen).
 
 :- html_meta table_row(+, 3).
 

@@ -184,6 +184,10 @@ table_handler(_Request) :-
 	reply_html_page(
 	    title('Table Demo'),
 	    [
+	     style(
+'tr.even td, tr.even {
+	     background-color: #aaaaff;
+	    }'),
 	     h1('Table Demo'),
 	     p('Table from nested list data'),
 	     \wl_direct_table([
@@ -211,13 +215,17 @@ grade_labels(final, 'Final').
 
 %  Note that we're styling the text before returning
 %
+%  NOTE - subtlety here. The order of the answers is important,
+%  which is non logical.  The -> is needed to avoid leaving
+%  a choice point in a bad place.
+%
 grades_table_cells(Name, name, b(Name)) :- grade(Name, _, _).
-grades_table_cells(Name, Assignment, em(Value)) :-
+grades_table_cells(Name, Assignment, RetValue) :-
 	grade(Name, Assignment, Value),
-	Value < 60.
-grades_table_cells(Name, Assignment, Value) :-
-	grade(Name, Assignment, Value).
-
+	(   Value < 60
+	->  RetValue = em(Value)
+	;   RetValue = Value
+	).
 
 grade('Arnie Adams', quiz1, 45).
 grade('Arnie Adams', quiz2, 65).
