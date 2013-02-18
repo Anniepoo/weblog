@@ -16,8 +16,10 @@ controlling layout
 	Given a list, each of whose members is either a list
 	or a term head(List), outputs an HTML table representing
 	the data.
+
 	Upon encountering a head(List) term the elements of List are
 	output in th tags.
+
 	Bare lists are output as td tags
 
 	fails silently if it can't parse the data
@@ -85,8 +87,10 @@ rdup([H|T], SoFar, Return) :-
 	for all possible solutions to Key, Column
 
 	Note that if you want the keys you'll have to make sure
-	the key is included as a column name. Example, where key
-	is the name of the primary key
+	the key is included as a column name.
+
+        Example, where *my_key*
+	is the name of the primary key and my_data/3 is the underlying data.
 
 	==
 	...
@@ -94,11 +98,17 @@ rdup([H|T], SoFar, Return) :-
 	...
 
 
-	table_cells(Key, key, Key) :-
-	      data(Key, _, _).
+	table_cells(Key, my_key, Key) :-
+	      my_data(Key, _, _).
         table_cells(Key, Column, Value) :-
-	      data(Key, Column, Value).
+	      my_data(Key, Column, Value).
         ==
+
+	The generated html sets the class of body
+	rows to even or odd alternately to allow
+	alternate row styling
+
+	fails silently if given invalid arguments
 
 	Options:
 	* header(:Goal)
@@ -117,9 +127,6 @@ rdup([H|T], SoFar, Return) :-
         * rows(+List)
 	List is a list of row names. If this option exists,
 	the rows in the list are displayed in the order given.
-
-
-	fails silently if given invalid arguments
 */
 wl_table(DataGen, OptionListIn) -->
 	{
