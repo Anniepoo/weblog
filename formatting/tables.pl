@@ -60,6 +60,7 @@ direct_table_cells(Tag, [H|T]) -->
 	html([Cell]),
 	direct_table_cells(Tag, T).
 
+/*
 remove_duplicates(A, B) :-
 	rdup(A, [], BRev),
 	reverse(BRev, B).
@@ -72,6 +73,7 @@ rdup([H|T], SoFar, Return) :-
 	\+ ord_memberchk(H, SoFar),
 	ord_add_element(SoFar, H, NewSoFar),
 	rdup(T, NewSoFar, Return).
+*/
 
 :- html_meta wl_table(3, +, ?, ?).
 
@@ -134,17 +136,15 @@ wl_table(DataGen, OptionListIn) -->
 	    option(header(HeaderGoal) , OptionList, = ),
 	    option(columns(OptionColumns), OptionList, true),
 	    option(rows(OptionRows), OptionList, true),
+	    findall(Key-Column, call(DataGen, Key, Column, _), Pairs),
+	    pairs_keys_values(Pairs, DupKeyList, DupColumnList),
 	    (	is_list(OptionColumns) ->
 	        ColumnList = OptionColumns ;
-	        bagof(Column2, Key2^Value2^call(DataGen, Key2, Column2, Value2),
-		    DupColumnList),
-	        remove_duplicates(DupColumnList, ColumnList)
+	        list_to_set(DupColumnList, ColumnList)
 	    ),
 	    (	is_list(OptionRows) ->
 	        KeyList = OptionRows ;
-	        bagof(Key, Column^Value^call(DataGen, Key, Column, Value),
-		     DupKeyList),
-		remove_duplicates(DupKeyList, KeyList)
+		list_to_set(DupKeyList, KeyList)
 	    )
 	},
 	html([table([tr(\table_header(HeaderGoal, ColumnList)),
