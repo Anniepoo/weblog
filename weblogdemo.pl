@@ -204,7 +204,14 @@ table_handler(_Request) :-
 	     \wl_table(grades_table_cells, [header(weblogdemo:grade_labels)]),
 	     hr([]),
 	     p('Table From Facts without Header'),
-	     \wl_table(grades_table_cells, [header(none)])
+	     \wl_table(grades_table_cells, [header(none)]),
+	     hr([]),
+	     p('Table From Facts with explicit columns'),
+	     \wl_table(grades_table_cells, [columns([name, quiz1, final])]),
+	     hr([]),
+	     p('Table From Facts with explicit rows'),
+	     \wl_table(grades_table_cells, [rows(['Arnie Adams', 'Brenda Burns'])])
+
 	    ]).
 
 grade_labels(name, 'Student').
@@ -248,6 +255,23 @@ grade('Dwight Dangerman', midterm, 85).
 grade('Dwight Dangerman', final, 90).
 
 
+%
+% temporary - trying to find a clean way to
+% handle pagination
+%
+:- http_handler(root(next), next_handler, [id(next)]).
+
+next_handler(Request) :-
+	http_parameters(Request, [
+				  page(Page, [integer, default(0)])
+				 ]),
+	Next is Page + 1,
+	reply_html_page(title('Next!'),
+			[
+			 p('Your number is ' , Page),
+			 a(href=location_by_id(next_handler) + [page(Next)],
+			   'Next')
+			]).
 
 
 

@@ -11,21 +11,21 @@ controlling layout
 :- use_module(library(option)).
 :- use_module(library(http/http_wrapper), [http_current_request/1]).
 
-%%	wl_direct_table(+Data:listoflists)// is semidet
-%
-%	Given a list, each of whose members is either a list
-%	or a term head(List), outputs an HTML table representing
-%	the data
-%	Upon encountering a head(List) term the elements of List are
-%	output in th tags.
-%	Bare lists are output as td tags
-%
-%	fails silently if it can't parse the data
-%
-%	The generated html sets the class of body
-%	rows to even or odd alternately to allow
-%	alternate row styling
-%
+/**	wl_direct_table(+Data:listoflists)// is semidet
+
+	Given a list, each of whose members is either a list
+	or a term head(List), outputs an HTML table representing
+	the data.
+	Upon encountering a head(List) term the elements of List are
+	output in th tags.
+	Bare lists are output as td tags
+
+	fails silently if it can't parse the data
+
+	The generated html sets the class of body
+	rows to even or odd alternately to allow
+	alternate row styling
+*/
 wl_direct_table([]) --> [].
 wl_direct_table([H|T]) -->
          html([table(\direct_table_body(1, [H|T]))]).
@@ -64,40 +64,81 @@ remove_duplicates(A, B) :-
 
 rdup([], Return, Return).
 rdup([H|T], SoFar, Return) :-
-	member(H, SoFar),
+	ord_memberchk(H, SoFar),
 	rdup(T, SoFar, Return).
 rdup([H|T], SoFar, Return) :-
-	\+ member(H, SoFar),
-	rdup(T, [H|SoFar], Return).
+	\+ ord_memberchk(H, SoFar),
+	ord_add_element(SoFar, H, NewSoFar),
+	rdup(T, NewSoFar, Return).
 
 :- html_meta wl_table(3, +, ?, ?).
 
-%%	wl_table(+DataGen:goal, +OptionListIn:list)// is semidet
-%
-%	DataGen is expected to be an arity 3 predicate
-%	my_data_gen(Key, Column, Value)
-%
-%	wl_table outputs an HTML table showing the data
-%	for all possible solutions to Key, Column
-%
-%	The only valid option is header(:goal)
-%	goal is expected to be an arity 2 predicate
-%	goal(Column, Label)
-%	if the option is missing, the column ID's are used
-%	as labels.
-%	if the option header(none)  is provided, no headers are
-%	produced
-%
-%	fails silently if given invalid arguments
-%
+/**	wl_table(+DataGen:goal, +OptionListIn:list)// is semidet
+
+        Generate a table from a predicate that supplies the data
+	as alternate solutions.
+
+	DataGen is expected to be an arity 3 predicate
+	my_data_gen(Key, Column, Value)
+
+	wl_table outputs an HTML table showing the data
+	for all possible solutions to Key, Column
+
+	Note that if you want the keys you'll have to make sure
+	the key is included as a column name. Example, where key
+	is the name of the primary key
+
+	==
+	...
+        \wl_table(table_cells, [])
+	...
+
+
+	table_cells(Key, key, Key) :-
+	      data(Key, _, _).
+        table_cells(Key, Column, Value) :-
+	      data(Key, Column, Value).
+        ==
+
+	Options:
+	* header(:Goal)
+	Goal is expected to be an arity 2 predicate
+	goal(Column, Label)
+	if the option is missing, the column ID's are used
+	as labels.
+	if the option header(none)  is provided, no headers are
+	produced
+
+	* columns(+List)
+	List is a list of column names. If this option exists,
+	the columns in the list are displayed in the order given.
+	Unless this list includes the key, it won't be included
+
+        * rows(+List)
+	List is a list of row names. If this option exists,
+	the rows in the list are displayed in the order given.
+
+
+	fails silently if given invalid arguments
+*/
 wl_table(DataGen, OptionListIn) -->
 	{
 	    meta_options(is_meta, OptionListIn, OptionList),
 	    option(header(HeaderGoal) , OptionList, = ),
-	    bagof(Key, Column^Value^call(DataGen, Key, Column, Value), DupKeyList),
-	    bagof(Column2, Key2^Value2^call(DataGen, Key2, Column2, Value2), DupColumnList),
-	    remove_duplicates(DupKeyList, KeyList),
-	    remove_duplicates(DupColumnList, ColumnList)
+	    option(columns(OptionColumns), OptionList, true),
+	    option(rows(OptionRows), OptionList, true),
+	    (	is_list(OptionColumns) ->
+	        ColumnList = OptionColumns ;
+	        bagof(Column2, Key2^Value2^call(DataGen, Key2, Column2, Value2),
+		    DupColumnList),
+	        remove_duplicates(DupColumnList, ColumnList)
+	    ),
+	    (	is_list(OptionRows) ->
+	        KeyList = OptionRows ;
+	        bagof(Key, Column^Value^call(DataGen, Key, Column, Value),
+		     DupKeyList),
+		remove_duplicates(DupKeyList, KeyList)
+	    )
 	},
 	html([table([tr(\table_header(HeaderGoal, ColumnList)),
 		     \table_body(1, KeyList, ColumnList, DataGen)])]).
