@@ -3,6 +3,8 @@
 
 Displays generally useful debug information.
 
+ At the moment does little, eventually should
+
  * List of registered handlers and paths
  * Current File Search Path
  * Current Session info
@@ -13,9 +15,10 @@ Displays generally useful debug information.
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
+/*
 :- use_module(library(http/http_session)).
-:- use_module(library(server_stats)).
 :- use_module(weblog(formatting/boxes)).
+*/
 
 :- http_handler(admin(debugpage) , debug_page_handler, [id(debug_page)]).
 

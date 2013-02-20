@@ -44,9 +44,6 @@ portray_list_innerds([H|T]) :-
 
 
 :- ensure_loaded(load).
-:- ensure_loaded(weblog(debug_page/debug_page)).
-:- ensure_loaded(weblogtest(html_form/html_form_test)).
-
 :- ensure_loaded(weblogdemo).
 
 %%	pldoc is det

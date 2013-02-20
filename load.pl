@@ -24,6 +24,7 @@ user:file_search_path(weblogtest, '.').
 :- ensure_loaded(weblog(info/google/maps/gmap)).
 
 http:location(admin, '/admin' , []).
+http:location(demo, '/demo', []).
 
 user:file_search_path(weblog, '.').
 user:file_search_path(weblogtest, '.').

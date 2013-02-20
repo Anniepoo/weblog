@@ -5,7 +5,6 @@
         stop_server/0,
 	bye/0,
         normal_debug/0
-
 ]).
 
 
@@ -33,16 +32,11 @@
 :- use_module(library(http/html_write)).
 % logging - turns on and gets http_log
 :- use_module(library(http/http_log)).
-% needed to handle params in some of the demo pages
-:- use_module(library(http/http_parameters)).
-% needed by tables demo
-:- use_module(library(clpfd)).
 
 :- ensure_loaded(weblog(debug_page/debug_page)).
-:- ensure_loaded(weblogtest(html_form/html_form_test)).
-:- use_module(weblog(info/google/maps/gmap)).
-:- use_module(weblog(formatting/basics)).
-:- use_module(weblog(formatting/tables)).
+
+
+
 
 % flag to ensure we only start server once
 :- dynamic started/0.
@@ -158,121 +152,15 @@ demo_item(Item) -->
 %         I haven't decided how to architect breaking it up yet
 %         so bear with me here
 
+:- discontiguous demo_label/2.
+
 demo_label(testform, 'Validated Form').
+:- ensure_loaded(demo/html_form_demo).
+
 demo_label(googlemap, 'Google Map').
+:- ensure_loaded(demo/google_map_demo).
+
 demo_label(table, 'Table Generation').
-
-:- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
-
-google_map_handler(_Request) :-
-	reply_html_page(
-	    title('Google Map Demo'),
-	    [
-	    h1('Google Map demo page'),
-	     p('Weblog contributors'),
-	    \gmap([
-		      point(37.482214,-122.176552),     % Annie
-		      point(37.969368,23.732979),       % Acropolis
-		      point(52.334434,4.863596),        % VNU
-		      point(29.720576,-95.34296)        % Univ. of Houston
-		       ])
-	    ]).
-
-:- http_handler(root(table), table_handler, [id(table)]).
-
-table_handler(_Request) :-
-	reply_html_page(
-	    title('Table Demo'),
-	    [
-	     style(
-'tr.even td, tr.even {
-	     background-color: #aaaaff;
-	    }'),
-	     h1('Table Demo'),
-	     p('Table from nested list data'),
-	     \wl_direct_table([
-		 head(['Name', 'Quiz1', 'Quiz2', 'Midterm', 'Final']),
-		 ['Abigail Ames', 73, 84, 92, 87],
-		 ['Bob Burns', 23, 45, 77, 45],
-		 ['Charlie Clark', 99, 100, 89, 94]
-		      ]),
-	     hr([]),
-	     p('Table From Facts'),
-	     \wl_table(grades_table_cells, []),
-	     hr([]),
-	     p('Table From Facts with Column Names'),
-	     \wl_table(grades_table_cells, [header(weblogdemo:grade_labels)]),
-	     hr([]),
-	     p('Table From Facts without Header'),
-	     \wl_table(grades_table_cells, [header(none)]),
-	     hr([]),
-	     p('Table From Facts with explicit columns'),
-	     \wl_table(grades_table_cells, [columns([name, quiz1, final])]),
-	     hr([]),
-	     p('Table From Facts with explicit rows'),
-	     \wl_table(grades_table_cells, [rows(['Arnie Adams', 'Brenda Burns'])])
-
-	    ]).
-
-grade_labels(name, 'Student').
-grade_labels(quiz1, 'Quiz 1').
-grade_labels(quiz2, 'Quiz 2').
-grade_labels(midterm, 'Midterm').
-grade_labels(final, 'Final').
-
-%  Note that we're styling the text before returning
-%
-%  NOTE - subtlety here. The order of the answers is important,
-%  which is non logical.  The -> is needed to avoid leaving
-%  a choice point in a bad place.
-%
-grades_table_cells(Name, name, b(Name)) :- grade(Name, _, _).
-grades_table_cells(Name, Assignment, RetValue) :-
-	grade(Name, Assignment, Value),
-	(   Value < 60
-	->  RetValue = em(Value)
-	;   RetValue = Value
-	).
-
-grade('Arnie Adams', quiz1, 45).
-grade('Arnie Adams', quiz2, 65).
-grade('Arnie Adams', midterm, 85).
-grade('Arnie Adams', final, 45).
-
-grade('Brenda Burns', quiz1, 83).
-grade('Brenda Burns', quiz2, 85).
-grade('Brenda Burns', midterm, 95).
-grade('Brenda Burns', final, 95).
-
-grade('Cindy Cameo', quiz1, 40).
-%   missing value
-grade('Cindy Cameo', midterm, 39).
-grade('Cindy Cameo', final, 29).
-
-grade('Dwight Dangerman', quiz1, 78).
-grade('Dwight Dangerman', quiz2, 98).
-grade('Dwight Dangerman', midterm, 85).
-grade('Dwight Dangerman', final, 90).
-
-
-%
-% temporary - trying to find a clean way to
-% handle pagination
-%
-:- http_handler(root(next), next_handler, [id(next)]).
-
-next_handler(Request) :-
-	http_parameters(Request, [
-				  page(Page, [integer, default(0)])
-				 ]),
-	Next is Page + 1,
-	reply_html_page(title('Next!'),
-			[
-			 p('Your number is ' , Page),
-			 a(href=location_by_id(next_handler) + [page(Next)],
-			   'Next')
-			]).
-
-
+:- ensure_loaded(demo/table_demo).
 
 

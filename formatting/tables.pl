@@ -60,22 +60,12 @@ direct_table_cells(Tag, [H|T]) -->
 	html([Cell]),
 	direct_table_cells(Tag, T).
 
-/*
-remove_duplicates(A, B) :-
-	rdup(A, [], BRev),
-	reverse(BRev, B).
-
-rdup([], Return, Return).
-rdup([H|T], SoFar, Return) :-
-	ord_memberchk(H, SoFar),
-	rdup(T, SoFar, Return).
-rdup([H|T], SoFar, Return) :-
-	\+ ord_memberchk(H, SoFar),
-	ord_add_element(SoFar, H, NewSoFar),
-	rdup(T, NewSoFar, Return).
-*/
-
 :- html_meta wl_table(3, +, ?, ?).
+
+:- predicate_options(wl_table/4, 2,
+		     [ header(goal),
+		       columns(list),
+		       rows(list) ]).
 
 /**	wl_table(+DataGen:goal, +OptionListIn:list)// is semidet
 

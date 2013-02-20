@@ -1,4 +1,4 @@
-:- module(html_form_test,
+:- module(html_form_demo,
 	  [
 %	   test_form_content//1,
 %	   test_landing_page_content//1
@@ -10,7 +10,6 @@
 :- use_module(weblog(html_form/html_form)).
 
 :- http_handler(root(testform) , test_form_page_handler, [id(testform)]).
-
 
 test_form_page_handler(Request) :-
 	validated_form(
