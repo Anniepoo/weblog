@@ -1,9 +1,4 @@
-:- module(html_form_demo,
-	  [
-%	   test_form_content//1,
-%	   test_landing_page_content//1
-
-	  ]).
+:- module(html_form_demo, []).
 
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
@@ -15,10 +10,10 @@ test_form_page_handler(Request) :-
 	validated_form(
 	    reply_html_page(
 		[title('Form Page')],
-		\(html_form_test:test_form_content(Request))),
+		\(html_form_demo:test_form_content(Request))),
 	    reply_html_page(
 		[title('Thanks')],
-		\(html_form_test:test_landing_page_content(Request)))).
+		\(html_form_demo:test_landing_page_content(Request)))).
 
 test_form_content(_Request) -->
 	{

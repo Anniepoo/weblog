@@ -1,0 +1,9 @@
+/*
+     CSS for the Weblog Demo
+     
+     Note - nothing should be in here that is needed generally,
+     that should go in weblog.css
+*/
+tr.even td, tr.even {
+	     background-color: #aaaaff;
+	    }

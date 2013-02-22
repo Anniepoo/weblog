@@ -21,6 +21,7 @@
    @copyright Copyright (c) 2012, University of Houston
    @license This code governed by the Cogbot New BSD License
    @tbd figure out why google maps isn't happy with xhtml
+   @tbd should the file handlers for css, etc be in here?
 
 */
 
@@ -33,10 +34,7 @@
 % logging - turns on and gets http_log
 :- use_module(library(http/http_log)).
 
-:- ensure_loaded(weblog(debug_page/debug_page)).
-
-
-
+:- use_module(library(http/http_files)).
 
 % flag to ensure we only start server once
 :- dynamic started/0.
@@ -112,6 +110,12 @@ bye :-
 :- http_handler(root(.) , redir_to_index,
 		[id(indexroot)]).
 
+%
+%  Serve css, icons, and js
+%
+:- http_handler(css('demo.css'), http_reply_file('css/demo.css', []), []).
+
+
 %%	redir_to_index(+Request:http_request) is det
 %
 %	handle bare domain request by redirection to index
@@ -130,7 +134,8 @@ index_page(_Request) :-
 	    h1('Weblog demo page'),
 	    \demo_item(testform),
 	    \demo_item(googlemap),
-	    \demo_item(table)
+	    \demo_item(table),
+	    \demo_item(debug_demo)
 	    ]).
 
 %%	demo_item(+Item:location_id)
@@ -162,5 +167,8 @@ demo_label(googlemap, 'Google Map').
 
 demo_label(table, 'Table Generation').
 :- ensure_loaded(demo/table_demo).
+
+demo_label(debug_demo, 'Debugging Tools').
+:- ensure_loaded(demo/debug_demo).
 
 

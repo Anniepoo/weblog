@@ -110,6 +110,7 @@ direct_table_cells(Tag, [H|T]) -->
 	as labels.
 	if the option header(none)  is provided, no headers are
 	produced
+	Note that you'll have to specify the module explicitly
 
 	* columns(+List)
 	List is a list of column names. If this option exists,

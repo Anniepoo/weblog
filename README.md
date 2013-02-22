@@ -17,6 +17,7 @@ Contributing
 ============
 
 We welcome contributions. Because this is more a 'toolbox' library than a unified 
+framework, it's particularly easy to contribute.
 
 Code should generally follow the style conventions of 
 

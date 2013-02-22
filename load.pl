@@ -18,16 +18,10 @@ user:file_search_path(weblogtest, '.').
 % Needed for http:location/3, don't remove even if red
 :- use_module(library(http/http_path)).
 
-
-:- ensure_loaded(weblog(debug_page/debug_page)).
-:- ensure_loaded(weblogtest(html_form/html_form_test)).
-:- ensure_loaded(weblog(info/google/maps/gmap)).
-
+% these are suspicious
 http:location(admin, '/admin' , []).
 http:location(demo, '/demo', []).
 
-user:file_search_path(weblog, '.').
-user:file_search_path(weblogtest, '.').
 
 
 

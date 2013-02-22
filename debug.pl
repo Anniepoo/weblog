@@ -57,8 +57,8 @@ pldoc :-
 :- writeln('\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\
 %                                           %\n\
-%    To run the pldoc server query pldoc    %\n\
-%  To run the weblogdemo query weblog_demo  %\n\
+%    To run the pldoc server query pldoc.   %\n\
+% To run the weblog demo query weblog_demo. %\n\
 %                                           %\n\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
 
