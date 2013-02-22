@@ -1,0 +1,208 @@
+howdy
+aw, no prolog at languages 
+yup, we should sue!
+XD
+so, wahts yer thoughts on form?
+well, I'm not sure if we should have separate modules; one for simple forms and one for validated
+maybe just some extra arguments for the validated forms (form(..., ..., [validate(....)]))
+imagine the dev process
+somebody makes a form
+later they realize they want it to validate
+they shouldn't have to undo/change what's done
+so yah, some 'extra arguments'
+How do we specify the validation?
+and what happens if it doesn't validate?
+is it server or client side? what if the validation can only be done server side?
+well, some things (unique name) can only be done server side. 
+also, the server should check if the fields are valid even if the page has validation client-side
+in case the user bypass it
+so for starters maybe we should focus on just server side
+ok
+well, i think it will be nice to be able to add "validation specification" at the same place you declare the form field
+I agree
+what about error message?
+
+like, say this field has to be non null
+
+name [___________]
+
+so if you submit that way, should be
+
+name must not be blank
+name  [___________]
+
+how's that specified?
+well, if we have some default validation specifications (like, notnull, alnum...) we can have default error messages  
+but the message text always needs customized
+
+otherwise, it should be specified when you declare the validation
+ok, that's reasonable
+(well, they can also customize the error in default)
+some people might want to make the err message someplace else (eg all messages at top of form)
+hmmm... create some sort of error event and let one process collect them and display them based on user specification perhaps? kinda messy though
+
+Yes - how about a dcg for the error message - expands to nothing if the error's not activated?
+Not sure how that would enable the user to display the errors at the top :/
+oh, I think I get it (i'm sencing race condition danger in our chatting method xD)
+I like the race condition  XcD
+
+XD
+ROTFLMAO
+
+html([
+   
+   form(action=formlanding.php, [
+        \error_msg([for=name, violation=foo], 'You must supply a name'),
+        \error_msg([for=name, violation=bar], 'must not contain spaces'),
+       p(\form_field(input([type=text, name=name], [])), 
+                        [foo(length>=3), bar(not(contains(' ')))]),
+       ...
+       ])
+       
+       something like that?
+       
+hm, that raises the question; what if we want different messages for different kind of validation violations?
+for example, "You must supply a name" "Name taken" "Name should not contain spaces"
+
+got it
+
+so 
+
+hmmm there is also this possibility:
+
+yes, that's nice
+
+html([
+   
+   form(action=formlanding.php, [
+        \error_msg([for=name, length>=3], 'You must supply a name'),
+        \error_msg([for=name, not(contains(' '))], 'must not contain spaces'),
+       p(\form_field(input([type=text, name=name], []))),
+       ...
+       ])
+       
+       
+ and, for the record, until we got on the issue of different types of violations,
+ we were following my existing code - which is some sign we're not totally insane
+ 
+ (my thing was great to write, it just is hard to debug)
+ 
+ we are prolog programmers. I think one could say that we are insane by default :b
+ 
+ True.
+ OK, so how do you handle the decision to reload the form or proceed to the landing page?
+ 
+ A gotcha I ran into was that first time you visit form it has error messages - like, name should only have error msg shown in above if you've already submitted form once
+ 
+ 
+ Well, the dirty way to fix is to claim that they are not error messages, just guidelines for the user :b but that's bad. so hmm...
+ 
+ yah, I handled it by looking to see if the parms were there
+ if the name parm exists and is null then err message
+ if no parms, we're on first load
+ 
+ just warning you if you're going to try to do something same, to handle this case
+
+maybe some hidden form field? 
+
+ OK, so how do you handle the decision to reload the form or proceed to the landing page?
+ 
+so, if we are doing everything server side, we can validate the fields; check all conditions, no short-circuiting: I once was trying to register and didn't get all the error messages the first time and it was really annoying
+
+I agree - should show all the error messages, not stop at first
+
+
+I'm asking what my, as a programmer using your code, method is to land the user on the right page?
+
+hm. you might want to return to the last page after, for example, registering. hmmmm
+
+ 
+ oh, good point - we should support that
+ also, the app programmer needs to know if the form's valid, 
+ my code generates the HTML twice.  That's so it can handle error messages before or after the form field.
+ But your way of putting the validation in the error message is better.
+ and eliminates that to boot
+ but still, we need some way of having the result of pressing 'submit' land you on the right page,
+ either the landing page, or back on the form if you've made an error.
+ 
+ and maybe erase some fields, like password (not sure why they do that) and CAPTCHA
+ 
+ well, captcha we handle as a field type
+ the session remembers what we gave as challenge
+ 
+ you erase password fields so they don't get transmitted in plaintext in the form.
+ 
+ oh
+ my method, and this is the sucky part of mine, is to have a wrapper on the handlers
+ 
+ :- handler('/some/form',  myform_handler , []).
+ myform_handler(Request) :-  validated_form(Request,
+                                 actual_form_handler,
+                                 landing_page_handler).
+                                 
+ it calls actual_form_handler twice - needs to for the 2 pass compiler issue your put validation in error message thing eliminates
+ if it's valid, it then calls the landing page handler
+                                 
+                                 
+ hm, couldn't we have some AJAX and perform the validation asynchronously - and update the page?
+ 
+ we could, but I think we should handle the old fashioned way
+ since we have to handle it anyway
+ 
+ it'd be very very nifty if you could just set a flag somewhere and it does all this by ajax with client side verify. But I think the default has to be the old 1990's style
+ 
+ XD
+ 
+ well, we're compiling, essentially - it's a preprocessor on Jan's termerized HTML.
+ actually, that's the bad part of mine - it's really hard to figure out hwat the hecks going on through the indirection of validated_form
+ 
+ so what's yer thoughts on how to invoke the validation and end up on the right URI
+ ??
+ 
+ hmmmm. not sure. cannot think of something good :/
+ 
+sorry, need the trick:
+ 
+ myform_handler(Request) :-
+        start_validated_form,
+        html([.... form  ...]),
+        end_validated_form(my_landing_page, Request).
+        
+We redirect output into a string and capture the form.  If we're valid when we reach end_validated_form, we discard the string and call the landing page.
+
+the 'trick' is that you have to hang onto a boolean that is set by start_validated_form and
+might be reset by an err_message  DCG.
+
+So you need one of the stateful dodges  - thread local assert or something
+        
+or something like setvar right?
+
+yes  nb_setval or something
+
+tbd decided what
+
+remember the server's multithread, you gotta do it per thread
+
+ yup
+ 
+ this looks much better than my existing code
+ 
+ hehe. Do you think it's a good point to stop for a bit? I gotta eat XD
+ 
+sure
+
+I think this is a good design
+Are you willing to try implementing it?
+
+sure, I'll try! 
+
+8cD
+
+CVool!
+Yay - I think between us we fixed the issues with existing, this is gonna be great.
+I'm going to spend some time thinking about other parts of design.
+
+ :) cya *saves chat*
+ yup
+ 
+ 
