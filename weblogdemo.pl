@@ -111,9 +111,13 @@ bye :-
 		[id(indexroot)]).
 
 %
-%  Serve css, icons, and js
+%  Serve css, icons, and js by adding our directories to
+%  the file search path
 %
-:- http_handler(css('demo.css'), http_reply_file('css/demo.css', []), []).
+user:file_search_path(css, 'static/css').
+user:file_search_path(icons, 'static/icons').
+user:file_search_path(js, 'static/js').
+
 
 
 %%	redir_to_index(+Request:http_request) is det
