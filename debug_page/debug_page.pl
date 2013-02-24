@@ -53,13 +53,22 @@ debug_contents -->
 
 runtime_stats -->
 	{
-	    with_output_to(atom(Stats), statistics)
+	    with_output_to(atom(Stats), statistics),
+	    with_output_to(atom(Settings), list_settings)
 	},
 	html([
+	    h2('Statistics From stats/0'),
 	    pre(Stats),
+	    h2('Settings'),
+	    pre(Settings),
+	    h2('Stats/2'),
 	    \wl_table(rt_stats_cells,
 		      [columns([key, value, desc]),
-		      header(debug_page:rt_stats_headers)])
+		      header(debug_page:rt_stats_headers)]),
+	    h2('Prolog Flags'),
+	    \wl_table(flags_cells,
+		      [columns([key, value]),
+		       header(debug_page:rt_stats_headers)])
 	     ]).
 
 rt_stats_headers(key, 'Item').
@@ -123,3 +132,8 @@ stats_entries([
 'threads_created'-'MT-version: number of created threads',
 'thread_cputime'-'MT-version: seconds CPU time used by finished threads. Supported on Windows-NT and later, Linux and possibly a few more. Verify it gives plausible results before using.'
 		      ]).
+
+flags_cells(Key, key, Key) :-
+	current_prolog_flag(Key, _).
+flags_cells(Key, value, Value) :-
+	current_prolog_flag(Key, Value).
