@@ -139,7 +139,8 @@ index_page(_Request) :-
 	    \demo_item(testform),
 	    \demo_item(googlemap),
 	    \demo_item(table),
-	    \demo_item(debug_demo)
+	    \demo_item(debug_demo),
+	    \demo_item(accordion)
 	    ]).
 
 %%	demo_item(+Item:location_id)
@@ -174,5 +175,8 @@ demo_label(table, 'Table Generation').
 
 demo_label(debug_demo, 'Debugging Tools').
 :- ensure_loaded(demo/debug_demo).
+
+demo_label(accordion, 'Accordion').
+:- ensure_loaded(demo/accordion_demo).
 
 
