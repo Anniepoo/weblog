@@ -42,7 +42,6 @@ accordion(X) -->
 	},
        [].
 
-
 :- html_meta acc_header(html, ?, ?).
 
 acc_header(Contents) -->

@@ -57,6 +57,7 @@ grade_labels(final, 'Final').
 %  which is non logical.  The -> is needed to avoid leaving
 %  a choice point in a bad place.
 %
+
 grades_table_cells(Name, name, b(Name)) :- grade(Name, _, _).
 grades_table_cells(Name, Assignment, RetValue) :-
 	grade(Name, Assignment, Value),
