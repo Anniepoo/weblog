@@ -19,20 +19,20 @@ acc_demo_body -->
 	html([
 	    h1('Accordion demo page'),
 	     p('Tasty Recipes, Too Many For One Page!'),
-	    \accordion([
-		 \acc_header('Taco Salad'),
-		 \recipe(taco_salad),
-		 \acc_header('Grilled Cheese Sandwich'),
-		 \recipe(grilled_cheese),
-		 \acc_header('Tang'),
-		 div([
-		    p('ingredients:'),
-		    ul([
+	    \accordion([collapsible(true)], [
+		 \acc_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \acc_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \acc_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
 			  li('1 Tbspn Tang powder'),
 			  li('20 oz cold water')
-		       ]),
-		    p('Mix Tang powder into cold water. Serve')
-		    ])
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
 	         ])
 	    ]).
 
