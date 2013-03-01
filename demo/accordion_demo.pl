@@ -18,13 +18,72 @@ accordion_demo_page(_Request) :-
 acc_demo_body -->
 	html([
 	    h1('Accordion demo page'),
-	     p('Tasty Recipes, Too Many For One Page!'),
-	    \accordion([collapsible(true)], [
-		 \acc_section('Taco Salad',
+	     h2('Tasty Recipes, Too Many For One Page!'),
+	    \accordion([], [
+		 \accordion_section('Taco Salad',
 		         \recipe(taco_salad)),
-		 \acc_section('Grilled Cheese Sandwich',
+		 \accordion_section('Grilled Cheese Sandwich',
 		         \recipe(grilled_cheese)),
-		 \acc_section('Tang',
+		 \accordion_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
+			  li('1 Tbspn Tang powder'),
+			  li('20 oz cold water')
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
+	         ]),
+	    h2('Collapsible Version'),
+	    \accordion([id(collapsibleversion), collapsible(true)], [
+		 \accordion_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \accordion_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
+			  li('1 Tbspn Tang powder'),
+			  li('20 oz cold water')
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
+	         ]),
+	    h2('Fancy Icons  (custom classes)!'),
+	    \accordion([id(fancyicons),
+			active('ui-icon-circle-arrow-s'),
+			inactive('ui-icon-circle-arrow-e')], [
+		 \accordion_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \accordion_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
+			  li('1 Tbspn Tang powder'),
+			  li('20 oz cold water')
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
+	         ]),
+	    h2('Space Fill!'),
+	    style(
+  '\n#spacefill {
+    padding: 10px;
+    width: 550px;
+    height: 220px;
+  }\n'
+		 ),
+	    \accordion([id(spacefill),
+			height(fill)
+			], [
+		 \accordion_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \accordion_section('Tang',
 		     div([
 			p('ingredients:'),
 		        ul([
@@ -34,7 +93,29 @@ acc_demo_body -->
 		        p('Mix Tang powder into cold water. Serve')
 		        ]))
 	         ])
+/*   Hover is broken
+	    h2('Hover Open!'),
+	    \accordion([id(hovercraft),
+			hover(true)
+			], [
+		 \accordion_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \accordion_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
+			  li('1 Tbspn Tang powder'),
+			  li('20 oz cold water')
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
+	         ])
+*/
 	    ]).
+
+
 
 recipe(ID) -->
 	{
