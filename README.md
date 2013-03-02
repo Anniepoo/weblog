@@ -61,10 +61,13 @@ Contributors
 
 We'd like to thank the following folks:
 
-Anne Ogborn - tables, forms, accordion
-Thanos Tintinidis   - login and forms
-Jan Wielemaker - google maps, and of course SWI-Prolog!
-University of Houston - contributed the original library
+ * Anne Ogborn - tables, forms, accordion
+
+ * Thanos Tintinidis   - login and forms
+
+ * Jan Wielemaker - google maps, and of course SWI-Prolog!
+
+ * University of Houston - contributed the original library
 
 
 
