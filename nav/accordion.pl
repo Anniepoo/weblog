@@ -91,6 +91,12 @@
 
         * sortable(Bool)
 	Sections may be rearranged by dragging
+	if sortable(true) is used, then each group of sections to be drug
+	together must be surrounded by
+
+	==
+	      div(class=group, ... accordion_sections ... )
+	==
 
 	* id(Name)
 	The outer div's html id (default =accordion= ). Accordions sharing a page need unique IDs.
@@ -98,10 +104,12 @@
 	* css(Bool)
 	If true (default), include =/themes/base/jquery-ui.css= from the jquery CDN. Setting to false give a very bare boned H3 appearance to the headers, but does work. Set to false if you supply your own styling.
 
+	Note: currently not implemented.
+
 @param Options the list of options
 @param HTML the termerized HTML contents, which must be a list of
 accordian_section//2 sections
-@tbd  implement sortable and css options. hover is broken.
+@tbd  implement css option. hover is broken.
 
 
 */
@@ -127,8 +135,8 @@ accordion(Options, HTML) -->
 	},
 	html([
 	    \html_requires(jquery_ui),
-	    script(AScript),
-	    div(id=ID, HTML)
+	         div(id=ID, HTML),
+	         script(AScript)
 	     ]),
 	!.
 accordion(_, HTML, _, _) :-
@@ -136,16 +144,29 @@ accordion(_, HTML, _, _) :-
 		    context(accordion/2, 'Cannot generate HTML. Only \
 accordion_section//2 can be direct child of accordion//2'))).
 
-%%	valid_accordion_html(?HTML:list)
+%%	valid_accordion_html(:HTML:html)
+%
 %  unifies if HTML is a list of accordion_section escapes
+%  with, possibly, div(class=group, blahblah)
 %
 valid_accordion_html(_:X) :-
 	valid_accordion_html(X).
+
 valid_accordion_html([]).
 valid_accordion_html([\accordion_section(_, _) | T]) :-
 	valid_accordion_html(T).
+
 valid_accordion_html([\(_:accordion_section(_, _)) | T]) :-
 	valid_accordion_html(T).
+
+valid_accordion_html(\accordion_section(_, _)).
+valid_accordion_html(\(_:accordion_section(_, _))).
+
+% Allow containing divs for sort grouping
+valid_accordion_html([div(_, HTML) | T]) :-
+	valid_accordion_html(HTML),
+	valid_accordion_html(T).
+
 
 :- html_meta accordion_section(+, html, ?, ?).
 /**      accordion_section(+Header:options, +HTML:html)// is det
@@ -163,10 +184,33 @@ accordion_section(Header, HTML) -->
 	    atomic(Header)
 	},
 	html([
-	    h3(Header),
-	    div(HTML)
+			      h3(Header),
+			      div(HTML)
 	     ]).
 
+:- html_meta grouped_accordion_section(+, html, ?, ?).
+/**      grouped_accordion_section(+Header:options, +HTML:html)// is det
+
+    Create an accordion section of the given header and body.
+
+   Note - don't use this, see the sortable option in accordion//2
+
+@param Header atom text of header. In future may accept
+option(OptionList)
+@param HTML  Termerized HTML for body
+@see accordion//2
+
+*/
+grouped_accordion_section(Header, HTML) -->
+	{
+	    atomic(Header)
+	},
+	html([
+	    div(class=group, [
+			      h3(Header),
+			      div(class=group, HTML)
+			     ])
+	     ]).
 
 
 accordion_javascript(Options) -->

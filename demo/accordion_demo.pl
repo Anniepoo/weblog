@@ -115,11 +115,14 @@ acc_demo_body -->
 	    \accordion([id(sortme),
 			sortable(true)
 			], [
-		 \accordion_section('Taco Salad',
-		         \recipe(taco_salad)),
-		 \accordion_section('Grilled Cheese Sandwich',
-		         \recipe(grilled_cheese)),
-		 \accordion_section('Tang',
+		 div(class=group,
+		    \accordion_section('Taco Salad',
+		         \recipe(taco_salad))),
+		 div(class=group,
+		    \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese))),
+		 div(class=group,
+		    \accordion_section('Tang',
 		     div([
 			p('ingredients:'),
 		        ul([
@@ -127,7 +130,7 @@ acc_demo_body -->
 			  li('20 oz cold water')
 		          ]),
 		        p('Mix Tang powder into cold water. Serve')
-		        ]))
+		        ])))
 	         ])
 	    ]).
 
