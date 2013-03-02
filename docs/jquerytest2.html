@@ -13,7 +13,14 @@
 <body>
    <script>
   $(function() {
-    $( "#accordion " ).accordion();
+    $( "#accordion " ).accordion({
+    collapsible: true,
+    icons: {
+      header: "ui-icon-circle-arrow-e",
+      activeHeader: "ui-icon-circle-arrow-s"
+    },
+    dummy: 3
+    });
   });
   </script>
 <div id="accordion">

@@ -73,7 +73,7 @@ acc_demo_body -->
   '\n#spacefill {
     padding: 10px;
     width: 550px;
-    height: 220px;
+    height: 320px;
   }\n'
 		 ),
 	    \accordion([id(spacefill),
@@ -92,8 +92,7 @@ acc_demo_body -->
 		          ]),
 		        p('Mix Tang powder into cold water. Serve')
 		        ]))
-	         ])
-/*   Hover is broken
+	         ]),
 	    h2('Hover Open!'),
 	    \accordion([id(hovercraft),
 			hover(true)
@@ -111,8 +110,25 @@ acc_demo_body -->
 		          ]),
 		        p('Mix Tang powder into cold water. Serve')
 		        ]))
+	         ]),
+	    h2('Sortable!'),
+	    \accordion([id(sortme),
+			sortable(true)
+			], [
+		 \accordion_section('Taco Salad',
+		         \recipe(taco_salad)),
+		 \accordion_section('Grilled Cheese Sandwich',
+		         \recipe(grilled_cheese)),
+		 \accordion_section('Tang',
+		     div([
+			p('ingredients:'),
+		        ul([
+			  li('1 Tbspn Tang powder'),
+			  li('20 oz cold water')
+		          ]),
+		        p('Mix Tang powder into cold water. Serve')
+		        ]))
 	         ])
-*/
 	    ]).
 
 

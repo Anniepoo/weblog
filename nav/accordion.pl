@@ -109,135 +109,29 @@ accordian_section//2 sections
 accordion(Options, _, _, _) :-
 	option(inactive(_), Options),
 	\+ option(active(_), Options),
-	throw(error(domain_error(list, Options), context(accordion/2, 'inactive option demands active'))).
+	throw(error(domain_error(list, Options), context(accordion/2,
+				   'inactive option demands active'))).
 accordion(Options, _, _, _) :-
 	option(active(_), Options),
 	\+ option(inactive(_), Options),
-	throw(error(domain_error(list, Options), context(accordion/2, 'active option demands inactive'))).
+	throw(error(domain_error(list, Options), context(accordion/2,
+				   'active option demands inactive'))).
 
 accordion(Options, HTML) -->
 	{
 	    debug(weblog, 'accordion got ~q: ~q', [Options, HTML] ),
-	    option(id(ID), Options, accordion),
-	    option(collapsible(Collapsible), Options, false),
-	    option(hover(Hover), Options, false),
-	    option(height(Height), Options, content),
-	    (	option(active(Active), Options) ->
-	        option(inactive(Inactive), Options),
-		format(atom(IconText),
-'  icons:  {
-        header: "~w",
-        activeHeader: "~w"
-	   }\n', [Inactive, Active])
-	    ;
-		IconText = ''
-	    ),
-	    !
-	},
-	accordion_gen([id(ID),
-		       collapsible(Collapsible),
-		       icons(IconText),
-		       height(Height),
-		       hover(Hover)], HTML).
-accordion(Options, _, _, _) :-
-	throw(error(domain_error(list, Options),
-		    context(accordion/2, 'Illegal option'))).
-
-:- html_meta accordion_gen(+, html).
-
-/**  accordion_gen(+Opts:list, HTML:html)// is det
-
-     given a list guaranteed to have all the option values
-     generate the actual accordion surround html
-*/
-
-accordion_gen(Opts, HTML) -->
-	{
-	    member(id(ID), Opts),
-	    member(collapsible(Collapsible), Opts),
-	    member(icons(IconText), Opts),
-	    member(hover(Hover), Opts),
 	    valid_accordion_html(HTML),
-	    (  Collapsible = true ->
-	       CollapsePhrase = 'collapsible: true' ;
-	       CollapsePhrase = ''
-	    ),
-	    (	 Hover = true ->
-	         HoverPhrase = 'event: "click hoverintent"' ;
-	         HoverPhrase = ''
-	    ),
-	    format(atom(Func),
-'$(function() {
-   $("#~w").accordion({
-~w
-~w
-~w
-		      });
-});', [ID, CollapsePhrase, IconText, HoverPhrase]),
-	 (   Hover = true ->
-	     Addl ='\n\c
- var cfg = ($.hoverintent = {\n\c
-    sensitivity: 7,\n\c
-    interval: 100\n\c
-  });\n\c
- \n\c
-  $.event.special.hoverintent = {\n\c
-    setup: function() {\n\c
-      $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );\n\c
-    },\n\c
-    teardown: function() {\n\c
-      $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );\n\c
-    },\n\c
-    handler: function( event ) {\n\c
-      var that = this,\n\c
-        args = arguments,\n\c
-        target = $( event.target ),\n\c
-        cX, cY, pX, pY;\n\c
- \n\c
-      function track( event ) {\n\c
-        cX = event.pageX;\n\c
-        cY = event.pageY;\n\c
-      };\n\c
-      pX = event.pageX;\n\c
-      pY = event.pageY;\n\c
-      function clear() {\n\c
-        target\n\c
-          .unbind( "mousemove", track )\n\c
-          .unbind( "mouseout", arguments.callee );\n\c
-        clearTimeout( timeout );\n\c
-      }\n\c
-				\n\c
-      function handler() {\n\c
-        if ( ( Math.abs( pX - cX ) + Math.abs( pY - cY ) ) < cfg.sensitivity ) {\n\c
-          clear();\n\c
-          event.type = "hoverintent";\n\c
-          // prevent accessing the original event since the new event\n\c
-          // is fired asynchronously and the old event is no longer\n\c
-          // usable (#6028)\n\c
-          event.originalEvent = {};\n\c
-          jQuery.event.handle.apply( that, args );\n\c
-        } else {\n\c
-          pX = cX;\n\c
-          pY = cY;\n\c
-          timeout = setTimeout( handler, cfg.interval );\n\c
-        }\n\c
-      }\n\c
-      var timeout = setTimeout( handler, cfg.interval );\n\c
-      target.mousemove( track ).mouseout( clear );\n\c
-      return true;\n\c
-    }\n\c
-  };'
-	 ;
-	    Addl = ''
-	 ),
-	 format(atom(Script), '~w~n~w~n', [Func, Addl])
+	    option(id(ID), Options, accordion),
+	    phrase(accordion_javascript(Options), CScript),
+	    atom_codes(AScript, CScript)
 	},
 	html([
 	    \html_requires(jquery_ui),
-	    script(Script),
+	    script(AScript),
 	    div(id=ID, HTML)
-	     ]).
-accordion_gen(_, HTML, _, _) :-
+	     ]),
+	!.
+accordion(_, HTML, _, _) :-
 	throw(error(domain_error(list, HTML),
 		    context(accordion/2, 'Cannot generate HTML. Only \
 accordion_section//2 can be direct child of accordion//2'))).
@@ -272,3 +166,168 @@ accordion_section(Header, HTML) -->
 	    h3(Header),
 	    div(HTML)
 	     ]).
+
+
+
+accordion_javascript(Options) -->
+	{
+	    option(id(ID), Options, accordion),
+	    atom_codes(ID, CID)
+	},
+	jquery_call_start,
+	accordion_call_open(CID),
+       accordion_call_options(Options),
+       accordion_call_close,
+       attached_calls(Options),
+       ";\n",
+       jquery_call_end,
+       accordion_post_javascript(Options).
+
+accordion_call_open(CID) -->
+	"    $( \"#",
+        CID,
+        "\" ).accordion({\n".
+
+accordion_call_close -->
+       "dummy: 3\n})".
+
+jquery_call_start -->
+       "  $(function() {\n".
+
+jquery_call_end -->
+	"  });\n".
+
+accordion_call_options(Options) -->
+       collapse_options(Options),
+       icons_options(Options),
+       fillspace_options(Options),
+       hover_options(Options),
+       sortable_options(Options).
+
+collapse_options(Options) -->
+	{
+	   option(collapsible(false), Options, false)
+	},
+	[],!.
+collapse_options(_) -->
+	"collapsible: true,\n".
+
+icons_options(Options) -->
+	{
+	   \+ option(active(_), Options)
+	},
+	[],!.
+icons_options(Options) -->
+	{
+	   option(active(Active), Options),
+	   option(inactive(Inactive), Options),
+	   atom_codes(Active, CActive),
+	   atom_codes(Inactive, CInactive)
+	},
+	"icons: {\n          header: \"",
+	CInactive,
+	"\",\n       activeHeader: \"",
+	CActive,
+	"\"\n     },\n".
+
+fillspace_options(Options) -->
+	{
+	   option(height(content), Options, content)
+	},
+	"heightStyle: \"content\",\n",
+	!.
+fillspace_options(_) -->
+	"heightStyle: \"fill\",\n".
+
+hover_options(Options) -->
+	{
+	   option(hover(false), Options, false)
+	},
+	[],!.
+hover_options(_) -->
+	"event: \"click hoverintent\",\n".
+
+sortable_options(Options) -->
+	{
+	   option(sortable(false), Options, false)
+	},
+	[],!.
+sortable_options(_) -->
+	"header: \"> div > h3\",\n".
+
+attached_calls(Options) -->
+	{
+	   option(sortable(false), Options, false)
+	},
+	[],!.
+attached_calls(_) -->
+	".sortable({\n\c
+        axis: \"y\",\n\c
+        handle: \"h3\",\n\c
+        stop: function( event, ui ) {\n\c
+          // IE doesn't register the blur when sorting\n\c
+          // so trigger focusout handlers to remove .ui-state-focus\n\c
+          ui.item.children( \"h3\" ).triggerHandler( \"focusout\" );\n\c
+        }})\n".
+
+accordion_post_javascript(Options) -->
+	hover_post_options(Options).
+
+
+hover_post_options(Options) -->
+	{
+	   option(hover(false), Options, false)
+	},
+	[],!.
+hover_post_options(_) -->
+"var cfg = ($.hoverintent = {\n\c
+    sensitivity: 7,\n\c
+    interval: 100\n\c
+  });\n\c
+ \n\c
+  $.event.special.hoverintent = {\n\c
+    setup: function() {\n\c
+   $( this ).bind( \"mouseover\", jQuery.event.special.hoverintent.handler );\n\c
+    },\n\c
+    teardown: function() {\n\c
+ $( this ).unbind( \"mouseover\", jQuery.event.special.hoverintent.handler );\n\c
+    },\n\c
+    handler: function( event ) {\n\c
+      var that = this,\n\c
+        args = arguments,\n\c
+        target = $( event.target ),\n\c
+        cX, cY, pX, pY;\n\c
+ \n\c
+      function track( event ) {\n\c
+        cX = event.pageX;\n\c
+        cY = event.pageY;\n\c
+      };\n\c
+      pX = event.pageX;\n\c
+      pY = event.pageY;\n\c
+      function clear() {\n\c
+        target\n\c
+          .unbind( \"mousemove\", track )\n\c
+          .unbind( \"mouseout\", arguments.callee );\n\c
+        clearTimeout( timeout );\n\c
+      }\n\c
+      function handler() {\n\c
+     if ( ( Math.abs( pX - cX ) + Math.abs( pY - cY ) ) < cfg.sensitivity ) {\n\c
+          clear();\n\c
+          event.type = \"hoverintent\";\n\c
+          // prevent accessing the original event since the new event\n\c
+          // is fired asynchronously and the old event is no longer\n\c
+          // usable (#6028)\n\c
+          event.originalEvent = {};\n\c
+          jQuery.event.handle.apply( that, args );\n\c
+        } else {\n\c
+          pX = cX;\n\c
+          pY = cY;\n\c
+          timeout = setTimeout( handler, cfg.interval );\n\c
+        }\n\c
+      }\n\c
+      var timeout = setTimeout( handler, cfg.interval );\n\c
+      target.mousemove( track ).mouseout( clear );\n\c
+      return true;\n\c
+    }\n\c
+  };\n".
+
