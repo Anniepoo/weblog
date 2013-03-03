@@ -140,7 +140,8 @@ index_page(_Request) :-
 	    \demo_item(googlemap),
 	    \demo_item(table),
 	    \demo_item(debug_demo),
-	    \demo_item(accordion)
+	    \demo_item(accordion),
+	    \demo_item(buttons)
 	    ]).
 
 %%	demo_item(+Item:location_id)
@@ -178,5 +179,8 @@ demo_label(debug_demo, 'Debugging Tools').
 
 demo_label(accordion, 'Accordion').
 :- ensure_loaded(demo/accordion_demo).
+demo_label(buttons, 'Buttons').
+:- ensure_loaded(demo/buttons_demo).
+
 
 

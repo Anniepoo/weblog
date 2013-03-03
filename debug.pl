@@ -44,7 +44,7 @@ portray_list_innerds([H|T]) :-
 
 
 :- ensure_loaded(load).
-:- ensure_loaded(weblogdemo).
+:- use_module(weblogdemo).
 
 %%	pldoc is det
 %
