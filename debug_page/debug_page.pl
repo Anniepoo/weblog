@@ -34,6 +34,7 @@ handler at a higher priority.
 :- use_module(library(http/html_head)).
 :- use_module(weblog(formatting/tables)).
 :- use_module(weblog(resources/resources)).
+:- use_module(weblog(nav/accordion)).
 
 :- http_handler(root(debugpage) , debug_page_handler, [priority(-10), id(debug_page)]).
 
@@ -57,18 +58,25 @@ runtime_stats -->
 	    with_output_to(atom(Settings), list_settings)
 	},
 	html([
-	    h2('Statistics From stats/0'),
-	    pre(Stats),
-	    h2('Settings'),
-	    pre(Settings),
-	    h2('Stats/2'),
-	    \wl_table(rt_stats_cells,
+	    style(
+		'td   {
+		     font-size: 80%;
+		     font-face: sans;
+		      }'),
+	    \accordion([], [
+	       \accordion_section('Statistics From stats/0',
+	          pre(Stats)),
+	       \accordion_section('Settings',
+	          pre(Settings)),
+	       \accordion_section('Stats/2',
+	          \wl_table(rt_stats_cells,
 		      [columns([key, value, desc]),
-		      header(debug_page:rt_stats_headers)]),
-	    h2('Prolog Flags'),
-	    \wl_table(flags_cells,
+		      header(debug_page:rt_stats_headers)])),
+	       \accordion_section('Prolog Flags',
+	          \wl_table(flags_cells,
 		      [columns([key, value]),
-		       header(debug_page:rt_stats_headers)])
+		       header(debug_page:rt_stats_headers)]))
+		       ])
 	     ]).
 
 rt_stats_headers(key, 'Item').
@@ -135,5 +143,6 @@ stats_entries([
 
 flags_cells(Key, key, Key) :-
 	current_prolog_flag(Key, _).
-flags_cells(Key, value, Value) :-
-	current_prolog_flag(Key, Value).
+flags_cells(Key, value, DisplayValue) :-
+	current_prolog_flag(Key, Value),
+	format(atom(DisplayValue), '~w', [Value]).
