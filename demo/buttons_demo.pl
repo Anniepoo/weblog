@@ -18,12 +18,21 @@ buttons_demo_page(_Request) :-
 
 buttons_demo_body -->
 	html([
+	    style(
+		'.stylename  {
+		      font-family: monospace;
+			     }'),
 	    h1('Button Widgets'),
 	    h2('Reddit'),
+	    h3(['The ', span(class=stylename, tiny), ' style']),
 	    \reddit([style(tiny)]),
+	    h3(['The ', span(class=stylename, plus), ' style']),
 	    \reddit([style(plus)]),
+	    h3(['The ', span(class=stylename, score_only), ' style']),
 	    \reddit([style(score_only)]),
+	    h3(['The ', span(class=stylename, tiny_score), ' style']),
 	    \reddit([style(tiny_score)]),
+	    h3(['The ', span(class=stylename, tiny_vote), ' style']),
 	    \reddit([style(tiny_vote)])
 	     ]).
 
