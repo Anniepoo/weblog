@@ -6,7 +6,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(info/google/maps/gmap)).
+:- use_module(weblog(info/maps/google/gmap)).
 
 :- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
 

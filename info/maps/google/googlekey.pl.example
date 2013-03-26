@@ -1,2 +1,0 @@
-:- setting(key, atom, 'yourkeygoeshere',
-	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').

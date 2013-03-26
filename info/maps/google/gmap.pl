@@ -7,20 +7,14 @@
 */
 
 :- module(gmap,
-	  [ gmap//1			% +Coordinates
+	  [ gmap//1,			% +Coordinates
+	    gmap//2                     % +Options, +Coordinates
 	  ]).
-:- use_module(library(semweb/rdf_db)).
-:- use_module(library(http/html_write)).
-:- use_module(library(settings)).
 
-:- include('googlekey.pl').
-/*
- googlekey should contain a single directive like
-:- setting(key, atom, 'yourgooglekey',
-	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').
-*/
-:- setting(script, atom, 'http://maps.google.com/maps?file=api&v=2&sensor=false',
-	   'Address of Google map script').
+:- use_module(library(http/html_write)).
+:- ensure_loaded(weblog(resources/resources)).
+
+:- include(weblog('keys/googlekey.pl')).
 
 %%	gmap(+Coordinates)// is det.
 %
@@ -30,42 +24,49 @@
 %	more gmap:coordinate/3 clauses
 %
 %	@bug For some reason this does not work if you set dialect to xhtml
-
 gmap(Coordinates) -->
-	google_script,
-	html(div([ id(map_canvas),
+	gmap([], Coordinates).
+
+:- predicate_options(gmap//2, 1, [
+	id(text)
+	       ]).
+
+gmap(Options, Coordinates) -->
+	{
+	    option(id(ID), Options, map_canvas),
+	    setting(google_map_key, Key),
+	    setting(google_map_script, Script),
+	    format(atom(Src),
+		'~w&key=~w',
+		[Script, Key])
+	},
+	html([  % \html_requires(googlemap),
+	      \html_post(head, script([type('text/javascript'),
+	      src(Src)], []) ),
+	      div([ id(ID),
 		   style('width: 90%; height: 600px;')
 		 ],
-		 [])),
-	show_map(Coordinates).
+		 [])]),
+	show_map(Coordinates, ID).
 
-google_script -->
-	{ setting(key, Key),
-	  setting(script, Script),
-	  format(atom(Src), '~w&key=~w', [Script, Key])
-	},
-	html(script([ src(Src),
-		      type('text/javascript')
-		    ],
-		    [])).
-
-show_map(Coordinates) -->
+show_map(Coordinates, ID) -->
 	{ avg(Coordinates, point(CLat, CLong))
 	},
 	html(script(type('text/javascript'),
 		    [ 'if (GBrowserIsCompatible()) {\n',
-		      'var map = new GMap2(document.getElementById("map_canvas"));\n',
-		      'map.setCenter(new GLatLng(~w,~w), 2);\n'-[CLat, CLong],
-		      \coords(Coordinates),
-		      'map.setUIToDefault();\n',
+		      'var ~w = new GMap2(document.getElementById("~w"));\n'-[ID,ID],
+		      '~w.setCenter(new GLatLng(~w,~w), 2);\n'-[ID, CLat, CLong],
+		      \coords(ID, Coordinates),
+		      '~w.setUIToDefault();\n'-[ID],
+		     % '~w.addControl(new GSmallMapControl());\n'-[ID],
 		      '}\n'
 		    ])).
 
-coords([]) --> [].
-coords([C|T]) -->
+coords(_, []) --> [].
+coords(ID, [C|T]) -->
 	{ coordinate(C, Lat, Long) },
-	html('map.addOverlay(new GMarker(new GLatLng(~w,~w)));\n'-[Lat,Long]),
-	coords(T).
+	html('~w.addOverlay(new GMarker(new GLatLng(~w,~w)));\n'-[ID,Lat,Long]),
+	coords(ID, T).
 
 avg([] , point(0.0, 0.0)) :- !.
 avg(Coordinates, point(ALat, ALong)) :-

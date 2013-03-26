@@ -138,6 +138,7 @@ index_page(_Request) :-
 	    h1('Weblog demo page'),
 	    \demo_item(testform),
 	    \demo_item(googlemap),
+	    \demo_item(map),
 	    \demo_item(table),
 	    \demo_item(debug_demo),
 	    \demo_item(stats),
@@ -172,6 +173,9 @@ demo_label(testform, 'Validated Form').
 demo_label(googlemap, 'Google Map').
 :- ensure_loaded(demo/google_map_demo).
 
+demo_label(map, 'Maps').
+:- ensure_loaded(demo/map_demo).
+
 demo_label(table, 'Table Generation').
 :- ensure_loaded(demo/table_demo).
 
@@ -183,6 +187,7 @@ demo_label(stats, 'Server Statistics').
 
 demo_label(accordion, 'Accordion').
 :- ensure_loaded(demo/accordion_demo).
+
 demo_label(buttons, 'Buttons').
 :- ensure_loaded(demo/buttons_demo).
 
