@@ -2,7 +2,7 @@
 /** <module>  Demo handler for maps
 
 */
-% basic dispatch
+
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
@@ -32,7 +32,9 @@ map_handler(_Request) :-
 	     h2('Leaflet'),
 	     p('VNU Campus'),
 	    \geo_map([provider(leaflet([])), id(leafletmap)], [
-		      point(52.334287,4.862677)
+		      point(52.334287,4.862677)+
+                      popup(div([p(b('Free University Amsterdam')),
+	                     p('Home of "SWI-Prolog"')]))+open  % VNU
 		       ])
 	    ]).
 

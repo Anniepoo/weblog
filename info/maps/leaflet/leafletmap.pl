@@ -13,6 +13,8 @@
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
+:- use_module(weblog(support/html_comments)).
+:- use_module(weblog(support/javascript)).
 :- ensure_loaded(weblog(resources/resources)).
 
 :- include(weblog('keys/cloudmadekey.pl')).
@@ -44,6 +46,11 @@ lmap(Options, Coordinates) -->
 	},
 	html([
 	      \html_requires(leaflet),
+	      \html_post(head,
+		\if_ie('lte IE 8',
+                  link([ rel(stylesheet),
+                    href('http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css')
+                  ]))),
 	      div([ id(ID)
 		 ],
 		 [])]),
@@ -62,8 +69,12 @@ show_map(Coordinates, ID, Key) -->
 
 coords(_, []) --> [].
 coords(ID, [C|T]) -->
-	{ coordinate(C, Lat, Long) },
-	html('L.marker([~w,~w]).addTo(~w);\n'-[Lat,Long,ID]),
+	{
+	  coordinate(C, Lat, Long)
+	},
+	html(['L.marker([~w,~w]).addTo(~w)'-[Lat, Long, ID],
+	     \decorations(ID, C),
+	     ';\n']),
 	coords(ID, T).
 
 avg([] , point(0.0, 0.0)) :- !.
@@ -83,3 +94,28 @@ sum_ll([C|T], Lat0, LatS, Long0, LongS) :-
 :- multifile gmap:coordinate/3.
 
 coordinate(point(Lat, Long), Lat, Long).
+coordinate('+'(A,_), Lat, Long) :-
+	coordinate(A, Lat, Long).
+
+decorations(ID, '+'(Left, Right)) -->
+	!,
+	html([
+	   \decorations(ID, Left),
+	   \a_decoration(ID, Right)
+	     ]).
+
+decorations(_, point(_, _)) -->
+	[].
+decorations(ID, X) -->
+	a_decoration(ID, X).
+
+a_decoration(_, popup(HTML)) -->
+	{
+	   javascript_friendly_html(HTML, JavascriptFriendlyHTML)
+	},
+	html('.bindPopup("'),
+	html(\[JavascriptFriendlyHTML]),
+	html('")').
+
+a_decoration(_, open) -->
+	html('.openPopup()').

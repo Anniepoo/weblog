@@ -17,6 +17,7 @@ types of information. Examples would be
  Using the abstract lib rather than the specific one is recommended.
  
  For some of these the information provider requires an API key.
+ The key files are in /keys
  Copy the foo.pl.example file to foo.pl and modify with your key.
  
  
