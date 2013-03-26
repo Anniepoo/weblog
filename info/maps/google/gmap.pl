@@ -42,9 +42,8 @@ gmap(Options, Coordinates) -->
 	},
 	html([  % \html_requires(googlemap),
 	      \html_post(head, script([type('text/javascript'),
-	      src(Src)], []) ),
-	      div([ id(ID),
-		   style('width: 90%; height: 600px;')
+	                               src(Src)], []) ),
+	      div([ id(ID)
 		 ],
 		 [])]),
 	show_map(Coordinates, ID).

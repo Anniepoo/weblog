@@ -1,5 +1,9 @@
 :- module(resources , []).
 /** <module> Define resources for html_requires
+
+   @tbd leaflet requires additional css for IE, but swipl html
+   generation isn't handling it
+
 */
 :- use_module(library(http/html_head)).
 :- use_module(library(settings)).
@@ -23,3 +27,7 @@
 	     jquery])]).
 :-html_resource(jquery, [virtual(true),
        requires(['http://code.jquery.com/jquery-1.9.1.js'])]).
+
+:-html_resource(leaflet, [virtual(true),
+       requires(['http://cdn.leafletjs.com/leaflet-0.5/leaflet.css',
+		 'http://cdn.leafletjs.com/leaflet-0.5/leaflet.js'])]).

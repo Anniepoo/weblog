@@ -117,12 +117,12 @@ accordian_section//2 sections
 accordion(Options, _, _, _) :-
 	option(inactive(_), Options),
 	\+ option(active(_), Options),
-	throw(error(domain_error(list, Options), context(accordion/2,
+	throw(error(domain_error(list, Options), context(accordion//2,
 				   'inactive option demands active'))).
 accordion(Options, _, _, _) :-
 	option(active(_), Options),
 	\+ option(inactive(_), Options),
-	throw(error(domain_error(list, Options), context(accordion/2,
+	throw(error(domain_error(list, Options), context(accordion//2,
 				   'active option demands inactive'))).
 
 accordion(Options, HTML) -->

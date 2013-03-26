@@ -46,3 +46,10 @@ reddit(Options) -->
 	},
 	html([
 	    \['<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js"></script>']]).
+
+reddit(Options) -->
+	{
+		throw(error(domain_error(list, Options), context(reddit//1,
+				   'invalid style')))
+	},
+	[].
