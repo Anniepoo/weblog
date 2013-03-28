@@ -49,12 +49,10 @@ debug_contents -->
 	      \html_requires(css('demo.css')),
 	      h2('Runtime Statistics'),
 	      \runtime_stats
-
 	     ]).
 
 runtime_stats -->
 	{
-	    with_output_to(atom(Stats), statistics),
 	    with_output_to(atom(Settings), list_settings)
 	},
 	html([
@@ -64,8 +62,6 @@ runtime_stats -->
 		     font-face: sans;
 		      }'),
 	    \accordion([], [
-	       \accordion_section('Statistics From stats/0',
-	          pre(Stats)),
 	       \accordion_section('Settings',
 	          pre(Settings)),
 	       \accordion_section('Stats/2',
