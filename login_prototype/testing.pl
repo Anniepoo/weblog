@@ -5,6 +5,14 @@
 :- use_module(library(http/http_session)).
 :- use_module(login_box).
 
+
+% Just so we can read the pldocs
+%
+:- use_module(library(http/http_path)).
+http:location(pldoc, root('help/source'), [priority(10)]).
+
+:- doc_server(4040).
+
 %% ============================================================ %%
 %% =============================== webserver2_3 =============== %%
 %% ============================================================ %%
@@ -69,5 +77,5 @@ logged(Name) :-
 			 []),
 	 format('Content-type: text/html~n~n'),
 	 print_html(TokenizedHtml).
-	
-	
+
+

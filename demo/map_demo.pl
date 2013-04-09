@@ -23,18 +23,22 @@ map_handler(_Request) :-
 	     h1('Map demo page'),
 	     h2('Google Maps'),
 	     p('Weblog contributors'),
-	    \geo_map([provider(google([])), id(gmap)], [
-		      point(37.482214,-122.176552),     % Annie
-		      point(37.969368,23.732979),       % Acropolis
-		      point(52.334434,4.863596),        % VNU
-		      point(29.720576,-95.34296)        % Univ. of Houston
-		       ]),
+	     \geo_map([provider(google([])), id(gmap)], gmap_info),
 	     h2('Leaflet'),
 	     p('VNU Campus'),
-	    \geo_map([provider(leaflet([])), id(leafletmap)], [
+	    \geo_map_direct([provider(leaflet([])), id(leafletmap)], [
 		      point(52.334287,4.862677)+
                       popup(div([p(b('Free University Amsterdam')),
 	                     p('Home of "SWI-Prolog"')]))+open  % VNU
 		       ])
 	    ]).
+
+
+:- html_meta gmap_info(-, html).
+
+gmap_info(map).
+gmap_info(point(37.482214,-122.176552)).    % Annie
+gmap_info(point(37.969368,23.732979)).       % Acropolis
+gmap_info(point(52.334434,4.863596)).        % VNU
+gmap_info(point(29.720576,-95.34296)).       % Univ. of Houston
 
