@@ -33,8 +33,12 @@
 :- use_module(library(http/html_write)).
 % logging - turns on and gets http_log
 :- use_module(library(http/http_log)).
+% head - so we can refer to resources
+:- use_module(library(http/html_head)).
 
 :- use_module(library(http/http_files)).
+
+:- use_module(weblog(formatting/boxes)).
 
 % flag to ensure we only start server once
 :- dynamic started/0.
@@ -135,15 +139,17 @@ index_page(_Request) :-
 	reply_html_page(
 	    title('Weblog Demo'),
 	    [
+	    \html_requires(css('demo.css')),
 	    h1('Weblog demo page'),
-	    \demo_item(testform),
-	    \demo_item(googlemap),
-	    \demo_item(map),
-	    \demo_item(table),
-	    \demo_item(debug_demo),
-	    \demo_item(stats),
-	    \demo_item(accordion),
-	    \demo_item(buttons)
+	    \abox('', 'Input', [\demo_item(testform)]),
+	    \abox('', 'Info', [
+			       \demo_item(googlemap),
+			       \demo_item(map),
+			       \demo_item(buttons)]),
+	    \abox('', 'Formatting', [\demo_item(table)]),
+	    \abox('', 'Debug', [\demo_item(debug_demo),
+				\demo_item(stats)]),
+	    \abox('', 'Navigation', [\demo_item(accordion)])
 	    ]).
 
 %%	demo_item(+Item:location_id)

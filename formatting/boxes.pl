@@ -56,9 +56,7 @@ I don't know.  It is dangerous though :-)
     Cheers --- Jan
 */
 
-:- html_meta  abox(+, +, html).
-
-:- meta_predicate abox(+, +, 0).
+:- html_meta  abox(+, +, html, ?, ?).
 
 %%	abox(+ClassAdditions:atom,
 %%           +Title:atom,

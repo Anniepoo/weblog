@@ -18,18 +18,27 @@
 :- use_module(weblog(info/maps/leaflet/leafletmap)).
 
 
-/**	map(+Options, +Coordinates)// is det.
+/**	geo_map_direct(+Options, +Coordinates)// is det.
 
 	HTML component that shows maps  with markers at the given
 	Coordinates. Coordinates is a list. Each  coordinate is a
-	term point(Lat,Long). This can be extended by defining
-	more gmap:coordinate/3 clauses
+	term point(Lat,Long), optionally followed by decorations
+	separated by + signs.
+
+        Available Decorations:
+	* popup(HTML)
+	add a popup (small window with text that appears when clicking the
+	location icon)
+	* open
+	The point must already have a popup. Makes the popup open by default.
 
 	Options:
 	* provider(ProviderName(ProviderSpecificOptionList))
-	map can use one of several underlying map providers. Currently the choice is
-	google or leaflet. The argument is a list of options which are only meaningful to
-	that provider. For example, leaflet allows named styles.
+	map can use one of several underlying map providers.
+        Currently the choice is google or leaflet. The argument is a
+	list of options which are only meaningful to
+	that provider. At the moment there are no such options,
+	and ProvideSpecificOptionList always binds to []
 
 
 */
@@ -70,7 +79,7 @@ geo_map_direct(Options , _Coordinates) -->
 	id(text)
 	       ]).
 
-:- meta_predicate geo_map(+, 1, ?, ?).
+:- meta_predicate geo_map(+, 2, ?, ?).
 
 geo_map(Options, Generator) -->
 	{
@@ -101,9 +110,10 @@ geo_map(Options, _Generator) -->
 	},
 	[].
 
+:- meta_predicate  map_structure(2, -).
 
 map_structure(Generator, Coordinates) :-
-	bagof(X, call(Generator, X), RawList),
+	bagof(X, call(Generator, X, _), RawList),
 	convert_structure(RawList, Coordinates).
 
 convert_structure([], []).

@@ -7,3 +7,22 @@
 tr.even td, tr.even {
 	     background-color: #aaaaff;
 	    }
+        
+.abox.header {
+    background-color: #8888ff;
+    color: #000000;
+    align: center;
+    margin-bottom: 0px;
+}
+
+.abox.content {
+    margin-top: 0px;
+    align: center;
+    border: 1px solid #8888ff;
+    margin-bottom: 24px;
+}
+
+p {
+    margin: 0px;
+}
+        

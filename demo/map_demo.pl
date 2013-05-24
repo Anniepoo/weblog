@@ -36,9 +36,9 @@ map_handler(_Request) :-
 
 :- html_meta gmap_info(-, html).
 
-gmap_info(map).
-gmap_info(point(37.482214,-122.176552)).    % Annie
-gmap_info(point(37.969368,23.732979)).       % Acropolis
-gmap_info(point(52.334434,4.863596)).        % VNU
-gmap_info(point(29.720576,-95.34296)).       % Univ. of Houston
+gmap_info(map, _).
+gmap_info(point(37.482214,-122.176552), _).    % Annie
+gmap_info(point(37.969368,23.732979), _).       % Acropolis
+gmap_info(point(52.334434,4.863596), _).        % VNU
+gmap_info(point(29.720576,-95.34296), _).       % Univ. of Houston
 
