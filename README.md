@@ -16,6 +16,22 @@ common web tasks.
 
 Currently, users should expect that almost anything can change.
 
+Install
+=======
+
+Other than a normal swi-prolog install, the only install step is to 
+set keys for the various functionality 
+For the demo, at the moment, this is the two map providers, google and cloudmade.
+
+copy 
+weblog/keys/cloudmadekey.pl.example 
+to 
+weblog/keys/cloudmadekey.pl
+and modify cloudmadekey.pl with your key
+
+repeat for google 
+
+
 Starting
 ========
 

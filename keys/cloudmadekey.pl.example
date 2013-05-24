@@ -1,5 +1,2 @@
-:- setting(google_map_key, atom, 'yourkeygoeshere',
-	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').
-:- setting(google_map_script, atom,
-       'http://maps.google.com/maps?file=api&v=2&sensor=false',
-       'Google map script').
+:- setting(cloudmade_map_key, atom, 'iamnotavalidkeypasteoneinhere',
+	   'Cloudmade map key.  Get one at http://account.cloudmade.com/register').
