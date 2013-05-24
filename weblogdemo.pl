@@ -143,8 +143,8 @@ index_page(_Request) :-
 	    h1('Weblog demo page'),
 	    \abox('', 'Input', [\demo_item(testform)]),
 	    \abox('', 'Info', [
-			       \demo_item(googlemap),
 			       \demo_item(map),
+			       \demo_item(geocoding),
 			       \demo_item(buttons)]),
 	    \abox('', 'Formatting', [\demo_item(table)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
@@ -196,6 +196,9 @@ demo_label(accordion, 'Accordion').
 
 demo_label(buttons, 'Buttons').
 :- ensure_loaded(demo/buttons_demo).
+
+demo_label(geocoding, 'Geocoding').
+:- ensure_loaded(demo/geocoding_demo).
 
 
 

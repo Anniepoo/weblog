@@ -35,7 +35,7 @@ gmap(Options, Coordinates) -->
 	{
 	    option(id(ID), Options, map_canvas),
 	    setting(google_map_key, Key),
-	    setting(google_map_script, Script),
+	    setting(google_map_script, Script),!,
 	    format(atom(Src),
 		'~w&key=~w',
 		[Script, Key])
@@ -47,6 +47,9 @@ gmap(Options, Coordinates) -->
 		 ],
 		 [])]),
 	show_map(Coordinates, ID).
+
+gmap(_, _) -->
+	html([p('Missing google key in weblog/keys/googlekey.pl.example')]).
 
 show_map(Coordinates, ID) -->
 	{ avg(Coordinates, point(CLat, CLong))

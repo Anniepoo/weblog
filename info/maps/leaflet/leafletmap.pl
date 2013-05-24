@@ -42,7 +42,7 @@ lmap(Coordinates) -->
 lmap(Options, Coordinates) -->
 	{
 	    option(id(ID), Options, map),
-	    setting(cloudmade_map_key, Key)
+	    setting(cloudmade_map_key, Key),!
 	},
 	html([
 	      \html_requires(leaflet),
@@ -55,6 +55,8 @@ lmap(Options, Coordinates) -->
 		 ],
 		 [])]),
 	show_map(Coordinates, ID, Key).
+lmap(_, _) -->
+	html(p('Missing cloudmade key in weblog/keys/cloudmade.pl.')).
 
 show_map(Coordinates, ID, Key) -->
 	{ avg(Coordinates, point(CLat, CLong))
