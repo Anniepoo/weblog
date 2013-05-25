@@ -9,7 +9,7 @@
 
      @Market must be djia
      @Stat   must be opening
-     @Date   is of the form mm/dd/yy where mm, dd, and yy are ints
+     @Date   is of the form yy-mm-dd where mm, dd, and yy are ints
      @Value  bound to the value of the DJIA opening for that day
 
      fails if the dow wasn't open, or hasn't opened yet for that day,
@@ -21,7 +21,7 @@
      when in doubt, ask.
 
 */
-crstock_stats(djia, opening, MM/DD/YY, Value) :-
+crstock_stats(djia, opening, YY - MM - DD, Value) :-
 	(   YY < 100 -> YYYY is YY + 2000 ; YYYY = YY),
 	format(atom(URL), 'http://geo.crox.net/djia/~d/~d/~d', [YYYY, MM, DD]),
 	http_get(URL, Reply, []),
