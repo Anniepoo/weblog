@@ -140,6 +140,7 @@ hash_point(YY - MM - DD, graticule(Lat, Long), point(PLat, PLong)) :-
 	grat_geo(LLong, LongFrac, PLong).
 
 /**   grat_geo(+GratNum, +Frac, -Geo) is det
+
 	 get a real geocoord from a graticule number and
 	 fraction
 */

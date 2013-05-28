@@ -34,6 +34,7 @@ handler at a higher priority.
 :- use_module(library(http/html_head)).
 :- use_module(weblog(formatting/tables)).
 :- use_module(weblog(resources/resources)).
+:- use_module(library(http/http_path)).
 :- use_module(weblog(nav/accordion)).
 
 :- http_handler(root(debugpage) , debug_page_handler, [priority(-10), id(debug_page)]).
@@ -62,6 +63,10 @@ runtime_stats -->
 		     font-face: sans;
 		      }'),
 	    \accordion([], [
+	       \accordion_section('Handlers',
+		  \wl_table(handler_info_cells, [
+		       columns([path, absolute_path, action, is_prefix, options]),
+		       header(debug_page:handler_headers)])),
 	       \accordion_section('Settings',
 	          pre(Settings)),
 	       \accordion_section('Stats/2',
@@ -74,6 +79,27 @@ runtime_stats -->
 		       header(debug_page:rt_stats_headers)]))
 		       ])
 	     ]).
+
+handler_headers(path, 'Path').
+handler_headers(absolute_path, 'Absolute Path').
+handler_headers(is_prefix, 'prefix?').
+handler_headers(options, 'Options').
+
+handler_info_cells(Path, path, Path) :-
+	http_dispatch:handler(Path, _, _, _).
+handler_info_cells(Path, absolute_path, AbsPath) :-
+	http_dispatch:handler(Path, _, _, _),
+	http_absolute_location(Path, AbsPath, []).
+handler_info_cells(Path, action, Action) :-
+	http_dispatch:handler(Path, A, _, _),
+	format(atom(Action), '~w', [A]).
+handler_info_cells(Path, is_prefix, '') :-
+	http_dispatch:handler(Path, _, false, _).
+handler_info_cells(Path, is_prefix, b('PREFIX')) :-
+	http_dispatch:handler(Path, _, true, _).
+handler_info_cells(Path, options, X) :-
+	http_dispatch:handler(Path, _, _, Options),
+	format(atom(X), '~w', [Options]).
 
 rt_stats_headers(key, 'Item').
 rt_stats_headers(value, 'Current').
