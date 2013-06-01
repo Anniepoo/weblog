@@ -7,7 +7,7 @@
 */
 
 :- module(map,
-	  [ geo_map_direct//2,			% +Coordinates
+	  [
 	    geo_map//1
 	  ]).
 

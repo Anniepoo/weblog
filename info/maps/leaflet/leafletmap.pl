@@ -27,13 +27,12 @@
 %	HTML component that shows Open Street Map maps, using the
 %	Leaflet library (leafletjs.com) with tiles provided by
 %	Cloudmade (cloudmade.com).
-%       Maps have markers at the given
-%	Coordinates. Coordinates is a list. Each coordinate is a term
-%	point(Lat,Long). This can be extended by defining more
-%	gmap:coordinate/3 clauses
+%	Maps are generated from a closure. This is documented in
+%	map:geo_map.
 %
-%  @tbd abstract as much of the shared code betwen here and
-%  google maps as possible
+%	Do not call this directly, call it through geo_map and
+%	pass provider(leaflet).
+%
 %
 lmap(Generator) -->
 	{

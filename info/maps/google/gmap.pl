@@ -7,8 +7,7 @@
 */
 
 :- module(gmap,
-	  [ gmap//1,			% +Coordinates
-	    gmap//2                     % +Options, +Coordinates
+	  [ gmap//1			% +Coordinates
 	  ]).
 
 :- use_module(library(http/html_write)).
@@ -16,24 +15,20 @@
 
 :- include(weblog('keys/googlekey.pl')).
 
-%%	gmap(+Coordinates)// is det.
+%%	gmap(+Generator)// is det.
 %
-%	HTML component that shows Google maps  with markers at the given
-%	Coordinates. Coordinates is a list. Each  coordinate is a
-%	term point(Lat,Long). This can be extended by defining
-%	more gmap:coordinate/3 clauses
+%	HTML component that shows google maps
+%	Maps are generated from a closure. This is documented in
+%	map:geo_map.
 %
-%	@bug For some reason this does not work if you set dialect to xhtml
-gmap(Coordinates) -->
-	gmap([], Coordinates).
+%	Do not call this directly, call it through geo_map and
+%	bind provider(google) (or do nothing, google is the default)
+%
+%
 
-:- predicate_options(gmap//2, 1, [
-	id(text)
-	       ]).
-
-gmap(Options, Coordinates) -->
+gmap(Generator) -->
 	{
-	    option(id(ID), Options, map_canvas),
+	    (	call(Generator, id(ID)) ; ID = gmap),
 	    setting(google_map_key, Key),
 	    setting(google_map_script, Script),!,
 	    format(atom(Src),
@@ -46,29 +41,35 @@ gmap(Options, Coordinates) -->
 	      div([ id(ID)
 		 ],
 		 [])]),
-	show_map(Coordinates, ID).
+	show_map(Generator).
 
-gmap(_, _) -->
-	html([p('Missing google key in weblog/keys/googlekey.pl.example')]).
+gmap(_) -->
+	html([p('Missing google key in weblog/keys/googlekey.pl.example or other problem')]).
 
-show_map(Coordinates, ID) -->
-	{ avg(Coordinates, point(CLat, CLong))
+show_map(Generator) -->
+	{
+	  (	call(Generator, id(ID)) ; ID = gmap   ),
+	  (	call(Generator, zoom(Zoom)) ; Zoom = 14  ),
+	  setof(point(X,Y), call(Generator, point(X,Y)), Coordinates),
+	  (     call(Generator, center(CLat, CLong)) ; avg(Coordinates, point(CLat, CLong)))
 	},
 	html(script(type('text/javascript'),
 		    [ 'if (GBrowserIsCompatible()) {\n',
 		      'var ~w = new GMap2(document.getElementById("~w"));\n'-[ID,ID],
 		      '~w.setCenter(new GLatLng(~w,~w), 2);\n'-[ID, CLat, CLong],
-		      \coords(ID, Coordinates),
+		      \coords(Generator, Coordinates),
 		      '~w.setUIToDefault();\n'-[ID],
 		     % '~w.addControl(new GSmallMapControl());\n'-[ID],
 		      '}\n'
 		    ])).
 
 coords(_, []) --> [].
-coords(ID, [C|T]) -->
-	{ coordinate(C, Lat, Long) },
+coords(Generator, [point(Lat, Long)|T]) -->
+	{
+	    (	call(Generator, id(ID)) ; ID = gmap   )
+	},
 	html('~w.addOverlay(new GMarker(new GLatLng(~w,~w)));\n'-[ID,Lat,Long]),
-	coords(ID, T).
+	coords(Generator, T).
 
 avg([] , point(0.0, 0.0)) :- !.
 avg(Coordinates, point(ALat, ALong)) :-
@@ -78,12 +79,8 @@ avg(Coordinates, point(ALat, ALong)) :-
 	ALong is SumLong/Count.
 
 sum_ll([], Lat, Lat, Long, Long).
-sum_ll([C|T], Lat0, LatS, Long0, LongS) :-
-	coordinate(C, Lat, Long),
+sum_ll([point(Lat, Long)|T], Lat0, LatS, Long0, LongS) :-
 	Lat1 is Lat0+Lat,
 	Long1 is Long0+Long,
 	sum_ll(T, Lat1, LatS, Long1, LongS).
 
-:- multifile gmap:coordinate/3.
-
-coordinate(point(Lat, Long), Lat, Long).
