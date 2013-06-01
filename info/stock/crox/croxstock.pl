@@ -4,6 +4,7 @@
 */
 :- use_module(library(http/http_client)).
 
+:- dynamic stock_stat/4.
 
 /**   crstock_stats(+Market:atom, +Stat:atom, +Date:term, -Value:float) is semidet
 
@@ -21,13 +22,23 @@
      when in doubt, ask.
 
 */
+crstock_stats(djia, opening, YY - MM - DD, _) :-
+	stock_stat(djia, opening, YY - MM - DD, error(Stamp)),
+	get_time(Now),
+	Now < Stamp + 900,
+	!,fail.
 crstock_stats(djia, opening, YY - MM - DD, Value) :-
+	stock_stat(djia, opening, YY - MM - DD, Value),
+	number(Value),
+	!.
+crstock_stats(djia, opening, YY - MM - DD, Value) :-
+	debug(crstock, 'getting value for ~d ~d ~d', [YY, MM, DD]),
 	(   YY < 100 -> YYYY is YY + 2000 ; YYYY = YY),
 	format(atom(URL), 'http://geo.crox.net/djia/~d/~d/~d', [YYYY, MM, DD]),
 	http_get(URL, Reply, []),
-	atom_number(Reply, Value).
-
-
-
-
+	atom_number(Reply, Value),  % fails if crox returns 'error'
+	asserta(stock_stat(djia, opening, YY - MM - DD, Value)),!.
+crstock_stats(djia, opening, YY - MM - DD, _) :-
+	get_time(Stamp),
+	asserta(stock_stat(djia, opening, YY - MM - DD, error(Stamp))),!,fail.
 

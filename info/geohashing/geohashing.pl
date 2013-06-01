@@ -1,7 +1,8 @@
 :- module(geohashing, [hash_point/3,
 		       code_graticule/2,
 		       code_graticule/3,
-		       minesweeper/3]).
+		       minesweeper/3,
+		      globalhash/2]).
 /** <module> Tools for geohashing
     Tools for the sport of geohashing.
 
@@ -108,16 +109,17 @@ frac_part --> [].
 frac_part --> ".", digits(_).
 
 
+:- dynamic a_hash_point/3.
 
 /**   hash_point(+Date:term, +Lat:number, +Long:number, -Point:term) is det
 
       given a date and lat/long, returns point(Lat, Long)
  on 2008-05-27 the rules for computation of points E of 30W changed
 
-   @tbd This is roaringly asking for memoization, or maybe crstock_stats
-   is
-
 */
+hash_point(Date, Grat, Point) :-
+	a_hash_point(Date, Grat, Point),!.
+
 hash_point(YY - MM - DD, graticule(Lat, Long), point(PLat, PLong)) :-
 	LLat is float_integer_part(Lat),
 	LLong is float_integer_part(Long),
@@ -137,7 +139,19 @@ hash_point(YY - MM - DD, graticule(Lat, Long), point(PLat, PLong)) :-
         hex_codes_frac_float(FirstHalf, 1.0, LatFrac),
 	hex_codes_frac_float(LastHalf, 1.0, LongFrac),
 	grat_geo(LLat , LatFrac, PLat),
-	grat_geo(LLong, LongFrac, PLong).
+	grat_geo(LLong, LongFrac, PLong),
+	asserta(a_hash_point( YY - MM - DD,
+			      graticule(Lat, Long), point(PLat, PLong))).
+
+/**   globalhash(+Date:date,  -Point:point) is semidet
+
+        find location of globalhash for this date
+*/
+ globalhash(Date, point(GLat, GLong)) :-
+	hash_point(Date, graticule(10, -35), point(PLat, PLong)),
+	GLat is abs(float_fractional_part(PLat)) * 180.0 - 90.0,
+	GLong is abs(float_fractional_part(PLong)) * 360.0 - 180.0.
+
 
 /**   grat_geo(+GratNum, +Frac, -Geo) is det
 
@@ -204,14 +218,14 @@ normalize_geohash_date(Y - M - D, YO - MO - DO) :-
 	unifies if this location and date invokes the 'east of 30W' rule
 */
 east_rule(YYYY - _ - _, IntLong) :-
-	IntLong >= -30,
+	IntLong > -30,
 	YYYY > 2008.
 east_rule(YYYY - MM - _, IntLong) :-
-	IntLong >= -30,
+	IntLong > -30,
 	YYYY = 2008,
 	MM > 5.
 east_rule(YYYY - MM - DD, IntLong) :-
-	IntLong >= -30,
+	IntLong > -30,
 	YYYY = 2008,
 	MM = 5,
 	DD >= 27.

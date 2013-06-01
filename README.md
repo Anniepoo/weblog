@@ -14,6 +14,10 @@ SWI-Prolog ships with an excellent web framework. This library builds on that wo
 and is not a 'web framework'. It is, instead, a library of predicates that ease doing
 common web tasks.
 
+Some of the code is simply snippets that are extracted from SWI-Prolog related stuff,
+or other sources, but I've tried to extract everything to the point that it's a reasonable
+library.
+
 Currently, users should expect that almost anything can change.
 
 Install
@@ -21,6 +25,7 @@ Install
 
 Other than a normal swi-prolog install, the only install step is to 
 set keys for the various functionality 
+
 For the demo, at the moment, this is the two map providers, google and cloudmade.
 
 copy 

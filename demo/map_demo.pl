@@ -15,30 +15,31 @@ map_handler(_Request) :-
 	    title('Map Demo'),
 	    [
 	     style(
-'#gmap, #leafletmap {
+'#gmap, #lmap {
     width: 80%;
     height: 400px;
        }
 '),
 	     h1('Map demo page'),
-	     h2('Google Maps'),
+	     h2('Leaflet Maps'),
 	     p('Weblog contributors'),
-	     \geo_map([provider(google([])), id(gmap)], gmap_info),
+	     \geo_map(gmap_info)
+	    /* removed til we can change above back to google
+	    ,
 	     h2('Leaflet'),
 	     p('VNU Campus'),
 	    \geo_map_direct([provider(leaflet([])), id(leafletmap)], [
 		      point(52.334287,4.862677)+
                       popup(div([p(b('Free University Amsterdam')),
 	                     p('Home of "SWI-Prolog"')]))+open  % VNU
-		       ])
+		       ])   */
 	    ]).
 
 
-:- html_meta gmap_info(-, html).
-
-gmap_info(map, _).
-gmap_info(point(37.482214,-122.176552), _).    % Annie
-gmap_info(point(37.969368,23.732979), _).       % Acropolis
-gmap_info(point(52.334434,4.863596), _).        % VNU
-gmap_info(point(29.720576,-95.34296), _).       % Univ. of Houston
+gmap_info(provider(leaflet)).
+gmap_info(zoom(2)).
+gmap_info(point(37.482214,-122.176552)).    % Annie
+gmap_info(point(37.969368,23.732979)).       % Thanos - Acropolis
+gmap_info(point(52.334434,4.863596)).        % VNU
+gmap_info(point(29.720576,-95.34296)).       % Univ. of Houston
 
