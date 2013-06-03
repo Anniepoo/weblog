@@ -45,18 +45,54 @@ The demo may be started by consulting debug.pl and querying weblogdemo:weblog_de
 Libraries
 =========
 
-debug_page/debug_page.pl  serves a page of useful debug info at /debug
+Every subdirectory has a README.md that explains the contents of that directory
+
+debug_page  serves a couple pages with useful debug info
+
+demo     Every major module (ideally) has a demo page. Examining the demo code is often
+         an excellent way to learn to use a feature.
 
 formatting    tools for assisting with tables, boxes, and other page layout
 
 html_form     validated html forms.
 
 info          subdirectories contain tools for displaying various sorts of information.
-              at the moment the only useful one is google maps
+              This includes tools for displaying specific types of info, handling feeds
+              (geohashing data, geocoding), and often a combination of those (e.g. twitter buttons).
+             
+keys          Some third party providers (feeds) require a user key be provided. This directory holds
+              the keys
               
-login_prototype   Tools to make logging in easier.
+login_prototype   Tools to make logging in easier. We recognize this is a big project, so for
+                  the moment it's a prototype (thanks Thanos!). We'll make a user directory 
+                  that handles login, registration, security roles, and profiles some day.
+                  
+nav           Navigation widgets - menus, links, etc. etc.
 
 resources     resource definitions for other modules, definitions of commonly used javascript libs
+
+static        static files needed by other parts of weblog
+
+support       We're trying really hard to have as small a required footprint as possible. 
+              These are a few utility bits that have generally been useful (eg html comments handling).
+              
+Manifesto
+=========
+
+The library should remain bits and pieces you can use as you like, with little cost of inheriting weblog. If all you want is the accordion widget you shouldn't have to change your whole way of coding
+to get it.
+
+A Common Pattern
+================
+
+Web widgets often need a lot of rather trivial parameters and for which there
+are often good defaults.
+
+A very common pattern for our widgets is to provide a closure which is called
+with a partially instantiated extra argument. The closure instantiates some variables
+to return info to the widget. 
+This pattern gives the user flexibility. Simple uses can just use facts as the closure.
+More complex uses can be described with rules, in 'family tree' style code.
 
 Contributing
 ============
