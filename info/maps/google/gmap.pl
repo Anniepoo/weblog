@@ -15,6 +15,9 @@
 
 :- include(weblog('keys/googlekey.pl')).
 
+% needed for some coord calc stuff
+:- use_module(weblog(info/maps/map)).
+
 %%	gmap(+Generator)// is det.
 %
 %	HTML component that shows google maps
@@ -51,7 +54,7 @@ show_map(Generator) -->
 	  (	call(Generator, id(ID)) ; ID = gmap   ),
 	  (	call(Generator, zoom(Zoom)) ; Zoom = 14  ),
 	  setof(point(X,Y), call(Generator, point(X,Y)), Coordinates),
-	  (     call(Generator, center(CLat, CLong)) ; avg(Coordinates, point(CLat, CLong)))
+	  (     call(Generator, center(CLat, CLong)) ; average_geopoints(Coordinates, point(CLat, CLong)))
 	},
 	html(script(type('text/javascript'),
 		    [ 'if (GBrowserIsCompatible()) {\n',
@@ -71,16 +74,4 @@ coords(Generator, [point(Lat, Long)|T]) -->
 	html('~w.addOverlay(new GMarker(new GLatLng(~w,~w)));\n'-[ID,Lat,Long]),
 	coords(Generator, T).
 
-avg([] , point(0.0, 0.0)) :- !.
-avg(Coordinates, point(ALat, ALong)) :-
-	sum_ll(Coordinates, 0, SumLat, 0, SumLong),
-	length(Coordinates, Count),
-	ALat is SumLat/Count,
-	ALong is SumLong/Count.
-
-sum_ll([], Lat, Lat, Long, Long).
-sum_ll([point(Lat, Long)|T], Lat0, LatS, Long0, LongS) :-
-	Lat1 is Lat0+Lat,
-	Long1 is Long0+Long,
-	sum_ll(T, Lat1, LatS, Long1, LongS).
 

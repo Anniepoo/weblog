@@ -15,12 +15,14 @@ map_handler(_Request) :-
 	    title('Map Demo'),
 	    [
 	     style(
-'#gmap, #lmap {
+'#gmap, #lmap, #googleplex {
     width: 80%;
     height: 400px;
        }
 '),
 	     h1('Map demo page'),
+	     h2('Really simple map'),
+	     \geo_map(simple),
 	     h2('Google Maps'),
 	     p('Weblog contributors'),
 	     \geo_map(gmap_info),
@@ -29,8 +31,10 @@ map_handler(_Request) :-
 	    \geo_map(lmap_info)
 	    ]).
 
+simple(point(37.482214,-122.176552)).    % Annie
 
 gmap_info(provider(google)).
+gmap_info(id(googleplex)).
 gmap_info(zoom(2)).
 gmap_info(point(37.482214,-122.176552)).    % Annie
 gmap_info(point(37.969368,23.732979)).       % Thanos - Acropolis
@@ -38,6 +42,15 @@ gmap_info(point(52.334434,4.863596)).        % VNU
 gmap_info(point(29.720576,-95.34296)).       % Univ. of Houston
 
 lmap_info(provider(leaflet)).
+lmap_info(style(2402)).   % cloudmade 'clean'
 lmap_info(zoom(16)).
 lmap_info(point(52.334434,4.863596)).        % VNU
+lmap_info(icon_for(_, swiplpin)).
+lmap_info(icon(swiplpin, '/icons/swiplpin.png', '/icons/swiplpinshadow.png')).
+lmap_info(icon_size(swiplpin, 48, 61)).
+lmap_info(shadow_size(swiplpin, 81, 61)).
+lmap_info(icon_anchor(swiplpin, 24, 60)).
+lmap_info(shadow_anchor(swiplpin, 24, 60)).
+lmap_info(popup_anchor(swiplpin, 0, -55)).
+lmap_info(popup_for([p(b('VNU - Home of SWI-Prolog!'))], _)).
 

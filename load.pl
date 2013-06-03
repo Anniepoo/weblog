@@ -19,8 +19,8 @@ user:file_search_path(weblogtest, '.').
 :- use_module(library(http/http_path)).
 
 % these are suspicious
-http:location(admin, '/admin' , []).
-http:location(demo, '/demo', []).
+%http:location(admin, '/admin' , []).
+%http:location(demo, '/demo', []).
 
 
 

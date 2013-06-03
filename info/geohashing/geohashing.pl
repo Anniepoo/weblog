@@ -137,7 +137,8 @@ hash_point(YY - MM - DD, graticule(Lat, Long), point(PLat, PLong)) :-
 	append(FirstHalf, LastHalf, HashedCodes),
 	same_length(FirstHalf, LastHalf),!,
         hex_codes_frac_float(FirstHalf, 1.0, LatFrac),
-	hex_codes_frac_float(LastHalf, 1.0, LongFrac),
+	hex_codes_frac_float(LastHalf, 1.0, InvLongFrac),
+	LongFrac is 1.0 - InvLongFrac,  % heaven knows
 	grat_geo(LLat , LatFrac, PLat),
 	grat_geo(LLong, LongFrac, PLong),
 	asserta(a_hash_point( YY - MM - DD,
@@ -158,11 +159,16 @@ hash_point(YY - MM - DD, graticule(Lat, Long), point(PLat, PLong)) :-
 	 get a real geocoord from a graticule number and
 	 fraction
 */
+
 grat_geo(-0.0, Frac, Geo) :-
 	!,
 	Geo is -1.0 * Frac.
 grat_geo(Num, Frac, Geo) :-
-	Geo is sign(Num) *(abs(Num) + Frac).
+	Num >= 0.0,
+	Geo is Num + Frac.
+grat_geo(Num, Frac, Geo) :-
+	Num < 0.0,
+	Geo is Num - Frac.
 
 
 
@@ -248,6 +254,24 @@ hex_codes_frac_float([H|T], Place, Value) :-
 	Value is NewPlace * D + RemVal.
 
 
+
+test_geohashing :-
+	retractall(a_hash_point(_,_,_)),!,
+	test_item(Y-M-D, GLat, GLong, Lat, Long),
+	hash_point(Y-M-D, graticule(GLat, GLong), point(PLat, PLong)),
+	Dist is sqrt((Lat - PLat) * (Lat - PLat) +
+		     (Long - PLong) * (Long - PLong)),
+	(   Dist > 0.1 ->
+	    format('~w-~w-~w_~w_~w should be ~w,~w   but is ~w,~w~n',
+		   [Y,M,D,GLat,GLong,Lat,Long,PLat,PLong])
+	;   true),
+	false.
+
+test_item(2013-5-31, 50, 8, 50.47615093, 8.75973636).
+test_item(2013-5-31, 52, 1, 52.47615093, 1.75973636).
+test_item(2013-5-31, 52, -0.0, 52.47615093, -0.75973636).
+test_item(2013-5-31, 52, 0.0, 52.47615093, 0.75973636).
+test_item(2013-5-31, 52, -1.0, 52.47615093, -1.75973636).
 
 
 

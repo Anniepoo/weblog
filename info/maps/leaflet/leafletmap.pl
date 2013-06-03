@@ -19,6 +19,9 @@
 
 :- include(weblog('keys/cloudmadekey.pl')).
 
+% needed for some coord calc stuff
+:- use_module(weblog(info/maps/map)).
+
 
 :- meta_predicate  lmap(1, ?, ?).
 
@@ -92,11 +95,12 @@ show_map(Generator) -->
 	  (	call(Generator, zoom(Zoom)) ; Zoom = 14  ),
 	  setof(point(X,Y), call(Generator, point(X,Y)), Coordinates),
 	  setting(cloudmade_map_key, Key),
-	  (     call(Generator, center(CLat, CLong)) ; avg(Coordinates, point(CLat, CLong)))
+	  (     call(Generator, center(CLat, CLong)) ; average_geopoints(Coordinates, point(CLat, CLong))),
+	  (     call(Generator, style(Style)) ; Style = 997)
 	},
 	html(script(type('text/javascript'), [
 'var ~w = L.map(\'~w\').setView([~w, ~w], ~w);\n'-[ID, ID, CLat, CLong, Zoom],
-'L.tileLayer(\'http://{s}.tile.cloudmade.com/~w/997/256/{z}/{x}/{y}.png\', {\n'-[Key],
+'L.tileLayer(\'http://{s}.tile.cloudmade.com/~w/~w/256/{z}/{x}/{y}.png\', {\n'-[Key, Style],
 	'    maxZoom: 18\n',
 '}).addTo(~w);\n'-[ID],
 	     \coords(Generator, Coordinates)
@@ -116,20 +120,6 @@ coords(Generator, [point(Lat, Long)|T]) -->
 	     \decorations(Generator, point(Lat, Long)),
 	     ';\n']),
 	coords(Generator, T).
-
-avg([] , point(0.0, 0.0)) :- !.
-avg(Coordinates, point(ALat, ALong)) :-
-	sum_ll(Coordinates, 0, SumLat, 0, SumLong),
-	length(Coordinates, Count),
-	ALat is SumLat/Count,
-	ALong is SumLong/Count.
-
-sum_ll([], Lat, Lat, Long, Long).
-sum_ll([point(Lat, Long)|T], Lat0, LatS, Long0, LongS) :-
-	Lat1 is Lat0+Lat,
-	Long1 is Long0+Long,
-	sum_ll(T, Lat1, LatS, Long1, LongS).
-
 
 
 decorations(Generator, Pt) -->

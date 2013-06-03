@@ -8,7 +8,8 @@
 
 :- module(map,
 	  [
-	    geo_map//1
+	    geo_map//1,
+	    average_geopoints/2
 	  ]).
 
 :- use_module(library(http/html_write)).
@@ -112,6 +113,9 @@ the map.  The final argument may be
 
   * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
 
+  * style(-Style) only meaningful for leaflet, is cloudmade style
+  number
+
 Defining icon types means binding an icon/3 for each type, then binding
 all the properties
 
@@ -157,3 +161,20 @@ make_geo_map(leaflet, Generator) -->
 	lmap(Generator).
 make_geo_map(google, Generator) -->
 	gmap(Generator).
+
+/**    average_geopoints(+Points:list, -MeanPoint:point) is det
+
+     returns 0,0 for empty list
+*/
+average_geopoints([] , point(0.0, 0.0)) :- !.
+average_geopoints(Coordinates, point(ALat, ALong)) :-
+	sum_geopoints(Coordinates, 0, SumLat, 0, SumLong),
+	length(Coordinates, Count),
+	ALat is SumLat/Count,
+	ALong is SumLong/Count.
+
+sum_geopoints([], Lat, Lat, Long, Long).
+sum_geopoints([point(Lat, Long)|T], Lat0, LatS, Long0, LongS) :-
+	Lat1 is Lat0+Lat,
+	Long1 is Long0+Long,
+	sum_geopoints(T, Lat1, LatS, Long1, LongS).
