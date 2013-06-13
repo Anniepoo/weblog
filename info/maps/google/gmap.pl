@@ -18,17 +18,63 @@
 % needed for some coord calc stuff
 :- use_module(weblog(info/maps/map)).
 
-%%	gmap(+Generator)// is det.
-%
-%	HTML component that shows google maps
-%	Maps are generated from a closure. This is documented in
-%	map:geo_map.
-%
-%	Do not call this directly, call it through geo_map and
-%	bind provider(google) (or do nothing, google is the default)
-%
-%
+/**    gmap(+Generator:closure)// is det
 
+Geomap (map of Earth) component using Google Maps
+
+Do not call this directly, call it through geo_map and
+bind provider(google) (or do nothing, google is the default)
+
+Generator is an arity n term that corresponds to an arity n+1
+predicate.
+
+gmap//1 will repeatedly query Generator for information and build up
+the map.  The final argument may be
+
+  * id(-ID) The map div id and javascript variable name will be set to
+  this. default lmap or gmap depending on provider. must be valid
+  javascript identifier as atom.
+
+  * zoom(Zoom) The zoom level. Provider specific how this maps to a
+  viewport. Default 14
+
+  * center(Lat, Long) center map view here. defaults to average of
+  points
+
+  * point(-Lat, -Long) A marker will be placed at this point
+
+  * icon_for(+point(Lat, Long), -IconName) icon to use for this point.
+  default is provider default icon
+
+  * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
+
+  * style(-Style) only meaningful for leaflet, is cloudmade style
+  number
+
+Defining icon types means binding an icon/3 for each type, then binding
+all the properties
+
+  * icon(-Name, -ImageSource, -ShadowSource) Defines an icon type name.
+
+Defining an icon requires that the following be defined for each icon
+  type name:
+
+  * * icon_size(+Name, X, Y) size of icon image
+
+  * * shadow_size(+Name, X, Y) size of shadow image
+
+  * * icon_anchor(+Name, X, Y) offset from UL of image to the point
+  touching the spot on the map
+
+  * * shadow_anchor(+Name, X, Y) offset
+  from UL of shadow image to the point touching the spot on map
+
+  * * popup_anchor(+Name, X, Y) offset from the point touching map to
+  where the popup appears (so, eg, Y coord is often negative)
+
+  @tbd add an example to docs
+
+*/
 gmap(Generator) -->
 	{
 	    (	call(Generator, id(ID)) ; ID = gmap),
@@ -40,7 +86,7 @@ gmap(Generator) -->
 	},
 	html([  % \html_requires(googlemap),
 	      \html_post(head, script([type('text/javascript'),
-	                               src(Src)], []) ),
+				       src(Src)], []) ),
 	      div([ id(ID)
 		 ],
 		 [])]),
