@@ -93,7 +93,9 @@ show_map(Generator) -->
 	{
 	  (	call(Generator, id(ID)) ; ID = lmap   ),
 	  (	call(Generator, zoom(Zoom)) ; Zoom = 14  ),
-	  setof(point(X,Y), call(Generator, point(X,Y)), Coordinates),
+	    % setof fails if the goal never succeeds
+	  (   setof(point(X,Y), call(Generator, point(X,Y)), Coordinates) ;
+	      Coordinates = []),
 	  setting(cloudmade_map_key, Key),
 	  (     call(Generator, center(CLat, CLong)) ; average_geopoints(Coordinates, point(CLat, CLong))),
 	  (     call(Generator, style(Style)) ; Style = 997)
@@ -101,7 +103,8 @@ show_map(Generator) -->
 	html(script(type('text/javascript'), [
 'var ~w = L.map(\'~w\').setView([~w, ~w], ~w);\n'-[ID, ID, CLat, CLong, Zoom],
 'L.tileLayer(\'http://{s}.tile.cloudmade.com/~w/~w/256/{z}/{x}/{y}.png\', {\n'-[Key, Style],
-	'    maxZoom: 18\n',
+	'    maxZoom: 18,
+	     minZoom: 2',
 '}).addTo(~w);\n'-[ID],
 	     \coords(Generator, Coordinates)
 		    ])).

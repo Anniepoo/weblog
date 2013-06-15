@@ -47,11 +47,15 @@ code_graticule(Code, graticule(Lat, Long)) :-
 	format(codes(Code), '~s, ~s', [CLat, CLong]).
 code_graticule(Code, graticule(Lat, Long)) :-
 	is_list(Code),
-        phrase(grat_syntax(Lat, Long), Code),
+        phrase(grat_syntax(RLat, RLong), Code),
+	wrap_long(RLong, Long),
+	bound_lat(RLat, Lat),
 	Lat >= -90.0,
 	Lat =< 90.0,
 	Long >= -180.0,
 	Long =< 180.0 .
+
+
 
 /**     code_graticule(?CodeLat:codes, ?CodeLong:codes, ?Grat:graticule) is semidet
 
@@ -64,22 +68,38 @@ code_graticule(Code, graticule(Lat, Long)) :-
 	@Code see above
 	@Grat opaque graticule structure
 */
-code_graticule(CodeLat, CodeLong, graticule(Lat, Long)) :-
+code_graticule(CodeLat, CodeLong, graticule(RLat, RLong)) :-
 	var(CodeLat),
+	bound_lat(RLat, Lat),
+	wrap_long(RLong, Long),
 	codes_gnum(CodeLat, Lat),
-	codes_gnum(CodeLong, Long),
-	Lat >= -90.0,
-	Lat =< 90.0,
-	Long >= -180.0,
-	Long =< 180.0 .
+	codes_gnum(CodeLong, Long).
 code_graticule(CodeLat, CodeLong, graticule(Lat, Long)) :-
 	is_list(CodeLat),
-	phrase(half_grat(Lat), CodeLat),
-	phrase(half_grat(Long), CodeLong),
-	Lat >= -90.0,
-	Lat =< 90.0,
-	Long >= -180.0,
-	Long =< 180.0 .
+	is_list(CodeLong),
+	phrase(half_grat(RLat), CodeLat),
+	phrase(half_grat(RLong), CodeLong),
+	bound_lat(RLat, Lat),
+	wrap_long(RLong, Long).
+
+wrap_long(RLong, Long) :-
+	RLong >= -180.0,
+	wrap_long_upper(RLong, Long).
+wrap_long(RLong, Long) :-
+	RLong < -180.0,
+	NLong is RLong + 360.0,
+	wrap_long(NLong, Long).
+wrap_long_upper(RLong, RLong) :-
+	RLong < 180.0.
+wrap_long_upper(RLong, Long) :-
+	RLong >= 180.0,
+	NLong is RLong - 360.0,
+	wrap_long_upper(NLong, Long).
+bound_lat(RLat, -90.0) :-
+	RLat < -90.0,! .
+bound_lat(RLat, 90.0) :-
+	RLat > 90.0,! .
+bound_lat(Lat, Lat).
 
 /**    codes_gnum(-C:codes, +G:float) is det
 

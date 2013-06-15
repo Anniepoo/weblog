@@ -116,6 +116,9 @@ the map.  The final argument may be
   * style(-Style) only meaningful for leaflet, is cloudmade style
   number
 
+  * maptype(-Type) only meaningful for google maps, is the constant for
+  google.maps.MapTypeId (eg, 'HYBRID')
+
 Defining icon types means binding an icon/3 for each type, then binding
 all the properties
 

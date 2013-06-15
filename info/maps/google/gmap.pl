@@ -48,8 +48,8 @@ the map.  The final argument may be
 
   * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
 
-  * style(-Style) only meaningful for leaflet, is cloudmade style
-  number
+  * maptype(-Type) only meaningful for google maps, is the constant for
+  google.maps.MapTypeId (eg, 'HYBRID')
 
 Defining icon types means binding an icon/3 for each type, then binding
 all the properties
@@ -80,17 +80,15 @@ gmap(Generator) -->
 	    (	call(Generator, id(ID)) ; ID = gmap),
 	    setting(google_map_key, Key),
 	    setting(google_map_script, Script),!,
-	    format(atom(Src),
-		'~w&key=~w',
-		[Script, Key])
+  format(atom(Src), '<script type=\'text/javascript\' src=\'~w?sensor=false&key=~w\' ></script>', [Script, Key])
 	},
-	html([  % \html_requires(googlemap),
-	      \html_post(head, script([type('text/javascript'),
-				       src(Src)], []) ),
+	html([
+	      \html_post(head,
+		\[Src]),
+	      \html_post(head, [\show_map(Generator)]),
 	      div([ id(ID)
 		 ],
-		 [])]),
-	show_map(Generator).
+		 [])]).
 
 gmap(_) -->
 	html([p('Missing google key in weblog/keys/googlekey.pl.example or other problem')]).
@@ -99,25 +97,79 @@ show_map(Generator) -->
 	{
 	  (	call(Generator, id(ID)) ; ID = gmap   ),
 	  (	call(Generator, zoom(Zoom)) ; Zoom = 14  ),
-	  setof(point(X,Y), call(Generator, point(X,Y)), Coordinates),
-	  (     call(Generator, center(CLat, CLong)) ; average_geopoints(Coordinates, point(CLat, CLong)))
+	  (     call(Generator, maptype(MT)),
+		member(MT, ['HYBRID', 'ROADMAP', 'SATELLITE', 'TERRAIN'])
+	  ;
+		MT = 'TERRAIN' ),
+	 % setof fails if the goal always does
+	  (   setof(point(X,Y), call(Generator, point(X,Y)), Coordinates) ;
+	      Coordinates = []),
+	  (
+	        call(Generator, center(CLat, CLong))
+	  ;     average_geopoints(Coordinates, point(CLat, CLong))
+	  )
 	},
-	html(script(type('text/javascript'),
-		    [ 'if (GBrowserIsCompatible()) {\n',
-		      'var ~w = new GMap2(document.getElementById("~w"));\n'-[ID,ID],
-		      '~w.setCenter(new GLatLng(~w,~w), 2);\n'-[ID, CLat, CLong],
-		      \coords(Generator, Coordinates),
-		      '~w.setUIToDefault();\n'-[ID],
-		     % '~w.addControl(new GSmallMapControl());\n'-[ID],
-		      '}\n'
-		    ])).
+	define_icons(Generator),
+	html(script(type('text/javascript'), [
+\['	var ~w;
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(~w, ~w),
+          zoom: ~w,~n'-[ID,CLat, CLong, Zoom],
+'          mapTypeId: google.maps.MapTypeId.~w,
+	  mapTypeControl: false
+        };
+'-[MT],
+'        ~w = new google.maps.Map(document.getElementById("~w"),
+            mapOptions);~n'-[ID, ID],
+         \coords(Generator, Coordinates),
+'~n      }
+      google.maps.event.addDomListener(window, \'load\', initialize);~n'-[ID,ID]]])).
 
 coords(_, []) --> [].
 coords(Generator, [point(Lat, Long)|T]) -->
 	{
-	    (	call(Generator, id(ID)) ; ID = gmap   )
+	    (	call(Generator, id(ID)) ; ID = gmap   ),
+	    (
+	        call(Generator, icon_for(point(Lat, Long), N)),
+		format(atom(IconAtom), '   icon: ~wIcon,~n', [N])
+	    ;
+	        IconAtom = ''
+	    )
 	},
-	html('~w.addOverlay(new GMarker(new GLatLng(~w,~w)));\n'-[ID,Lat,Long]),
+	html('(new google.maps.Marker({
+    position: new google.maps.LatLng(~w, ~w),
+~w    title:"(~w, ~w)"
+})).setMap(~w);~n'-[Lat, Long, IconAtom, Lat, Long, ID]),
 	coords(Generator, T).
+
+define_icons(Generator) -->
+	{
+	    setof(Name, A^B^call(Generator, icon(Name, A, B)), Names),!
+	},
+	html(script(type('text/javascript'), [
+	     \def_icons_helper(Generator, Names) ])).
+% fallback if no icons defined
+define_icons(_) --> [].
+
+def_icons_helper(_, []) --> [].
+def_icons_helper(Generator, [H|T]) -->
+	{
+	    call(Generator, icon(H, ImgSrc, _)),
+	    call(Generator, icon_size(H, IconSizeX, IconSizeY)),
+	    call(Generator, icon_anchor(H, IconAnchorX, IconAnchorY))
+	},
+	html([
+	    'var ~wIcon = {
+    url: \'~w\',~n'-[H, ImgSrc],
+	    '	 size:	 new google.maps.Size(~w, ~w),~n'-[IconSizeX, IconSizeY],
+	    '    origin: new google.maps.Point(0,0),
+   anchor: new google.maps.Point(~w, ~w)
+};~n'-[IconAnchorX, IconAnchorY]
+	     ]),
+	def_icons_helper(Generator, T).
+def_icons_helper(Generator, [H|T]) -->
+	html(\[' // ~w could not be generated (missing values?)~n'-[H]]),
+	def_icons_helper(Generator, T).
 
 
