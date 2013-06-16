@@ -164,7 +164,7 @@ def_icons_helper(Generator, [H|T]) -->
     url: \'~w\',~n'-[H, ImgSrc],
 	    '	 size:	 new google.maps.Size(~w, ~w),~n'-[IconSizeX, IconSizeY],
 	    '    origin: new google.maps.Point(0,0),
-   anchor: new google.maps.Point(~w, ~w)
+   iconAnchor: new google.maps.Point(~w, ~w)
 };~n'-[IconAnchorX, IconAnchorY]
 	     ]),
 	def_icons_helper(Generator, T).

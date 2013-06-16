@@ -13,6 +13,8 @@ Examples would be
  The key files are in /keys
  Copy the foo.pl.example file to foo.pl and modify with your key.
  
+ http://xkcd.com/1034/
+ 
  
 
  
