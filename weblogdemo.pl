@@ -141,7 +141,8 @@ index_page(_Request) :-
 	    [
 	    \html_requires(css('demo.css')),
 	    h1('Weblog demo page'),
-	    \abox('', 'Input', [\demo_item(testform)]),
+	    \abox('', 'Input', [\demo_item(testform),
+			        \demo_item(testcontrols)]),
 	    \abox('', 'Info', [
 			       \demo_item(map),
 			       \demo_item(geocoding),
@@ -175,6 +176,8 @@ demo_item(Item) -->
 
 demo_label(testform, 'Validated Form').
 :- ensure_loaded(demo/html_form_demo).
+
+demo_label(testcontrols, 'Control Test').
 
 demo_label(googlemap, 'Google Map').
 :- ensure_loaded(demo/google_map_demo).

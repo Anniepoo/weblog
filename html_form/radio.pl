@@ -9,6 +9,8 @@
      Licensed under LGPL
 */
 
+:- use_module(library(http/html_write)).
+
 :- meta_predicate image_radio_set(1, ?, ?).
 
 /**    image_radio_set(+Generator:goal)// is det
@@ -26,30 +28,32 @@
 
       * selected_image(ID, Image) path to selected image file for this
       button
-
-
 */
 image_radio_set(Generator) -->
 	{
 	    (	call(Generator, set_name(SetName)) ; gensym(radioset, SetName)),
-	    (	setof(ID, call(Generator, id(ID)), IDList) ; IDList = [] )
+	    (	bagof(ID, call(Generator, id(ID)), IDList) ; IDList = [] )
 	},
 	html([
 	    \html_post(head,
 script(type('text/javascript'), [
                                \['function ~wReset() {~n'-[SetName]],
-			       \reset_button_code(IDList),
-                               \['}~n']
+			       \reset_button_code(Generator, IDList),
+                               \['}\n']
 				])
 	     )]),
 	image_radio_buttons(SetName, Generator, IDList).
 
-reset_button_code([]) --> [].
-reset_button_code([H|T]) -->
+reset_button_code(_, []) --> [].
+reset_button_code(Generator, [H|T]) -->
+	{
+	   call(Generator, image(H, Image))
+	},
 	html([
-	    \['document.getElementById(\'~w\').checked =false;~n'-[H]]
+	    \['document.getElementById(\'~w\').checked =false;~n
+document.getElementById(\'~wimage\').src = \'~w\';~n'-[H, H, Image]]
 	     ]),
-	reset_button_code(T).
+	reset_button_code(Generator, T).
 
 image_radio_buttons(_, _, []) --> [].
 image_radio_buttons(SetName, Generator, [H|T]) -->
@@ -60,12 +64,19 @@ image_radio_buttons(SetName, Generator, [H|T]) -->
 	    format(atom(Click),
                '~wReset(); document.getElementById(\'~wimage\').src = \'~w\';
 document.getElementById(\'~w\').checked =true; ',
-               [SetName, H, SelectedImage, H])
+               [SetName, H, SelectedImage, H]),
+	    (
+	        call(Generator, default(H))
+	    ->
+	        StartImage = SelectedImage
+	    ;
+	        StartImage = Image
+	    )
 	},
 	html([
 	    span(style='display:none', input([type=radio, id=H, name=SetName], [])),
 	    img([id=H+image,
-		 src=Image,
+		 src=StartImage,
 		 style='cursor:pointer;',
 		 onclick=Click], [])
 	     ]),
@@ -76,4 +87,4 @@ image_radio_buttons(SetName, Generator, [H|T]) -->
 	     ]),
 	image_radio_buttons(SetName, Generator, T).
 
-% TODO need to set default selection
+

@@ -2,8 +2,12 @@
 
 This directory contains modules useful for working with web forms.
 
-Notably, it contains the code for automaticly generating server side validation
+html_form.pl -automaticly generating server side validation
 and error messages in forms.
+
+radio.pl - image radio buttons
+
+
 
 
 
