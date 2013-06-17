@@ -28,6 +28,8 @@
 
       * selected_image(ID, Image) path to selected image file for this
       button
+
+      * default(ID)  the button to be selected at start
 */
 image_radio_set(Generator) -->
 	{
@@ -68,13 +70,16 @@ document.getElementById(\'~w\').checked =true; ',
 	    (
 	        call(Generator, default(H))
 	    ->
-	        StartImage = SelectedImage
+	        StartImage = SelectedImage,
+	        Attribs = [type=radio, id=H, value=H,
+			   checked=true, name=SetName]
 	    ;
-	        StartImage = Image
+	        StartImage = Image,
+	        Attribs = [type=radio, id=H, value=H, name=SetName]
 	    )
 	},
 	html([
-	    span(style='display:none', input([type=radio, id=H, name=SetName], [])),
+	    span(style='display:none', input(Attribs, [])),
 	    img([id=H+image,
 		 src=StartImage,
 		 style='cursor:pointer;',
