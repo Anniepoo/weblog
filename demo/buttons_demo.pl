@@ -33,7 +33,9 @@ buttons_demo_body -->
 	    h3(['The ', span(class=stylename, tiny_score), ' style']),
 	    \reddit([style(tiny_score)]),
 	    h3(['The ', span(class=stylename, tiny_vote), ' style']),
-	    \reddit([style(tiny_vote)])
+	    \reddit([style(tiny_vote)]),
+	    h2('del.icio.us'),
+	    \delicious([site_name('Buttons Demo')])
 	     ]).
 
 
