@@ -19,69 +19,6 @@
 :- use_module(weblog(info/maps/leaflet/leafletmap)).
 
 
-/*    direct removed
-
-geo_map_direct(+Options, +Coordinates)// is det.
-
-	HTML component that shows maps  with markers at the given
-	Coordinates. Coordinates is a list. Each  coordinate is a
-	term point(Lat,Long), optionally followed by decorations
-	separated by + signs.
-
-        Available Decorations:
-	* popup(HTML)
-	add a popup (small window with text that appears when clicking the
-	location icon)
-	* open
-	The point must already have a popup. Makes the popup open by default.
-
-	Options:
-	* provider(ProviderName(ProviderSpecificOptionList))
-	map can use one of several underlying map providers.
-        Currently the choice is google or leaflet. The argument is a
-	list of options which are only meaningful to
-	that provider. At the moment there are no such options,
-	and ProvideSpecificOptionList always binds to []
-	* id(Map)  set the html id of the map div. Required if there are
-	multiple maps on a page.
-
-       @deprecated Use geo_map. Probably broken
-
-
-
-:- predicate_options(geo_map_direct//2, 1, [
-	provider(oneof([google(_), leaflet(_)])),
-	id(text)
-	       ]).
-
-geo_map_direct(Options , Coordinates) -->
-	{
-	     option(provider(P), Options, google([])),
-	     P =.. [google, ProviderArgs],!,
-	     select(provider(_), Options, ProviderIndependentOptions),
-	     append(ProviderArgs, ProviderIndependentOptions, PassOptions)
-	},
-	gmap(PassOptions, Coordinates).
-
-geo_map_direct(Options , Coordinates) -->
-	{
-	     option(provider(P), Options),
-	     P =.. [leaflet, ProviderArgs],!,
-	     select(provider(_), Options, ProviderIndependentOptions),
-	     append(ProviderArgs, ProviderIndependentOptions, PassOptions)
-	},
-	lmap(PassOptions, Coordinates).
-
-
-geo_map_direct(Options , _Coordinates) -->
-	{
-		throw(error(domain_error(list, Options), context(geo_map_direct//2,
-				   'invalid provider')))
-	},
-	[].
-
-*/
-
 :- meta_predicate geo_map(1, ?, ?).
 
 /**    geo_map(+Generator:closure)// is det
@@ -109,7 +46,7 @@ the map.  The final argument may be
   * point(-Lat, -Long) A marker will be placed at this point
 
   * icon_for(+point(Lat, Long), -IconName) icon to use for this point.
-  default is provider default icon
+  default is provider default icon.
 
   * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
 
@@ -123,6 +60,9 @@ Defining icon types means binding an icon/3 for each type, then binding
 all the properties
 
   * icon(-Name, -ImageSource, -ShadowSource) Defines an icon type name.
+  The actual javascript names are common for all maps with same
+  provider, so you should only define the icons for each map provider
+  once.
 
 Defining an icon requires that the following be defined for each icon
   type name:

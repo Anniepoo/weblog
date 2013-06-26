@@ -76,7 +76,7 @@ def_icons_helper(Generator, [H|T]) -->
 	    call(Generator, popup_anchor(H, PopupAnchorX, PopupAnchorY))
 	},
 	html([
-	    'var ~wIcon = L.icon({~niconUrl: \'~w\',~n'-[H, ImgSrc],
+	    'var ~wLeafIcon = L.icon({~niconUrl: \'~w\',~n'-[H, ImgSrc],
 	    '    shadowUrl: \'~w\',~n'-[MaskSrc],
 	    '	 iconSize:   [~w, ~w],~n'-[IconSizeX, IconSizeY],
 	    '	 shadowSize: [~w, ~w],~n'-[ShadowSizeX, ShadowSizeY],
@@ -114,7 +114,7 @@ coords(Generator, [point(Lat, Long)|T]) -->
 	{
 	  (	call(Generator, id(ID)) ; ID = lmap   ),
 	 (   call(Generator, icon_for(point(Lat, Long), N)) ->
-	     format(codes(IconName), ', {icon: ~wIcon}', [N])
+	     format(codes(IconName), ', {icon: ~wLeafIcon}', [N])
 	 ;
 	     IconName = ""
 	)
