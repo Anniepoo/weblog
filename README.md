@@ -82,6 +82,10 @@ Manifesto
 The library should remain bits and pieces you can use as you like, with little cost of inheriting weblog. If all you want is the accordion widget you shouldn't have to change your whole way of coding
 to get it.
 
+The only real 'common' pieces are ==/resources==, which defines the resource inclusion names, and ==/static==
+which holds the various bits of javascript needed by the various widgets. For the moment a truly lean install of
+weblog might require a bit of picking through those.
+
 A Common Pattern
 ================
 
@@ -97,8 +101,10 @@ More complex uses can be described with rules, in 'family tree' style code.
 Contributing
 ============
 
-We welcome contributions. Because this is more a 'toolbox' library than a unified 
+We emphatically welcome contributions. Because this is more a 'toolbox' library than a unified 
 framework, it's particularly easy to contribute.
+Weblog is an ambitious project, far beyond what one person can do. It's definitely intended to
+be a kitchen sink project. It's Genesis was collecting existing code written for various projects.
 
 Code should generally follow the style conventions of 
 
@@ -112,17 +118,19 @@ http://www.pathwayslms.com/swipltuts/pldoc/
 
 Contributions should include a demo page.
 
+So far I've done a laughably bad job of following this myself.
+
 
 Contributors
 ============
 
 We'd like to thank the following folks:
 
- * Anne Ogborn - tables, forms, accordion
+ * Anne Ogborn - tables, forms, accordion, maps
 
  * Thanos Tintinidis   - login and forms
 
- * Jan Wielemaker - google maps, and of course SWI-Prolog!
+ * Jan Wielemaker - original google maps code, and of course SWI-Prolog!
 
  * University of Houston - contributed the original library
 

@@ -146,7 +146,8 @@ index_page(_Request) :-
 	    \abox('', 'Info', [
 			       \demo_item(map),
 			       \demo_item(geocoding),
-			       \demo_item(buttons)]),
+			       \demo_item(buttons),
+			       \demo_item(books)]),
 	    \abox('', 'Formatting', [\demo_item(table)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
@@ -202,6 +203,9 @@ demo_label(buttons, 'Buttons').
 
 demo_label(geocoding, 'Geocoding').
 :- ensure_loaded(demo/geocoding_demo).
+
+demo_label(books, 'Books').
+:- ensure_loaded(demo/books_demo).
 
 
 

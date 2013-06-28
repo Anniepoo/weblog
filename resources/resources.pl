@@ -29,3 +29,8 @@
 :-html_resource(leaflet, [virtual(true),
        requires(['http://cdn.leafletjs.com/leaflet-0.5/leaflet.css',
 		 'http://cdn.leafletjs.com/leaflet-0.5/leaflet.js'])]).
+
+:-html_resource('https://www.google.com/jsapi', [mime_type(text/javascript)]).
+:-html_resource(google_loader, [virtual(true),
+       requires(['https://www.google.com/jsapi'])]).
+
