@@ -7,6 +7,5 @@ I fear this becoming a 'miscellaneous' section, but at the moment don't
 see any better way of organizing.
 
 javascript helpers,
-html comments
-inclusion of html files
+
 
