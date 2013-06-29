@@ -1,5 +1,7 @@
-:- module(javascript, [javascript_friendly_html/2]).
+:- module(javascript_utils, [javascript_friendly_html/2]).
 /** <module> Javascript handling utilities
+
+   6/29/2013 renamed to avoid colliding with library javascript
 
 */
 :- use_module(library(http/html_write)).

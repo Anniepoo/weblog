@@ -14,7 +14,7 @@
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(weblog(info/html/html_comments)).
-:- use_module(weblog(support/javascript)).
+:- use_module(weblog(support/javascript_utils)).
 :- ensure_loaded(weblog(resources/resources)).
 
 :- include(weblog('keys/cloudmadekey.pl')).

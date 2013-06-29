@@ -9,6 +9,8 @@ types of information. Examples would be
  * Chart and graph packages
  * Markup languages and HTML editors
  
+ It mixes feeds and displays. This is a deliberate decision to avoid splitting
+ places where the feed and display are inextricably intertwined.
  
  When we have, or might reasonably have, more than one provider for
  an info type (e.g. maps), we'll try to have an abstract lib that wraps

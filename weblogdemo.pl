@@ -151,7 +151,8 @@ index_page(_Request) :-
 	    \abox('', 'Formatting', [\demo_item(table)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
-	    \abox('', 'Navigation', [\demo_item(accordion)])
+	    \abox('', 'Navigation', [\demo_item(accordion)]),
+	    \abox('', 'Widgets', [\demo_item(clippy)])
 	    ]).
 
 %%	demo_item(+Item:location_id)
@@ -206,6 +207,9 @@ demo_label(geocoding, 'Geocoding').
 
 demo_label(books, 'Books').
 :- ensure_loaded(demo/books_demo).
+
+demo_label(clippy, 'Clippy').
+:- ensure_loaded(demo/clippy_demo).
 
 
 
