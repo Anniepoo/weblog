@@ -34,5 +34,5 @@
 :-html_resource(google_loader, [virtual(true),
        requires(['https://www.google.com/jsapi'])]).
 :-html_resource(clippy, [virtual(true),
-			 aggregate([jquery, 'clippy.css', 'clippy.min.js'])
+			 requires([jquery, css('clippy.css'), js('clippy.min.js')])
 			]).
