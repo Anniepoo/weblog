@@ -23,9 +23,10 @@ Currently, users should expect that almost anything can change.
 Install
 =======
 
-Other than a normal swi-prolog install, the only install step is to 
-set keys for the various functionality 
+Other than having a normal SWI-Prolog install, the only install step is to 
+clone from github and set keys for the various functionality 
 
+Setting keys:
 For the demo, at the moment, this is the two map providers, google and cloudmade.
 
 copy 
