@@ -142,7 +142,8 @@ index_page(_Request) :-
 	    \html_requires(css('demo.css')),
 	    h1('Weblog demo page'),
 	    \abox('', 'Input', [\demo_item(testform),
-			        \demo_item(testcontrols)]),
+			        \demo_item(testcontrols),
+			        \demo_item(autocomplete)]),
 	    \abox('', 'Info', [
 			       \demo_item(map),
 			       \demo_item(geocoding),
@@ -210,6 +211,10 @@ demo_label(books, 'Books').
 
 demo_label(clippy, 'Clippy').
 :- ensure_loaded(demo/clippy_demo).
+
+demo_label(autocomplete, 'Auto Complete').
+:- ensure_loaded(demo/autocomplete_demo).
+
 
 
 

@@ -1,9 +1,6 @@
 :- module(books, [book_viewer//1]).
 /** <module> Generic interface for online book viewer/review widgets
 
-   Hoping we get extended mime support in resources so we can finish
-   this
-
 */
 
 :- use_module(library(http/html_write)).
@@ -12,6 +9,11 @@
 :- meta_predicate book_viewer(1, ?, ?).
 :- style_check(-atom).
 
+/**    book_viewer(+Generator:callable)// is det
+
+  @tbd comment this
+
+*/
 book_viewer(Generator) -->
 	{
 	   (   call(Generator, id(ID)) ; ID = bookViewerCanvas ),
