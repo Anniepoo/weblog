@@ -24,9 +24,20 @@ autocomplete_demo_body -->
 		     \autocomplete(autocomplete_opts)]),
 		  p([
 		     label([for=accentthingy], 'Accents: '),
-		     \autocomplete(accent_opts)])
+		     \autocomplete(accent_opts)]),
+		  p([
+		      label([for=ajaxthingy], 'Ajax: '),
+		     \autocomplete(ajax_opts)])
 		 ])
 	]).
+
+ajax_opts(id(ajaxthingy)) :- !.
+ajax_opts(ajax).
+ajax_opts(choice(Term, AX)) :-
+	autocomplete_opts(choice(AX)),
+	atom_codes(AX, CX),
+	atom_codes(Term, CTerm),
+	append(CTerm, _, CX).
 
 accent_opts(accents).
 accent_opts(id(accentthingy)) :- !.

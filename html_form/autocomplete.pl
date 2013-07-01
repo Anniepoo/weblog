@@ -9,6 +9,11 @@
 
 :- ensure_loaded(weblog(resources/resources)).
 :- use_module(library(http/js_write)).
+:- use_module(library(http/http_wrapper)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/json_convert)).
+:- use_module(library(http/http_parameters)).
+:- use_module(library(http/http_json)).
 
 :- html_meta autocomplete(1, ?, ?).
 
@@ -24,7 +29,13 @@ build up the autocomplete field. The final argument may be
 
   * choice(-Atom)  A choice for the autocomplete field
 
-  * id(-ID) The input field id will be set to this. default tags
+  * id(-ID)    The input field id will be set to this. default tags
+
+  * ajax      The generator will be called repeatedly with
+  choice(+Term, -Choice) where Term is an atom representation of
+  the current contents of the field, and Choice is an atom
+  representation of one of the choices
+
 
 */
 autocomplete(Generator) -->
@@ -35,6 +46,22 @@ autocomplete(Generator) -->
 	    \html_requires(jquery_ui),
 	    \html_post(head, [\autocomplete_script(Generator)]),
 	input([id=ID], [])]).
+
+autocomplete_script(Generator) -->
+	{
+            call(Generator, ajax),
+            (	call(Generator, id(ID))   ;   ID = 'tags' ),
+            ajax_path_name(Generator, PathName)
+        },
+	html([
+	    \js_script( {| javascript(ID, PathName) ||
+$(function() {
+    $( "#"+ID ).autocomplete({
+      source: PathName
+    });
+  });
+|} )
+	]).
 
 autocomplete_script(Generator) -->
 	{
@@ -87,3 +114,25 @@ $(function() {
   });
 |} )
 	]).
+
+ajax_path_name(Generator, AjaxPath) :-
+	(   call(Generator, id(ID)) ; ID = 'tags' ),
+	http_current_request(Request),
+	member(path(Path), Request),
+	atomic_list_concat([Path, '/ajax/', ID], AjaxPath),
+	ensure_ajax_handler_exists(Generator, AjaxPath).
+
+ensure_ajax_handler_exists(_, AjaxPath) :-
+	http_dispatch:handler(AjaxPath, _, _, _),!.
+ensure_ajax_handler_exists(Generator, AjaxPath) :-
+	http_handler(AjaxPath, ajax_wrapper(Generator), []).
+
+:- meta_predicate ajax_wrapper(1, +).
+
+ajax_wrapper(Generator, Request) :-
+	http_parameters(Request, [
+			    term(Term, [])]),
+	bagof(Choice, call(Generator, choice(Term, Choice)), Choices),
+	prolog_to_json(Choices, JSONOut),
+        reply_json(JSONOut).
+
