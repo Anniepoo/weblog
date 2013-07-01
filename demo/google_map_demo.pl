@@ -1,6 +1,8 @@
 :- module(google_map_demo, []).
 /** <module>  Demo handler for google maps
 
+      This is deprecated. Use the map abstraction layer
+
 */
 % basic dispatch
 :- use_module(library(http/http_dispatch)).

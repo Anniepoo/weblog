@@ -23,6 +23,7 @@ buttons_demo_body -->
 		      font-family: monospace;
 			     }'),
 	    h1('Button Widgets'),
+	    p('Small controls that interact with various social web sites'),
 	    h2('Reddit'),
 	    h3(['The ', span(class=stylename, tiny), ' style']),
 	    \reddit([style(tiny)]),

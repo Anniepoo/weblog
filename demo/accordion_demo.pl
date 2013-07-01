@@ -18,6 +18,7 @@ accordion_demo_page(_Request) :-
 acc_demo_body -->
 	html([
 	    h1('Accordion demo page'),
+	    p('Accordion widget using the jQueryui accordion'),
 	     h2('Tasty Recipes, Too Many For One Page!'),
 	    \accordion([], [
 		 \accordion_section('Taco Salad',
@@ -35,6 +36,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Collapsible Version'),
+	    p('Usually one section is always open. This version can close all sections'),
 	    \accordion([id(collapsibleversion), collapsible(true)], [
 		 \accordion_section('Taco Salad',
 		         \recipe(taco_salad)),
@@ -51,6 +53,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Fancy Icons  (custom classes)!'),
+	    p('Adds icons for disclosure triangles'),
 	    \accordion([id(fancyicons),
 			active('ui-icon-circle-arrow-s'),
 			inactive('ui-icon-circle-arrow-e')], [
@@ -69,6 +72,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Space Fill!'),
+	    p('This variation always fills a fixed height'),
 	    style(
   '\n#spacefill {
     padding: 10px;
@@ -94,6 +98,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Hover Open!'),
+	    p('This is broken in jQueryui'),
 	    \accordion([id(hovercraft),
 			hover(true)
 			], [
@@ -112,6 +117,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Sortable!'),
+	    p('Try dragging sections'),
 	    \accordion([id(sortme),
 			sortable(true)
 			], [

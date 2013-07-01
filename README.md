@@ -83,7 +83,7 @@ Manifesto
 The library should remain bits and pieces you can use as you like, with little cost of inheriting weblog. If all you want is the accordion widget you shouldn't have to change your whole way of coding
 to get it.
 
-The only real 'common' pieces are ==/resources==, which defines the resource inclusion names, and ==/static==
+The only real 'common' pieces are */resources*, which defines the resource inclusion names, and */static*
 which holds the various bits of javascript needed by the various widgets. For the moment a truly lean install of
 weblog might require a bit of picking through those.
 

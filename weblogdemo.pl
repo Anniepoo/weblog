@@ -153,7 +153,10 @@ index_page(_Request) :-
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
 	    \abox('', 'Navigation', [\demo_item(accordion)]),
-	    \abox('', 'Widgets', [\demo_item(clippy)])
+	    \abox('', 'Widgets', [\demo_item(clippy)]),
+	    p('This page also happens to demo boxes, which doesn\'t otherwise have a demo page'),
+	    p('geohashing doesn\'t have a demo page, but is extensively used in the Impatient Geohasher application, get it on Github'),
+	    p('info/stock/crox/croxstock.pl doesn\'t have a demo page.')
 	    ]).
 
 %%	demo_item(+Item:location_id)

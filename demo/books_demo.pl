@@ -13,7 +13,7 @@
 
 books_demo_page(_Request) :-
 	reply_html_page(
-	    title('Book display Demo'),
+	    title('Book Display Demo'),
 	    \books_demo_body).
 
 books_demo_body -->
@@ -27,6 +27,7 @@ books_demo_body -->
 		   height: 800px;
 		 }'),
 	    h1('Clocksin & Mellish'),
+	    p('Presented with the Google Books Viewer'),
 	    \book_viewer(book_opts)
 	     ]).
 

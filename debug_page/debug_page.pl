@@ -21,11 +21,10 @@ handler at a higher priority.
  since this code's not integrated
 
 
- * List of registered handlers and paths
+ * List of registered handlers and paths (done)
  * Current File Search Path
  * Current Session info
- * Info from
- [[stats.pl]]
+ * Info from [[stats.pl]]  done
 
 */
 

@@ -21,17 +21,24 @@ test_form_content(_Request) -->
 	 debug(html_form, 'in test_form_content~n', [])
 	},
      html([
+      h1('Validated Form'),
+      p('This is the usual sort of validated form. You must enter a name of length >3 and an age over 14 for it to be accepted'),
+      style(['.oops {    color: #F00; } ']),
       form([action='/testform', method='POST'], [
-	     label([for=name],'Name:'),
-	     \error_message([for=name], p([class=oops],
-					  'you have to type a name')),
-	     \form_field(Request, length_input_minmax(3, '>'),
-			 input([name=name, type=textarea], [])),
-	     label([for=age], 'Age:'),
-	     \error_message([for=age], p([class=oops], 'Problem with age')),
-	     \form_field(Request, numeric_minmax(14, '>'),
-			 input([name=age, type=textarea], [])),
-	     input([type=submit, name=submit, value='Wholy smokes'], [])])]).
+	       p([
+	          label([for=name],'Name:'),
+	          \error_message([for=name], p([class=oops],
+					  'You need to type your name in here')),
+	          \form_field(Request, length_input_minmax(3, '>'),
+			 input([name=name, type=textarea], []))]),
+	       p([
+	          label([for=age], 'Age:'),
+	          \error_message([for=age], p([class=oops], 'Age under 14 or not a number')),
+	          \form_field(Request, numeric_minmax(14, '>'),
+			 input([name=age, type=textarea], []))]),
+	       p([
+	           input([type=submit, name=submit, value='Wholy smokes'], [])
+	       ])])]).
 
 test_landing_page_content(_Request) -->
 	html([
@@ -47,6 +54,7 @@ test_controls_page_handler(_Request) :-
 	    [title('Controls')],
 	    [
 	       h1('Some Controls'),
+	       p('radio buttons using images'),
 	       form([action='/testcontrols'], [
 		   \image_radio_set(radio_info),
 		   input([type=submit, name=submitt, value=submitt], [])
