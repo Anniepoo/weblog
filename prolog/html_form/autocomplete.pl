@@ -1,3 +1,7 @@
+% Make sure the encoding of the characters `á` and `ö` is
+% correctly understood.
+:- encoding(utf8).
+
 :- module(autocomplete, [autocomplete//1]).
 /** <module> Autocomplete
 
@@ -75,8 +79,8 @@ autocomplete_script(Generator) -->
     var names = Choices;
 
     var accentMap = {
-      "�": "a",
-      "�": "o"
+      "á": "a",
+      "ö": "o"
     };
     var normalize = function( term ) {
       var ret = "";
