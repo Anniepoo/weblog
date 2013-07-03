@@ -206,16 +206,14 @@ demo_label(accordion, 'Accordion').
 demo_label(buttons, 'Buttons').
 :- ensure_loaded(buttons_demo).
 
-% @tbd Not yet implemented.
-%demo_label(geocoding, 'Geocoding').
-%:- ensure_loaded(geocoding_demo).
+demo_label(geocoding, 'Geocoding').
+:- ensure_loaded(geocoding_demo).
 
 demo_label(books, 'Books').
 :- ensure_loaded(books_demo).
 
-% @tbd Not yet implemented.
-%demo_label(clippy, 'Clippy').
-%:- ensure_loaded(clippy_demo).
+demo_label(clippy, 'Clippy').
+:- ensure_loaded(clippy_demo).
 
 demo_label(autocomplete, 'Auto Complete').
 :- ensure_loaded(autocomplete_demo).

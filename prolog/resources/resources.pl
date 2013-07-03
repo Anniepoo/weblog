@@ -14,6 +14,8 @@
 :- setting(key, atom, 'yourgooglekey',
 	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').
 */
+/*  Wouter - this fails on my machine if I have the keys
+
 prolog:message(missing_key_file(File)) -->
   ['Key file ~w is missing.'-[File], nl].
 :-
@@ -29,6 +31,7 @@ prolog:message(missing_key_file(File)) -->
   ;
     print_message(warning, missing_key_file('googlekey.pl'))
   ).
+*/
 
 :-html_resource(css('demo.css'), []).
 :-html_resource(jquery_ui_css, [virtual(true),

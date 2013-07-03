@@ -13,6 +13,8 @@
 :- use_module(library(http/html_write)).
 :- ensure_loaded(weblog(resources/resources)).
 
+/* this won't compile on my machine doesn't
+like the include
 prolog:message(missing_key_file(File)) -->
   ['Key file ~w is missing.'-[File], nl].
 :-
@@ -28,6 +30,8 @@ prolog:message(missing_key_file(File)) -->
   ;
     print_message(warning, missing_key_file('googlekey.pl'))
   ).
+*/
+:-ensure_loaded(weblog(keys/googlekey)).
 
 % needed for some coord calc stuff
 :- use_module(weblog(info/maps/map)).
