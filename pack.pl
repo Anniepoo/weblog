@@ -1,5 +1,5 @@
 author('Anne Ogborn', 'anniepoo@yahoo.com').
-branch_name(release).
+branch(release).
 download('https://github.com/Anniepoo/weblog.git').
 home('https://github.com/Anniepoo/weblog').
 name(weblog).
