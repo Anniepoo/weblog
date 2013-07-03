@@ -8,8 +8,15 @@
 
 */
 
-user:file_search_path(weblog, '.').
-user:file_search_path(weblogtest, '.').
+init_weblog_demo:-
+  % The use of `file_search_path(weblogtest, .)` is unreliable,
+  % since the meaning of point depends on the directory from
+  % which swipl was called.
+  source_file(init_weblog_demo, ThisFile),
+  file_directory_name(ThisFile, ThisDirectory),
+  assert(user:file_search_path(weblogtest, ThisDirectory)),
+  assert(user:file_search_path(weblog, weblogtest('../prolog'))).
+:- init_weblog_demo.
 
 % Turn on the logger
 :- ensure_loaded(library(http/http_log)).

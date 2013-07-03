@@ -34,6 +34,12 @@ user:portray([H|T]) :-
 	portray_list_innerds([H|T]),
 	write(']').
 
+% This library allows for exploiting the color and attribute facilities
+% of most modern terminals using ANSI escape sequences.
+% The Windows console (swipl-win) does not (yet) support ANSI (color)
+% codes.
+:- use_module(library(ansi_term)).
+
 portray_list_innerds([]).
 portray_list_innerds([H]) :-
 	print(H).

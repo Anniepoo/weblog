@@ -17,7 +17,21 @@
 :- use_module(weblog(support/javascript_utils)).
 :- ensure_loaded(weblog(resources/resources)).
 
-:- include(weblog('keys/cloudmadekey.pl')).
+prolog:message(missing_key_file(File)) -->
+  ['Key file ~w is missing.'-[File], nl].
+:-
+  % Print an error message if the keyfile is not present.
+  (
+    absolute_file_name(
+      weblog('keys/cloudmadekey'),
+      File,
+      [access(read), file_errors(fail), file_type(prolog)]
+    )
+  ->
+    include(File)
+  ;
+    print_message(warning, missing_key_file('cloudmadekey.pl'))
+  ).
 
 % needed for some coord calc stuff
 :- use_module(weblog(info/maps/map)).
