@@ -2,7 +2,7 @@ weblog
 ======
 
 Web Library for SWI-Prolog
-Rev 1e-9
+Rev 0.0002
 
 Licensed under the Lesser General Public License Vers. 3, June 2007
 
@@ -24,7 +24,7 @@ Install
 =======
 
 Other than having a normal SWI-Prolog install, the only install step is to 
-clone from github and set keys for the various functionality 
+clone from github or install from the pack, and set keys for the various functionality 
 
 Setting keys:
 For the demo, at the moment, this is the two map providers, google and cloudmade.
@@ -41,17 +41,21 @@ repeat for google
 Starting
 ========
 
-The demo may be started by consulting debug.pl and querying weblogdemo:weblog_demo.
+The demo may be started by consulting debug.pl  in the demo and querying weblogdemo:weblog_demo.
 
 Libraries
 =========
 
 Every subdirectory has a README.md that explains the contents of that directory
 
-debug_page  serves a couple pages with useful debug info
-
 demo     Every major module (ideally) has a demo page. Examining the demo code is often
          an excellent way to learn to use a feature.
+         
+docs    Documentation for weblog.
+
+under /prolog
+    
+debug_page  Loading these modules causes your server to serve a couple pages with useful debug info
 
 formatting    tools for assisting with tables, boxes, and other page layout
 
