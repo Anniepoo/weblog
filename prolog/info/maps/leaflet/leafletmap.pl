@@ -13,9 +13,17 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(settings)).
 :- use_module(weblog(info/html/html_comments)).
 :- use_module(weblog(support/javascript_utils)).
 :- ensure_loaded(weblog(resources/resources)).
+
+:- setting(
+  cloudmade_map_key,
+  atom,
+  'iamnotavalidkeypasteoneinhere',
+  'Cloudmade map key.  Get one at http://account.cloudmade.com/register'
+).
 
 prolog:message(missing_key_file(File)) -->
   ['Key file ~w is missing.'-[File], nl].

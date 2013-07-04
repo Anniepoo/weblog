@@ -19,7 +19,7 @@
   'yourgooglekey',
 	'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)'
 ).
-setting(
+:- setting(
   google_map_script,
   atom,
   'http://maps.google.com/maps?file=api&v=2&sensor=false',
@@ -37,7 +37,7 @@ prolog:message(missing_key_file(File)) -->
       [access(read), file_errors(fail), file_type(prolog)]
     )
   ->
-    load_settings(File)
+    load_settings(File, [undefined(error)])
   ;
     print_message(warning, missing_key_file('googlekey.pl'))
   ).

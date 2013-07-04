@@ -16,9 +16,9 @@ init_weblog_demo:-
   file_directory_name(ThisFile, ThisDirectory),
   assert(user:file_search_path(weblogtest, ThisDirectory)),
   assert(user:file_search_path(weblog, weblogtest('../prolog'))),
-  assert(user:file_search_path(css, weblog('./static/css'))),
-  assert(user:file_search_path(js, weblog('./static/js'))),
-  assert(user:file_search_path(icons, weblog('./static/icons'))).
+  assert(user:file_search_path(css, weblog('static/css'))),
+  assert(user:file_search_path(js, weblog('static/js'))),
+  assert(user:file_search_path(icons, weblog('static/icons'))).
 
 :- init_weblog_demo.
 

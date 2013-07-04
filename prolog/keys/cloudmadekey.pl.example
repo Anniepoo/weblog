@@ -2,5 +2,5 @@
 % You'll need a cloudmade account, you can get an account and key here
 % http://support.cloudmade.com/answers/api-keys-and-authentication
 
-setting(cloudmade_map_key, 'iamnotavalidkeypasteoneinhere').
+setting(leafletmap:cloudmade_map_key, 'iamnotavalidkeypasteoneinhere').
 

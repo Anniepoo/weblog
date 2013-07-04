@@ -25,6 +25,7 @@
 
 */
 
+:- use_module(library(debug)).
 % threaded server
 :- use_module(library(http/thread_httpd)).
 % basic dispatch
@@ -37,6 +38,7 @@
 :- use_module(library(http/html_head)).
 
 :- use_module(library(http/http_files)).
+:- use_module(library(www_browser)).
 
 :- use_module(weblog(formatting/boxes)).
 
@@ -89,6 +91,7 @@ weblog_demo:-
 
 normal_debug :-
        debug(html_form),
+       % @tbd There seem to be no debug messages for this topic?
        debug(http(request)).
 
 %%	stop_server is det
@@ -113,16 +116,6 @@ bye :-
 %
 :- http_handler(root(.) , redir_to_index,
 		[id(indexroot)]).
-
-%
-%  Serve css, icons, and js by adding our directories to
-%  the file search path
-%
-user:file_search_path(css, 'static/css').
-user:file_search_path(icons, 'static/icons').
-user:file_search_path(js, 'static/js').
-
-
 
 %%	redir_to_index(+Request:http_request) is det
 %
@@ -217,7 +210,4 @@ demo_label(clippy, 'Clippy').
 
 demo_label(autocomplete, 'Auto Complete').
 :- ensure_loaded(autocomplete_demo).
-
-
-
 
