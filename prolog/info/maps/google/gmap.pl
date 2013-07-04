@@ -11,6 +11,7 @@
 	  ]).
 
 :- use_module(library(http/html_write)).
+:- use_module(library(uri)).
 :- ensure_loaded(weblog(resources/resources)).
 
 :- setting(
@@ -19,12 +20,11 @@
   'yourgooglekey',
 	'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)'
 ).
-:- setting(
-  google_map_script,
-  atom,
-  'http://maps.google.com/maps?file=api&v=2&sensor=false',
-  'Google map script'
-).
+
+gmap_scheme(_NoScheme).
+gmap_authority('maps.googleapis.com').
+gmap_path('/maps/api/js').
+gmap_fragment(_NoFragment).
 
 prolog:message(missing_key_file(File)) -->
   ['Key file ~w is missing.'-[File], nl].
@@ -103,19 +103,23 @@ Defining an icon requires that the following be defined for each icon
 
 */
 gmap(Generator) -->
-	{
-	    (	call(Generator, id(ID)) ; ID = gmap),
-	    setting(google_map_key, Key),
-	    setting(google_map_script, Script),!,
-  format(atom(Src), '<script type=\'text/javascript\' src=\'~w?sensor=false&key=~w\' ></script>', [Script, Key])
-	},
-	html([
-	      \html_post(head,
-		\[Src]),
-	      \html_post(head, [\show_map(Generator)]),
-	      div([ id(ID)
-		 ],
-		 [])]).
+  {
+    (call(Generator, id(ID)) ; ID = gmap),
+    setting(google_map_key, Key), !,
+    gmap_scheme(Scheme),
+    gmap_authority(Authority),
+    gmap_path(Path),
+    uri_query_components(Search, [key=Key, sensor=false, v=3]),
+    uri_components(
+      URI,
+      uri_components(Scheme, Authority, Path, Search, _Fragment)
+    )
+  },
+  html([
+    \html_post(head, script([src(URI), type('text/javascript')], [])),
+    \html_post(head, [\show_map(Generator)]),
+    div(id(ID), [])
+  ]).
 
 gmap(_) -->
 	html([p('Missing google key in weblog/keys/googlekey.pl.example or other problem')]).
