@@ -94,7 +94,7 @@ delicious(Options) -->
 	{
 	   option(site_name(CoName), Options, 'set site_name'),
 	   option(save_text(SaveText), Options, 'Save this on Delicious'),
-	   www_form_encode(CoName, URLCoName),
+	   uri_encoded(query_value, CoName, URLCoName),
 	   format(atom(OnClick),
  'window.open(\'http://delicious.com/save?v=5&provider=~w&noui&jump=close&url=\'+
               encodeURIComponent(location.href)+
