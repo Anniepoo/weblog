@@ -2,7 +2,7 @@ weblog
 ======
 
 Web Library for SWI-Prolog
-Rev 0.0002
+Rev 0.0.4
 
 Licensed under the Lesser General Public License Vers. 3, June 2007
 
