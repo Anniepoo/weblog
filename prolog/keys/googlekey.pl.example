@@ -1,11 +1,4 @@
-
 % Obtain a Google map key from 
 % https://developers.google.com/maps/documentation/javascript/tutorial?hl=en#api_key
-%
-:- setting(google_map_key, atom, 'yourkeygoeshere',
-	   'Google map key.').
-:- setting(google_map_script, atom,
-       'http://maps.google.com/maps?file=api&v=2&sensor=false',
-       'Google map script').
-       
-       
+
+setting(google_map_key, 'yourkeygoeshere').
