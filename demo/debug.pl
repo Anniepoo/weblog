@@ -16,8 +16,10 @@
 
 http:location(pldoc, root('help/source'), [priority(10)]).
 
+:- use_module(library(doc_http)).
 :- doc_server(4040).
 % makes codes style strings be "abc" instead of numbers
+:- use_module(library(portray_text)).
 :- portray_text(true).
 % makes string style strings be `abc` instead of "abc"
 % which is ez to confuse with codes
@@ -33,6 +35,12 @@ user:portray([H|T]) :-
 	write('['),
 	portray_list_innerds([H|T]),
 	write(']').
+
+% This library allows for exploiting the color and attribute facilities
+% of most modern terminals using ANSI escape sequences.
+% The Windows console (swipl-win) does not (yet) support ANSI (color)
+% codes.
+:- use_module(library(ansi_term)).
 
 portray_list_innerds([]).
 portray_list_innerds([H]) :-
@@ -50,6 +58,7 @@ portray_list_innerds([H|T]) :-
 %
 %	Run the pldoc server on 4040 and open the root page
 %
+:- use_module(library(www_browser)).
 pldoc :-
 	doc_server(4040),
 	www_open_url('http://127.0.0.1:4040/help/source').

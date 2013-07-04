@@ -25,6 +25,7 @@
 
 */
 
+:- use_module(library(debug)).
 % threaded server
 :- use_module(library(http/thread_httpd)).
 % basic dispatch
@@ -37,6 +38,7 @@
 :- use_module(library(http/html_head)).
 
 :- use_module(library(http/http_files)).
+:- use_module(library(www_browser)).
 
 :- use_module(weblog(formatting/boxes)).
 
@@ -89,6 +91,7 @@ weblog_demo:-
 
 normal_debug :-
        debug(html_form),
+       % @tbd There seem to be no debug messages for this topic?
        debug(http(request)).
 
 %%	stop_server is det
@@ -113,16 +116,6 @@ bye :-
 %
 :- http_handler(root(.) , redir_to_index,
 		[id(indexroot)]).
-
-%
-%  Serve css, icons, and js by adding our directories to
-%  the file search path
-%
-user:file_search_path(css, 'static/css').
-user:file_search_path(icons, 'static/icons').
-user:file_search_path(js, 'static/js').
-
-
 
 %%	redir_to_index(+Request:http_request) is det
 %
@@ -181,43 +174,40 @@ demo_item(Item) -->
 :- discontiguous demo_label/2.
 
 demo_label(testform, 'Validated Form').
-:- ensure_loaded(demo/html_form_demo).
+:- ensure_loaded(html_form_demo).
 
 demo_label(testcontrols, 'Control Test').
 
 demo_label(googlemap, 'Google Map').
-:- ensure_loaded(demo/google_map_demo).
+:- ensure_loaded(google_map_demo).
 
 demo_label(map, 'Maps').
-:- ensure_loaded(demo/map_demo).
+:- ensure_loaded(map_demo).
 
 demo_label(table, 'Table Generation').
-:- ensure_loaded(demo/table_demo).
+:- ensure_loaded(table_demo).
 
 demo_label(debug_demo, 'Debugging Tools').
-:- ensure_loaded(demo/debug_demo).
+:- ensure_loaded(debug_demo).
 
 demo_label(stats, 'Server Statistics').
-:- ensure_loaded(debug_page/server_stats).
+:- ensure_loaded(weblog(debug_page/server_stats)).
 
 demo_label(accordion, 'Accordion').
-:- ensure_loaded(demo/accordion_demo).
+:- ensure_loaded(accordion_demo).
 
 demo_label(buttons, 'Buttons').
-:- ensure_loaded(demo/buttons_demo).
+:- ensure_loaded(buttons_demo).
 
 demo_label(geocoding, 'Geocoding').
-:- ensure_loaded(demo/geocoding_demo).
+:- ensure_loaded(geocoding_demo).
 
 demo_label(books, 'Books').
-:- ensure_loaded(demo/books_demo).
+:- ensure_loaded(books_demo).
 
 demo_label(clippy, 'Clippy').
-:- ensure_loaded(demo/clippy_demo).
+:- ensure_loaded(clippy_demo).
 
 demo_label(autocomplete, 'Auto Complete').
-:- ensure_loaded(demo/autocomplete_demo).
-
-
-
+:- ensure_loaded(autocomplete_demo).
 

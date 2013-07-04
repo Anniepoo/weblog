@@ -48,7 +48,7 @@ the map.  The final argument may be
   * icon_for(+point(Lat, Long), -IconName) icon to use for this point.
   default is provider default icon.
 
-  * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
+  * popup_for(-HTML, +point(Lat, Long)) termerized HTML to put in popup
 
   * style(-Style) only meaningful for leaflet, is cloudmade style
   number

@@ -9,12 +9,6 @@
 :- use_module(library(settings)).
 
 
-/*
- googlekey should contain a single directive like
-:- setting(key, atom, 'yourgooglekey',
-	   'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)').
-*/
-:- include(weblog('keys/googlekey.pl')).
 
 :-html_resource(css('demo.css'), []).
 :-html_resource(jquery_ui_css, [virtual(true),

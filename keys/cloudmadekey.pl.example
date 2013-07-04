@@ -1,2 +1,0 @@
-:- setting(cloudmade_map_key, atom, 'iamnotavalidkeypasteoneinhere',
-	   'Cloudmade map key.  Get one at http://account.cloudmade.com/register').

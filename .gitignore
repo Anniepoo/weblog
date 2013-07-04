@@ -1,0 +1,8 @@
+# Automated backups by pceEmacs.
+*~
+
+# Logging file.
+httpd.log
+
+# Settings files.
+prolog/keys/*.pl

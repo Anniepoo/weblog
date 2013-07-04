@@ -8,7 +8,7 @@
 
 :- use_module(library(http/http_open)).
 :- use_module(library(http/json)).
-
+:- use_module(library(url)).
 
 :- dynamic(country_location/2).
 
