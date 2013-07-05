@@ -25,4 +25,8 @@ tr.even td, tr.even {
 p {
     margin: 0px;
 }
+
+.ui-menu { width: 150px; } 
+
+
         

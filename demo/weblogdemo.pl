@@ -145,7 +145,8 @@ index_page(_Request) :-
 	    \abox('', 'Formatting', [\demo_item(table)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
-	    \abox('', 'Navigation', [\demo_item(accordion)]),
+	    \abox('', 'Navigation', [\demo_item(accordion),
+				    \demo_item(menu)]),
 	    \abox('', 'Widgets', [\demo_item(clippy)]),
 	    p('This page also happens to demo boxes, which doesn\'t otherwise have a demo page'),
 	    p('geohashing doesn\'t have a demo page, but is extensively used in the Impatient Geohasher application, get it on Github'),
@@ -210,4 +211,7 @@ demo_label(clippy, 'Clippy').
 
 demo_label(autocomplete, 'Auto Complete').
 :- ensure_loaded(autocomplete_demo).
+
+demo_label(menu, 'Menus').
+:- ensure_loaded(menus_demo).
 
