@@ -15,6 +15,9 @@ Examples would be
  
  http://xkcd.com/1034/
  
+ This page has many such buttons (and a fun look)
+ http://coderevision.com/how-to-have-a-jquery-ui-menu-displayed-horizontally/
+ 
  
 
  

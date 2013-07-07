@@ -74,14 +74,11 @@ start:-
 	assert(started),
 	http_log('Starting weblog demo on port ~w~n' , [Port]).
 
-%%	autostart is nondet
+%%	weblog_demo is nondet
 %
 %	Start the server in debug mode and show
-%	the admin login page
-%	debug mode means
+%	the index page
 %
-% * various debug messages are turned on
-% * services are set to 'simulate'
 %
 weblog_demo:-
        start,

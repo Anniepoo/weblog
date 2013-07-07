@@ -28,27 +28,20 @@ hierarchical menu.
 
      ==
 
-You'll also want to set the width of the menus to something uniform,
-which you can do with
-:- use_module(library(http/js_write)).
-     ==
-
-     .ui-menu { width: 150px; }
-
-     ==
-
-demo.css includes this.
 
 */
 
 wl_menu(ID) -->
 	html([
 	    \html_requires(jquery_ui),
+	    \html_requires(menu_css),
 	    \html_post(head,
 		       \js_script({| javascript(ID) ||
 var agent;
 $(function() {
-    $( "#"+ID ).menu();
+    $( "#"+ID ).menu({
+                position: {at: "left bottom"}
+            });
 });
 |}
 ))

@@ -30,3 +30,4 @@
 :-html_resource(clippy, [virtual(true),
 			 requires([jquery, css('clippy.css'), js('clippy.min.js')])
 			]).
+:- html_resource(menu_css, [virtual(true), requires([css('menu.css')])]).

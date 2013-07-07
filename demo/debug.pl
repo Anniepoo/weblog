@@ -1,7 +1,7 @@
 :- module(debug, [pldoc/0, portray_list_innerds/1]).
 /**   <module> Consult me to bring up normal dev environment.
 
-   To run the server, query autostart/0.
+   To run the server, query weblog_demo/0.
    To run the pldoc server, query pldoc/0, which starts the
    pldoc server on http://127.0.0.1:4040/help/source
 
@@ -42,6 +42,13 @@ user:portray([H|T]) :-
 % codes.
 :- use_module(library(ansi_term)).
 
+/**   portray_list_innerds(+List:list) is det
+
+Displays a list without ellipsizing it.
+When debugging termerized HTML ellipsizing gets in
+the way
+
+*/
 portray_list_innerds([]).
 portray_list_innerds([H]) :-
 	print(H).
