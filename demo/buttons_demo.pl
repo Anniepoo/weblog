@@ -7,7 +7,7 @@
 :- use_module(library(http/html_write)).
 
 :- use_module(weblog(info/buttons/buttons)).
-:- use_module(weblog(formatting/tables)).
+:- use_module(weblog(formatting/wl_table)).
 
 :- http_handler(root(buttons), buttons_demo_page, [id(buttons)]).
 

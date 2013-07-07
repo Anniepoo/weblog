@@ -31,7 +31,7 @@ handler at a higher priority.
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_head)).
-:- use_module(weblog(formatting/tables)).
+:- use_module(weblog(formatting/wl_table)).
 :- use_module(weblog(resources/resources)).
 :- use_module(library(http/http_path)).
 :- use_module(weblog(nav/accordion)).

@@ -139,7 +139,7 @@ index_page(_Request) :-
 			       \demo_item(geocoding),
 			       \demo_item(buttons),
 			       \demo_item(books)]),
-	    \abox('', 'Formatting', [\demo_item(table)]),
+	    \abox('', 'Formatting', [\demo_item(wl_table)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
 	    \abox('', 'Navigation', [\demo_item(accordion),
@@ -182,7 +182,7 @@ demo_label(googlemap, 'Google Map').
 demo_label(map, 'Maps').
 :- ensure_loaded(map_demo).
 
-demo_label(table, 'Table Generation').
+demo_label(wl_table, 'Table Generation').
 :- ensure_loaded(table_demo).
 
 demo_label(debug_demo, 'Debugging Tools').

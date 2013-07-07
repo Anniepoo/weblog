@@ -8,9 +8,9 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/tables)).
+:- use_module(weblog(formatting/wl_table)).
 
-:- http_handler(root(table), table_handler, [id(table)]).
+:- http_handler(root(wl_table), table_handler, [id(wl_table)]).
 
 table_handler(_Request) :-
 	reply_html_page(
