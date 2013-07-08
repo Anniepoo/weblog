@@ -1,14 +1,9 @@
 :- module(resources , []).
 /** <module> Define resources for html_requires
 
-   @tbd leaflet requires additional css for IE, but swipl html
-   generation isn't handling it
-
 */
 :- use_module(library(http/html_head)).
 :- use_module(library(settings)).
-
-
 
 :-html_resource(css('demo.css'), []).
 :-html_resource(jquery_ui_css, [virtual(true),
