@@ -21,7 +21,6 @@ menu_demo_page(_Request) :-
 menu_demo_body -->
 	html([
 	    \html_requires(css('demo.css')),
-	    style('#demo-menu li { float: left; }'),
 	    h1('Menu demo page'),
 	    p('Menu widget using the jQueryui menu'),
 	     h2('Menus for Fun and Profit!'),

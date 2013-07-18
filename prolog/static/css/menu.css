@@ -5,8 +5,19 @@
 .ui-menu > li { margin: 5px 5px !important; padding: 0 0 !important; }
 .ui-menu > li > a { float: left; display: block; clear: both; overflow: hidden;}
 .ui-menu .ui-menu-icon { margin-top: 0.3em !important;}
-.ui-menu .ui-menu .ui-menu li { float: left; display: block;}
+.ui-menu .ui-menu  .ui-menu  li { float: left; display: block;}
 
 /* This makes submenus drop vertically */
 
 .ui-menu .ui-menu > li {clear:both;}
+
+/* trying to make menus show in sane place */
+/* this is just an experiment
+.ui-menu .ui-menu .ui-menu li { background-color: #FF0; }
+
+.ui-menu .ui-menu li { background-color: #F00; }
+
+.ui-menu .ui-menu .ui-menu ul { float: none; display: inline; clear: none; }
+.ui-menu .ui-menu .ui-menu li { float: none; display: inline; clear: none; }
+
+*/

@@ -40,7 +40,7 @@ wl_menu(ID) -->
 var agent;
 $(function() {
     $( "#"+ID ).menu({
-                position: {at: "left bottom"}
+                position: {at: "left bottom" }
             });
 });
 |}
