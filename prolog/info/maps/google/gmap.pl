@@ -14,12 +14,16 @@
 :- use_module(library(uri)).
 :- ensure_loaded(weblog(resources/resources)).
 
-:- setting(
-  google_map_key,
-  atom,
-  'yourgooglekey',
-	'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)'
+% this makes sure there's always a setting
+% weblog users - do NOT change this. Copy keys/googlekey.pl.example
+% to keys/googlekey.pl and edit
+:-   setting(
+       google_map_key,
+       atom,
+       notarealgooglekey,   % don't change this here
+       'Google map key.  "abcdefg" works for localhost (didn\'t for me -AO)'
 ).
+
 
 gmap_scheme(_NoScheme).
 gmap_authority('maps.googleapis.com').
@@ -27,7 +31,7 @@ gmap_path('/maps/api/js').
 gmap_fragment(_NoFragment).
 
 prolog:message(missing_key_file(File)) -->
-  ['Key file ~w is missing.'-[File], nl].
+  ['Key file ~w is missing'-[File], nl].
 :-
   % Print an error message if the keyfile is not present.
   (
@@ -39,7 +43,10 @@ prolog:message(missing_key_file(File)) -->
   ->
     load_settings(File, [undefined(error)])
   ;
-    print_message(warning, missing_key_file('googlekey.pl'))
+% AO - 9/21/13 making this less in your face
+%
+% print_message(warning, missing_key_file('googlekey.pl'))
+  debug(weblog, 'Google map key file missing (keys/googlekey.pl)', [])
   ).
 
 % needed for some coord calc stuff
@@ -107,7 +114,9 @@ Defining an icon requires that the following be defined for each icon
 gmap(Generator) -->
   {
     (call(Generator, id(ID)) ; ID = gmap),
-    setting(google_map_key, Key), !,
+    setting(google_map_key, Key),
+    Key \= notarealgooglekey,
+    !,
     gmap_scheme(Scheme),
     gmap_authority(Authority),
     gmap_path(Path),
@@ -124,7 +133,7 @@ gmap(Generator) -->
   ]).
 
 gmap(_) -->
-	html([p('Missing google key in weblog/keys/googlekey.pl.example or other problem')]).
+	html([p('Missing google key in weblog/keys/googlekey.pl or other problem')]).
 
 show_map(Generator) -->
 	{

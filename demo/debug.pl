@@ -57,6 +57,9 @@ portray_list_innerds([H|T]) :-
 	write(','),
 	portray_list_innerds(T).
 
+% ensure that we print debug messages from weblog
+% particularly important for missing keys
+:- debug(weblog).
 
 :- ensure_loaded(load).
 :- use_module(weblogdemo).

@@ -18,10 +18,13 @@
 :- use_module(weblog(support/javascript_utils)).
 :- ensure_loaded(weblog(resources/resources)).
 
+% this makes sure there's always a setting
+% weblog users - do NOT change this. Copy keys/cloudmadekey.pl.example
+% to keys/googlekey.pl and edit
 :- setting(
   cloudmade_map_key,
   atom,
-  'iamnotavalidkeypasteoneinhere',
+  notarealcloudmadekey,
   'Cloudmade map key.  Get one at http://account.cloudmade.com/register'
 ).
 
@@ -38,7 +41,10 @@ prolog:message(missing_key_file(File)) -->
   ->
     load_settings(File)
   ;
-    print_message(warning, missing_key_file('cloudmadekey.pl'))
+% AO - 9/21/13 making this less in your face
+%
+%    print_message(warning, missing_key_file('cloudmadekey.pl'))
+    debug(weblog, 'Cloudmade map key missing (keys/cloudmakekey.pl)', [])
   ).
 
 % needed for some coord calc stuff
@@ -76,7 +82,7 @@ lmap(Generator) -->
 	define_icons(Generator),
 	show_map(Generator),!.
 lmap(_) -->
-	html(p('Missing cloudmade key in weblog/keys/cloudmade.pl. or other call error')).
+	html(p('Missing cloudmade key in weblog/keys/cloudmade.pl or other call error')).
 
 define_icons(Generator) -->
 	{
@@ -119,6 +125,7 @@ show_map(Generator) -->
 	  (   setof(point(X,Y), call(Generator, point(X,Y)), Coordinates) ;
 	      Coordinates = []),
 	  setting(cloudmade_map_key, Key),
+           Key \= notarealcloudmadekey,
 	  (     call(Generator, center(CLat, CLong)) ; average_geopoints(Coordinates, point(CLat, CLong))),
 	  (     call(Generator, style(Style)) ; Style = 997)
 	},
