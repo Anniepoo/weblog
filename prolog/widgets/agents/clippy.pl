@@ -7,6 +7,22 @@
 
 :- meta_predicate clippy(1, ?, ?).
 
+%%	clippy(+Generator:goal)// is nondet
+%
+%	Makes clippy appear on screen, using clippy-js
+%	from https://www.smore.com/clippy-js
+%
+%	generator is an arity 1 goal queried with
+%	an argument of form
+%
+%	* character(Char)   Character is one of Clippy, Merlin,
+%	  Rover, or Links  (default clippy)
+%
+%       * id(ID) ID is the ID of the agent (default agent1236742)
+%
+%	this just brings the character up. You have to control them
+%	yourself.
+%
 clippy(Generator) -->
 	{
              (	  call(Generator, character(Char)) ; Char = 'Clippy' ),

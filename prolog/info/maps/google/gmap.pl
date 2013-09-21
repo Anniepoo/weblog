@@ -75,6 +75,8 @@ the map.  The final argument may be
 
   * popup_for(-HTML, +point(Lat, Long))termerized HTML to put in popup
 
+  * tooltip_for(+point(Lat, Long), -ToolTipText)  contents of tooltip
+
   * maptype(-Type) only meaningful for google maps, is the constant for
   google.maps.MapTypeId (eg, 'HYBRID')
 
@@ -163,15 +165,20 @@ coords(Generator, [point(Lat, Long)|T]) -->
 	    (	call(Generator, id(ID)) ; ID = gmap   ),
 	    (
 	        call(Generator, icon_for(point(Lat, Long), N)),
-		format(atom(IconAtom), '   icon: ~wIcon,~n', [N])
+		format(atom(IconAtom), ',   icon: ~wIcon,~n', [N])
 	    ;
 	        IconAtom = ''
+	    ),
+            (	call(Generator, tooltip_for(point(Lat, Long), ToolTip)),
+		format(atom(ToolTipText), ',   title: "~w"\n',[ToolTip])
+	    ;
+	        ToolTipText = ''
 	    )
 	},
 	html('(new google.maps.Marker({
-    position: new google.maps.LatLng(~w, ~w),
-~w    title:"(~w, ~w)"
-})).setMap(~w);~n'-[Lat, Long, IconAtom, Lat, Long, ID]),
+    position: new google.maps.LatLng(~w, ~w)
+~w~w
+})).setMap(~w);~n'-[Lat, Long, IconAtom, ToolTipText, ID]),
 	coords(Generator, T).
 
 define_icons(Generator) -->
