@@ -65,6 +65,12 @@ prolog:message(missing_key_file(File)) -->
 %	pass provider(leaflet).
 %
 %
+lmap(_Generator) -->
+  {
+    setting(cloudmade_map_key, notarealcloudmadekey)
+  },
+  !,
+  html([p('Missing cloudmade key in weblog/keys/cloudmadekey.pl')]).
 lmap(Generator) -->
 	{
 	    (	call(Generator, id(ID)) ; ID = lmap   )
@@ -82,7 +88,7 @@ lmap(Generator) -->
 	define_icons(Generator),
 	show_map(Generator),!.
 lmap(_) -->
-	html(p('Missing cloudmade key in weblog/keys/cloudmade.pl or other call error')).
+	html(p('Leaflet failed')).
 
 define_icons(Generator) -->
 	{
