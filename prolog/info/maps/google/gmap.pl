@@ -111,6 +111,12 @@ Defining an icon requires that the following be defined for each icon
   @tbd add an example to docs
 
 */
+gmap(_) -->
+  {
+    setting(google_map_key, notarealgooglekey)
+  },
+  !,
+  html([p('Missing google key in weblog/keys/googlekey.pl')]).
 gmap(Generator) -->
   {
     (call(Generator, id(ID)) ; ID = gmap),
@@ -133,7 +139,7 @@ gmap(Generator) -->
   ]).
 
 gmap(_) -->
-	html([p('Missing google key in weblog/keys/googlekey.pl or other problem')]).
+	html([p('gmap failed')]).
 
 show_map(Generator) -->
 	{
