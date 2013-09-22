@@ -1,4 +1,4 @@
-weblog
+weblog 
 ======
 
 Web Library for SWI-Prolog
