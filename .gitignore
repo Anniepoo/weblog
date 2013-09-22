@@ -6,3 +6,9 @@ httpd.log
 
 # Settings files.
 prolog/keys/*.pl
+
+# a sample menu system
+prolog/nav/mb/
+
+#  jqueryui themes
+prolog/static/theme/
