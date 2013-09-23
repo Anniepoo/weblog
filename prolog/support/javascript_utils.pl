@@ -25,12 +25,16 @@ javascript_friendly_html(HTML, FriendlyHTML) :-
 	atom_codes(FriendlyHTML, Codes).
 
 js_friendly([], []).
+% Line feeds are skipped.
 js_friendly([10 | RT] , T) :-
 	js_friendly(RT, T).
+% Carriage returns are skipped.
 js_friendly([13 | RT], T) :-
 	js_friendly(RT, T).
+% Double quotes are escaped by backslashes.
 js_friendly([34 | RT], [92 , 34 | T]) :-
 	js_friendly(RT, T).
+% Apostrophes are escaped by backslashes.
 js_friendly([39 | RT], [92 , 39 | T]) :-
 	js_friendly(RT, T).
 js_friendly([RH | RT], [RH | T]) :-
