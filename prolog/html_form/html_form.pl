@@ -235,13 +235,13 @@ form_field(_Request, _Validator, input(Attribs, Content)) -->
 	{
 	   memberchk(name=Name, Attribs),
 	   html_form:'$$form_validate'(formdata(FormData)),
-	   \+ memberchk(Name=Value, FormData),
+	   \+ memberchk(Name=_Value, FormData),
 	 % 'valid' in that we don't want the err message
 	   assert(html_form:'$$form_validate'(validity(Name, true))),
 	 % but we need to make sure whole form is invalid
 	   assert(html_form:'$$form_validate'(
 			      validity('$$notreallyaname', false))),
-	   debug(html_form, 'the form field ~w=~w does not validate~n', [Name, Value])
+	   debug(html_form, 'the form field ~w=... does not validate~n', [Name])
 	},
 	html(input(Attribs, Content)).
 

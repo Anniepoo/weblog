@@ -4,13 +4,13 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/js_write)).
+:- use_module(library(quasi_quotations)).
 
 :- meta_predicate clippy(1, ?, ?).
 
-%%	clippy(+Generator:goal)// is nondet
+%!	clippy(+Generator:goal)// is nondet
 %
-%	Makes clippy appear on screen, using clippy-js
-%	from https://www.smore.com/clippy-js
+%	Makes clippy appear on screen.
 %
 %	generator is an arity 1 goal queried with
 %	an argument of form
@@ -23,10 +23,13 @@
 %	this just brings the character up. You have to control them
 %	yourself.
 %
+% @see Using `clippy-js` from https://www.smore.com/clippy-js
+
 clippy(Generator) -->
 	{
              (	  call(Generator, character(Char)) ; Char = 'Clippy' ),
-	     (	  call(Generator, id(ID)) ; ID = agent),
+% @tbd The identifier cannot really be set.
+%	     (	  call(Generator, id(ID)) ; ID = agent1236742),
 	     member(Char , ['Clippy', 'Merlin', 'Rover', 'Links'])
         },
 	html([

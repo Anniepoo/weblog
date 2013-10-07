@@ -67,7 +67,7 @@ start:-
 start:-
 	% for unclear reasons, uncommenting this breaks the google maps
 	% demo
-%	html_set_options([dialect(xhtml)]),
+	%html_set_options([dialect(xhtml)]),
 	format(user_error, 'Starting weblog demo server\n', []),
 	server_port(Port),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),

@@ -12,14 +12,14 @@
 
 map_handler(_Request) :-
 	reply_html_page(
-	    title('Map Demo'),
-	    [
-	     style(
+	    [title('Map Demo'),
+	     style(type('text/css'),
 '#gmap, #lmap, #googleplex {
-    width: 80%;
-    height: 400px;
-       }
-'),
+  width: 80%;
+  height: 400px;
+}')
+	    ],
+	    [
 	     h1('Map demo page'),
 	     h2('Really simple map'),
 	     \geo_map(simple),
