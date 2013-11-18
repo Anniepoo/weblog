@@ -42,6 +42,13 @@ gmap_info(point(52.334434,4.863596)).        % VNU
 gmap_info(point(29.720576,-95.34296)).       % Univ. of Houston
 gmap_info(point(52.364767, 4.934787)).       % Wouter Beek
 
+gmap_info(tooltip_for(point(37.482214,-122.176552),'Annie')).
+gmap_info(tooltip_for(point(37.969368,23.732979), 'Thanos')).
+gmap_info(tooltip_for(point(52.334434,4.863596), 'VNU')).
+gmap_info(tooltip_for(point(29.720576,-95.34296), 'Univ. of Houston')).
+gmap_info(tooltip_for(point(52.364767, 4.934787), 'Wouter Beek')).
+gmap_info(popup_for([p(b('VNU - Home of SWI-Prolog!'))], point(52.334434,4.863596))).
+
 lmap_info(provider(leaflet)).
 lmap_info(style(2402)).   % cloudmade 'clean'
 lmap_info(zoom(16)).

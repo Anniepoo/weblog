@@ -57,7 +57,8 @@ the map.  The final argument may be
   number
 
   * maptype(-Type) only meaningful for google maps, is the constant for
-  google.maps.MapTypeId (eg, 'HYBRID')
+  google.maps.MapTypeId (one of 'HYBRID', 'ROADMAP', 'SATELLITE', 'TERRAIN')
+
 
 Defining icon types means binding an icon/3 for each type, then binding
 all the properties
