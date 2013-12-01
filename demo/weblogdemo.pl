@@ -139,7 +139,9 @@ index_page(_Request) :-
 			       \demo_item(geocoding),
 			       \demo_item(buttons),
 			       \demo_item(books)]),
-	    \abox('', 'Formatting', [\demo_item(wl_table)]),
+	    \abox('', 'Formatting', [
+			       \demo_item(wl_table),
+		               \demo_item(wl_windows)]),
 	    \abox('', 'Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
 	    \abox('', 'Navigation', [\demo_item(accordion),
@@ -184,6 +186,9 @@ demo_label(map, 'Maps').
 
 demo_label(wl_table, 'Table Generation').
 :- ensure_loaded(table_demo).
+
+demo_label(wl_windows, 'Windows and popups').
+:- ensure_loaded(wl_windows_demo).
 
 demo_label(debug_demo, 'Debugging Tools').
 :- ensure_loaded(debug_demo).

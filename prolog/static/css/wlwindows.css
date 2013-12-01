@@ -1,0 +1,27 @@
+.fn {
+    margin: auto;
+    width: 250px;
+    height: 50px;
+    background: #333;
+    cursor: pointer;
+    margin-bottom: 90px;
+}
+
+.fnp {
+    position: absolute;
+    top: auto;
+    left: auto;
+    border: 1px solid #000;
+    display: none;
+    margin-top: 25px;
+    padding: 8px 12px;
+    font-size: larger;
+}
+
+.fn.footnote {
+    margin: auto;
+	width: auto;
+    cursor: pointer;
+    display: inline;
+	background: inherit;
+}

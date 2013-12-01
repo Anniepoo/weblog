@@ -23,6 +23,9 @@
 :-html_resource(google_loader, [virtual(true),
        requires(['https://www.google.com/jsapi'])]).
 :-html_resource(clippy, [virtual(true),
-			 requires([jquery, css('clippy.css'), js('clippy.min.js')])
-			]).
-:- html_resource(menu_css, [virtual(true), requires([css('menu.css')])]).
+			 requires([jquery,
+				   css('clippy.css'),
+				   js('clippy.min.js')])]).
+:-html_resource(menu_css, [virtual(true), requires([css('menu.css')])]).
+:-html_resource(wl_window, [virtual(true), ordered(true), requires([jquery_ui, js('wlwindows.js')])]).
+:-html_resource(wl_window_css, [virtual(true), requires([css('wlwindows.css')])]).
