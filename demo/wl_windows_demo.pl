@@ -30,7 +30,11 @@ windows_handler(_Request) :-
 	            \popup(footnote_options,
 		       '3',
 		       'some misc info'),
-		   'It seems academic.'])
+		   'It seems academic.']),
+		p(['Having lots of footnotes was reported by Ogborn',
+		   \popup(footnote_options, '4',
+			  a(href('http://www.google.com'),
+		  'Effect of footnote density on academic advancement, Jrnl Improb. Results 7-5')), ' to have a positive effect on academic tenure'])
 	    ]).
 
 click_popup_options(open_on(click)).
