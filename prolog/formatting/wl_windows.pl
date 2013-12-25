@@ -16,7 +16,7 @@ popup(Options, Activator, Popup) -->
 	html([
 	    \html_requires(wl_window),
 	    \html_requires(wl_window_css),
-	    sup(class=[fn, footnote], [Activator, span(class=fnp, Popup)])
+	    sup(class=[fn, footnote], [Activator, span(class(fnp), span(class(footcontain), Popup))])
 	]).
 popup(_, _, _) -->
 	html([

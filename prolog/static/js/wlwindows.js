@@ -14,7 +14,7 @@ $(window).load(function(){
 		this.footnoteid = window.setTimeout(
 			
 			function() {
-				  t.hide(100);
-			}, 3000);
+				t.hide(100);
+			}, 3000);  
 	});
 });
