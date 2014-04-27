@@ -29,3 +29,4 @@
 :-html_resource(menu_css, [virtual(true), requires([css('menu.css')])]).
 :-html_resource(wl_window, [virtual(true), ordered(true), requires([jquery_ui, js('wlwindows.js')])]).
 :-html_resource(wl_window_css, [virtual(true), requires([css('wlwindows.css')])]).
+:-html_resource(wl_gps, [virtual(true), requires([js('wlgps.js')])]).

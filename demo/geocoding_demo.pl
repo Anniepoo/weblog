@@ -1,11 +1,12 @@
 :- module(geocoding_demo, []).
-/** <module>  Demo handler for geocoding
+/** <module>  Demo handler for geocoding and gps
 
 */
 
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_parameters)).
+:- use_module(library(http/html_head)).
 
 :- use_module(weblog(info/maps/map)).
 :- use_module(weblog(info/geocoding/google/glatlong)).
@@ -33,7 +34,8 @@ geocoding_handler(Request) :-
 		  input([name=loc, type=textarea], []),
 	          input([type=submit, name=submit, value='Find It'])
 						    ]),
-	    \geo_map(geocoding_callback(Address, FA, Type, Loc))
+	    \geo_map(geocoding_callback(Address, FA, Type, Loc)),
+	    \gps_demo
 	    ]).
 
 geocoding_handler(_Request) :-
@@ -52,3 +54,10 @@ geocoding_callback(Address, FA, Type, Pt, popup_for(
 	       p(['Canonical Name:', FA, ' (type: ', Type, ')'])
 	    ], Pt)).
 
+
+gps_demo -->
+	html([
+	    \html_requires(wl_gps),
+	    h2('gps demo'),
+	    div([class='', id=status], ['Data will be here'])
+	]).

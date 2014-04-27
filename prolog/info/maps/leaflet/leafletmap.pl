@@ -140,25 +140,31 @@ show_map(Generator) -->
 'L.tileLayer(\'http://{s}.tile.cloudmade.com/~w/~w/256/{z}/{x}/{y}.png\', {\n'-[Key, Style],
 	'    maxZoom: 18,
 	     minZoom: 2',
-'}).addTo(~w);\n'-[ID],
+'}).addTo(~w);\nvar allmarkers = L.layerGroup().addTo(~w);\n'-[ID, ID],
 	     \coords(Generator, Coordinates)
 		    ])).
 
+% needed because var_branches doesnt suppress the error
+:- style_check(-singleton).
 coords(_, []) --> [].
 coords(Generator, [point(Lat, Long)|T]) -->
 	{
-	  (	call(Generator, id(ID)) ; ID = lmap   ),
+	 (   call(Generator, tooltip_for(point(Lat, Long), ToolTip)) ; ToolTip = '' ),
+	 (   call(Generator, id(ID)) ; ID = lmap   ),
 	 (   call(Generator, icon_for(point(Lat, Long), N)) ->
-	     format(codes(IconName), ', {icon: ~wLeafIcon}', [N])
+	     format(codes(IconName), ', {icon: ~wLeafIcon, title: \'~w\'}', [N, ToolTip])
 	 ;
 	     IconName = ""
-	)
+	),
+    % did this to avoid having entities made
+        format(atom(MarkerCode), 'L.marker([~w,~w]~s).addTo(allmarkers)',[Lat, Long, IconName])
+
 	},
-	html(['L.marker([~w,~w]~s).addTo(~w)'-[Lat, Long, IconName, ID],
+	html([\[MarkerCode],
 	     \decorations(Generator, point(Lat, Long)),
 	     ';\n']),
 	coords(Generator, T).
-
+:- style_check(+singleton).
 
 decorations(Generator, Pt) -->
 	{

@@ -49,7 +49,7 @@ the map.  The final argument may be
   default is provider default icon.
 
   * tooltip_for(+point(Lat, Long), -ToolTipText)  contents of tooltip
-  default is no tooltip (only for google maps)
+  default is no tooltip
 
   * popup_for(-HTML, +point(Lat, Long)) termerized HTML to put in popup
 

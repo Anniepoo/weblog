@@ -136,7 +136,7 @@ ensure_ajax_handler_exists(Generator, AjaxPath) :-
 ajax_wrapper(Generator, Request) :-
 	http_parameters(Request, [
 			    term(Term, [])]),
-	bagof(Choice, call(Generator, choice(Term, Choice)), Choices),
+	findall(Choice, call(Generator, choice(Term, Choice)), Choices),
 	prolog_to_json(Choices, JSONOut),
         reply_json(JSONOut).
 
