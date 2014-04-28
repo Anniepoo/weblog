@@ -133,7 +133,8 @@ index_page(_Request) :-
 	    h1('Weblog demo page'),
 	    \abox('', 'Input', [\demo_item(testform),
 			        \demo_item(testcontrols),
-			        \demo_item(autocomplete)]),
+			        \demo_item(autocomplete),
+				\demo_item(ajaxify)]),
 	    \abox('', 'Info', [
 			       \demo_item(map),
 			       \demo_item(geocoding),
@@ -217,3 +218,5 @@ demo_label(autocomplete, 'Auto Complete').
 demo_label(menu, 'Menus').
 :- ensure_loaded(menus_demo).
 
+demo_label(ajaxify, 'Ajaxify').
+:- ensure_loaded(ajaxify_demo).
