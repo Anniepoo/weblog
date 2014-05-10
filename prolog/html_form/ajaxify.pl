@@ -11,7 +11,7 @@
 :- use_module(library(http/js_write)).
 
 
-:- html_meta  ajaxify(1, html).
+:- html_meta  ajaxify(1, html, ?, ?).
 
 %%	ajaxify(+Generator:goal, +HTML:html, ?A:list, ?B:list) is det
 %
@@ -35,7 +35,7 @@ ajaxify(Generator, HTML) -->
        ensure_ajax_handler_exists(Generator, AjaxPath, HTML)
    },
    html(div(id(ID), [&(nbsp)])),
-   html_requires(ajaxify_base),   % TODO
+   html_requires(ajaxify_base),
    register_listener(load, Generator),
    register_listener(all, Generator),
    generator_register(Generator),
@@ -130,7 +130,7 @@ ensure_ajax_handler_exists(Generator, AjaxPath, HTML) :-
 :- html_meta ajax_wrapper(1, html, +).
 
 ajax_wrapper(_Generator, HTML, _Request) :-
-	fmt('Content-type: text/html\n\n'),
+	format('Content-type: text/html\n\n'),
 	phrase(html(HTML), Tokens),
 	print_html(Tokens).
 

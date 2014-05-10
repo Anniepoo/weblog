@@ -7,6 +7,8 @@
 
 
 :- use_module(weblog(html_form/ajaxify)).
+:- use_module(weblog(support/utils)).
+:- reexport(weblog(support/utils), [wl_opts/2]).
 
 :- http_handler(root(ajaxify), ajaxify_demo_page, [id(ajaxify)]).
 
@@ -20,7 +22,7 @@ ajaxify_demo_body -->
 	    h1('Ajaxify Demo'),
 	    form([action='#'],[
 		  p('This paragraph was loaded normally'),
-		  p([\ajaxify(ajaxify_opts(time), p(\server_time))])
+		  p([\ajaxify(wl_opts(time), p(\server_time))])
 		     % well that was dumber than a dirt sandwich!
 		     % guess I better just document it
 		 ])
