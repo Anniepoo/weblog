@@ -1,4 +1,6 @@
-:- module(ajaxify, [ajaxify//2, ajaxify_broadcast//3]).
+:- module(ajaxify, [ajaxify//2,
+		    ajaxify_broadcast//3,
+		    ajaxify_contents//2]).
 /** <module> Turn any html generation into ajax
 
 */
@@ -9,6 +11,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(library(http/js_write)).
+:- use_module(library(http/http_parameters)).
 
 
 :- html_meta  ajaxify(1, html, ?, ?).
@@ -27,6 +30,10 @@
 %	                       mypage_mything is recommended
 %      listen_to(Name)         listen to all, ID, and anything
 %                              that matches Name
+%      timer(Speed)	       call this ajaxify every Speed millisec
+%
+%      In the event of an error, the contents of #error will be
+%      appended with the error message
 
 ajaxify(Generator, HTML) -->
    {
@@ -52,17 +59,23 @@ ajaxify_broadcast(Name, return, HTML) -->
        atomic_concat('#', ID, PID)
    },
    html(OHTML),
-   html(js_script(
+   html(\js_script(
        {|javascript(PID, Name)||
-	    $(PID).keypress(function(event) {
+	    $(PID).keyup(event, function() {
 	        if ( event.which == 13 ) {
-		    ajaxify.talk(Name)
+		    ajaxify.talk(Name);
                     event.preventDefault();
                 }
-	    }
+	    });
        |}
    )).
 
+%%	outer_id(+HTML, ?ID, -OHTML)
+%
+%	make sure we have a matching ID in the OHTML
+%
+outer_id(input(A, C), ID, input(A, C)) :-
+	outer_id([input(A, C)], ID, [input(A, C)]).
 outer_id([input(A, C) | T], ID, [input(A, C) | T]) :-
 	is_list(A),
 	member(id(ID), A).
@@ -84,7 +97,7 @@ register_listener(Name, Generator) -->
        call(Generator, id(ID)),
        ajax_path_name(Generator, AjaxPath)
    },
-   html(js_script(
+   html(\js_script(
        {|javascript(Name, ID, AjaxPath)||
 	    ajaxify.listen(Name, ID, AjaxPath);
        |}
@@ -104,14 +117,19 @@ generator_register_(Generator, [H|T]) -->
 timer_register(Generator) -->
    {
        call(Generator, timer(Speed)),
+       !,
+       (   Speed  > 99 ;
+           throw(error(bad_idea(too_fast_ajax),
+		       context(ajaxify/4, 'Timer ajax faster than 100msec')))),
        call(Generator, id(ID)),
        ajax_path_name(Generator, AjaxPath)
    },
-   html(js_script(
+   html(\js_script(
        {|javascript(Speed, ID, AjaxPath)||
 	    ajaxify.tick(Speed, ID, AjaxPath);
        |}
    )).
+timer_register(_) -->[].
 
 
 ajax_path_name(Generator, AjaxPath) :-
@@ -129,10 +147,28 @@ ensure_ajax_handler_exists(Generator, AjaxPath, HTML) :-
 
 :- html_meta ajax_wrapper(1, html, +).
 
-ajax_wrapper(_Generator, HTML, _Request) :-
-	format('Content-type: text/html\n\n'),
+ajax_wrapper(Generator, HTML, _Request) :-
+	format('Content-type: text/html~n'),
+	call(Generator, id(ID)),
+	format('X-Clear: 1~n'),
+	format('X-Id: ~w~n~n', [ID]),
 	phrase(html(HTML), Tokens),
 	print_html(Tokens).
 
+%%	ajaxify_contents(+Message, +Contents, ?A, ?B) is det
+%
+%	add contents of an element to ajaxify
+%	calls
+%
+%	@arg    Message when you send this message
+%	@arg Contents add this element to the query string, with id the
+%	        element name
+%
+ajaxify_contents(Message, Contents) -->
+   html(\js_script(
+       {|javascript(Message, Contents)||
+	    ajaxify.add_contents(Message, Contents);
+       |}
+   )).
 
 

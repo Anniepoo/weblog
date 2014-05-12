@@ -4,6 +4,8 @@
 */
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/http_parameters)).
+:- use_module(library(http/http_wrapper)).
 
 
 :- use_module(weblog(html_form/ajaxify)).
@@ -20,18 +22,42 @@ ajaxify_demo_page(_Request) :-
 ajaxify_demo_body -->
 	html([
 	    h1('Ajaxify Demo'),
-	    form([action='#'],[
-		  p('This paragraph was loaded normally'),
-		  p([\ajaxify(wl_opts(time), p(\server_time))])
+	    p('This paragraph was loaded normally'),
+	    p([\ajaxify(utils:wl_opts([timer(5000), id(demoajax)]),
+			p(\server_time))]),
 		     % well that was dumber than a dirt sandwich!
 		     % guess I better just document it
-		 ])
+	    form([action='#'],[
+		     \ajaxify_contents(demoajax, ajaxsender),
+		     \ajaxify_broadcast(demotext, return,
+			  input([id(ajaxsender), type(textarea)], []))
+		 ]),
+	    h1('Uppercase'),
+	    \ajaxify_contents(demotext, ajaxsender),
+	    \ajaxify(utils:wl_opts([id(demotext)]), p(\show_text))
 	]).
+
+show_text -->
+	{
+	     http_current_request(Request),
+             http_parameters(Request, [
+			ajaxsender(Val, [ optional(true) ])
+			     ]),
+             upcase_atom(Val, UVal)
+        },
+	html([p(UVal)]).
+
+
+
 
 server_time -->
 	{
+	     http_current_request(Request),
+             http_parameters(Request, [
+			ajaxsender(Val, [ optional(true) ])
+			     ]),
              get_time(T),
-	     format_time(atom(Time), '%A, %B %e, %I:%M:%3f', T)
+	     format_time(atom(Time), '%A, %B %e, %I:%M:%3S', T)
         },
-	html(p(Time)).
+	html([p(Time), p(Val)]).
 
