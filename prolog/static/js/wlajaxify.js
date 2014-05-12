@@ -25,10 +25,10 @@ function ajaxify_object() {
 			if(wl_args[i].message_id == id) {
 				if(ret == "") {
 					ret = "?" + wl_args[i].dom_id +
-					      "=" + $("#" + wl_args[i].dom_id).val();
+					      "=" + encodeURIComponent($("#" + wl_args[i].dom_id).val());
 				} else {
 					ret = ret + "&" + wl_args[i].dom_id +
-					      "=" + $("#" + wl_args[i].dom_id).val();
+					      "=" + encodeURIComponent($("#" + wl_args[i].dom_id).val());
 				}
 			}
 		}
