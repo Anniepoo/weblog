@@ -61,7 +61,7 @@ portray_list_innerds([H|T]) :-
 % particularly important for missing keys
 :- debug(weblog).
 
-:- ensure_loaded(load).
+:- use_module(load).
 :- use_module(weblogdemo).
 
 % reexport so user can control from the interactor
