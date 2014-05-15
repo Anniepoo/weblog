@@ -1,4 +1,5 @@
 :- module(boxes, [
+		  abox//2,
 		  abox//3
 		 ]).
 
@@ -58,13 +59,16 @@ I don't know.  It is dangerous though :-)
 
 :- html_meta  abox(+, +, html, ?, ?).
 
-%%	abox(+ClassAdditions:atom,
-%%           +Title:atom,
-%%	     +Contents:termerized_html)// is det
-%
-%	Create a round corner rect box with a title area
-%	above and contents below
-%
+%! abox(+Title:atom, +Contents:termized_html)// is det .
+% @see Wrapper for abox//3 without additional class names.
+
+abox(Title, Contents) -->
+  abox('', Title, Contents).
+
+%! abox(+ClassAdditions:atom, +Title:atom, +Contents:termized_html)// is det.
+% Create a round corner rect box with a title area
+% above and contents below
+
 abox(ClassAdditions, Title, Contents) -->
 	html([
 	    div([class='abox header ' + ClassAdditions], p(Title)),

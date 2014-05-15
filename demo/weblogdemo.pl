@@ -122,23 +122,23 @@ index_page(_Request) :-
 	    [
 	    \html_requires(css('demo.css')),
 	    h1('Weblog demo page'),
-	    \abox('', 'Input', [\demo_item(testform),
+	    \abox('Input', [\demo_item(testform),
 			        \demo_item(testcontrols),
 			        \demo_item(autocomplete),
 				\demo_item(ajaxify)]),
-	    \abox('', 'Info', [
+	    \abox('Info', [
 			       \demo_item(map),
 			       \demo_item(geocoding),
 			       \demo_item(buttons),
 			       \demo_item(books)]),
-	    \abox('', 'Formatting', [
+	    \abox('Formatting', [
 			       \demo_item(wl_table),
 		               \demo_item(wl_windows)]),
-	    \abox('', 'Debug', [\demo_item(debug_demo),
+	    \abox('Debug', [\demo_item(debug_demo),
 				\demo_item(stats)]),
-	    \abox('', 'Navigation', [\demo_item(accordion),
+	    \abox('Navigation', [\demo_item(accordion),
 				    \demo_item(menu)]),
-	    \abox('', 'Widgets', [\demo_item(clippy)]),
+	    \abox('Widgets', [\demo_item(clippy)]),
 	    p('This page also happens to demo boxes, which doesn\'t otherwise have a demo page'),
 	    p('geohashing doesn\'t have a demo page, but is extensively used in the Impatient Geohasher application, get it on Github'),
 	    p('info/stock/crox/croxstock.pl doesn\'t have a demo page.')
