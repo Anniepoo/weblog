@@ -1,7 +1,6 @@
 :- module(weblogdemo, [
 	start_server/0,
         weblog_demo/0,
-	server_port/1,
         stop_server/0,
         normal_debug/0
 ]).
@@ -27,6 +26,7 @@
 :- use_module(library(debug)).
 :- use_module(library(error)).
 :- use_module(library(http/http_header)).
+:- use_module(library(settings)).
 % threaded server
 :- use_module(library(http/thread_httpd)).
 % basic dispatch
@@ -43,12 +43,8 @@
 
 :- use_module(weblog(formatting/boxes)).
 
-%%   server_port(-Port:int) is det
-%
-% Returns the number to run the server on
-%
-% @param Port the port the server should listen on
-server_port(4050).
+:- setting(http:port, nonneg, env('PORT', 4050),
+    'Port the http server listens to').
 
 %	%%%%%%%%%%%%%%%%%%%%  SERVER CONTROL  %%%%%%%%%%%%%%%%%%%
 
@@ -58,7 +54,7 @@ server_port(4050).
 %	nondet because the server might not start
 %
 start_server:-
-	server_port(Port),
+  setting(http:port, Port),
   start_server(Port).
 
 start_server(Port):-
@@ -83,7 +79,7 @@ start_server(Port):-
 %
 weblog_demo:-
        start_server,
-       server_port(Port),
+  setting(http:port, Port),
        format(string(S), 'http://127.0.0.1:~w/' , [Port]),
        www_open_url(S).
 
@@ -97,7 +93,7 @@ normal_debug :-
 %	Stop the web server
 %
 stop_server :-
-	server_port(Port),
+  setting(http:port, Port),
   stop_server(Port).
 
 stop_server(Port):-
