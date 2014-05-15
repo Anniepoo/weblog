@@ -26,6 +26,8 @@
 */
 
 :- use_module(library(debug)).
+:- use_module(library(error)).
+:- use_module(library(http/http_header)).
 % threaded server
 :- use_module(library(http/thread_httpd)).
 % basic dispatch
@@ -42,9 +44,6 @@
 
 :- use_module(weblog(formatting/boxes)).
 
-% flag to ensure we only start server once
-:- dynamic started/0.
-
 %%   server_port(-Port:int) is det
 %
 % Returns the number to run the server on
@@ -60,18 +59,18 @@ server_port(4050).
 %	nondet because the server might not start
 %
 start:-
-	started,!,
 	server_port(Port),
-	format(user_error, 'Already running - browse http://127.0.0.1:~w/\n', [Port]).
+  start(Port).
 
-start:-
-	% for unclear reasons, uncommenting this breaks the google maps
-	% demo
+start(Port):-
+  must_be(between(1000,9999), Port),
+  http_server_property(Port, start_time(StartTime)), !,
+  print_message(informational, server_running(Port,StartTime)).
+start(Port):-
+	% @tbd for unclear reasons, uncommenting this breaks the Google Maps demo.
 	%html_set_options([dialect(xhtml)]),
 	format(user_error, 'Starting weblog demo server\n', []),
-	server_port(Port),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),
-	assert(started),
 	http_log('Starting weblog demo on port ~w~n' , [Port]).
 
 %%	weblog_demo is nondet
@@ -220,3 +219,18 @@ demo_label(menu, 'Menus').
 
 demo_label(ajaxify, 'Ajaxify').
 :- ensure_loaded(ajaxify_demo).
+
+
+% Messages
+
+:- multifile(prolog:message//1).
+
+prolog:message(server_running(Port,StartTime)) -->
+  ['The server at port ~d is already in use (start time: '-[Port]],
+  time(StartTime),
+  [').'].
+
+time(Time) -->
+  {http_timestamp(Time, Text)},
+  [Text].
+
