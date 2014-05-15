@@ -49,6 +49,9 @@
 
 */
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(server_stats, 'Server Statistics').
+
 :- http_handler(root(stats),	server_stats, [id(stats)]).
 
 server_stats(_Request) :-

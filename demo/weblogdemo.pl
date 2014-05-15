@@ -5,7 +5,6 @@
         normal_debug/0
 ]).
 
-
 /**   <module> Web Log Demo
    This code based on
       Installer for Cogbot
@@ -36,7 +35,29 @@
 :- use_module(library(uri)).
 :- use_module(library(www_browser)).
 
+% Load the modules that are included in the weblog demo.
+:- use_module(accordion_demo).
+:- use_module(ajaxify_demo).
+:- use_module(autocomplete_demo).
+:- use_module(books_demo).
+:- use_module(buttons_demo).
+:- use_module(clippy_demo).
+:- use_module(debug_demo).
+:- use_module(geocoding_demo).
+:- use_module(html_form_demo).
+:- use_module(google_map_demo).
+:- use_module(map_demo).
+:- use_module(menus_demo).
+:- use_module(table_demo).
+:- use_module(testcontrols_demo).
+:- use_module(wl_windows_demo).
+
+:- use_module(weblog(debug_page/server_stats)).
 :- use_module(weblog(formatting/boxes)).
+
+% A weblog demo module must add a clause to this predicate
+% in order to appear on the weblog demo page.
+:- multifile(weblogdemo:label/2).
 
 :- setting(http:port, nonneg, env('PORT', 4050),
     'Port the HTTP server listens to.').
@@ -135,7 +156,7 @@ index_page(_Request) :-
 			       \demo_item(wl_table),
 		               \demo_item(wl_windows)]),
 	    \abox('Debug', [\demo_item(debug_demo),
-				\demo_item(stats)]),
+				\demo_item(server_stats)]),
 	    \abox('Navigation', [\demo_item(accordion),
 				    \demo_item(menu)]),
 	    \abox('Widgets', [\demo_item(clippy)]),
@@ -150,67 +171,13 @@ index_page(_Request) :-
 %
 demo_item(Item) -->
 	{
-	    demo_label(Item, Label)
+	    weblogdemo:label(Item, Label)
 	    ;
 	    atom_concat('Oops, No Label For ', Item, Label)
 	},
 	html([
 	    p(a(href=location_by_id(Item), ['Demo ', Label]))
 	     ]).
-
-%
-%         it's ugly having all this in one file, but
-%         I haven't decided how to architect breaking it up yet
-%         so bear with me here
-
-:- discontiguous demo_label/2.
-
-demo_label(testform, 'Validated Form').
-:- ensure_loaded(html_form_demo).
-
-demo_label(testcontrols, 'Control Test').
-
-demo_label(googlemap, 'Google Map').
-:- ensure_loaded(google_map_demo).
-
-demo_label(map, 'Maps').
-:- ensure_loaded(map_demo).
-
-demo_label(wl_table, 'Table Generation').
-:- ensure_loaded(table_demo).
-
-demo_label(wl_windows, 'Windows and popups').
-:- ensure_loaded(wl_windows_demo).
-
-demo_label(debug_demo, 'Debugging Tools').
-:- ensure_loaded(debug_demo).
-
-demo_label(stats, 'Server Statistics').
-:- ensure_loaded(weblog(debug_page/server_stats)).
-
-demo_label(accordion, 'Accordion').
-:- ensure_loaded(accordion_demo).
-
-demo_label(buttons, 'Buttons').
-:- ensure_loaded(buttons_demo).
-
-demo_label(geocoding, 'Geocoding').
-:- ensure_loaded(geocoding_demo).
-
-demo_label(books, 'Books').
-:- ensure_loaded(books_demo).
-
-demo_label(clippy, 'Clippy').
-:- ensure_loaded(clippy_demo).
-
-demo_label(autocomplete, 'Auto Complete').
-:- ensure_loaded(autocomplete_demo).
-
-demo_label(menu, 'Menus').
-:- ensure_loaded(menus_demo).
-
-demo_label(ajaxify, 'Ajaxify').
-:- ensure_loaded(ajaxify_demo).
 
 
 % Messages

@@ -7,12 +7,14 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_wrapper)).
 
-
 :- use_module(weblog(html_form/ajaxify)).
 :- use_module(weblog(support/utils)).
 :- reexport(weblog(support/utils), [wl_opts/2]).
 
 :- http_handler(root(ajaxify), ajaxify_demo_page, [id(ajaxify)]).
+
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(ajaxify, 'Ajaxify').
 
 ajaxify_demo_page(_Request) :-
 	reply_html_page(

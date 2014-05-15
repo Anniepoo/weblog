@@ -12,6 +12,9 @@
 
 :- http_handler(root(googlemap), google_map_handler, [id(googlemap)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(googlemap, 'Google Map').
+
 google_map_handler(_Request) :-
 	reply_html_page(
 	    title('Google Map Demo'),

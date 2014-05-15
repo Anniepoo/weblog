@@ -13,6 +13,9 @@
 
 :- http_handler(root(menu), menu_demo_page, [id(menu)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(menu, 'Menus').
+
 menu_demo_page(_Request) :-
 	reply_html_page(
 	    title('Menu Demo'),
@@ -43,5 +46,4 @@ menu_demo_body -->
 		      ])
 	         ])
 	    ]).
-
 

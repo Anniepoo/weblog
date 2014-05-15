@@ -57,7 +57,8 @@ I don't know.  It is dangerous though :-)
     Cheers --- Jan
 */
 
-:- html_meta  abox(+, +, html, ?, ?).
+:- html_meta(abox(+,html,?,?)).
+:- html_meta(abox(+,+,html,?,?)).
 
 %! abox(+Title:atom, +Contents:termized_html)// is det .
 % @see Wrapper for abox//3 without additional class names.

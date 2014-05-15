@@ -8,8 +8,10 @@
 
 :- use_module(weblog(info/books/google/books)).
 
-
 :- http_handler(root(books), books_demo_page, [id(books)]).
+
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(books, 'Books').
 
 books_demo_page(_Request) :-
 	reply_html_page(
