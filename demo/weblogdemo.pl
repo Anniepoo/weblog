@@ -69,9 +69,10 @@ start(Port):-
 start(Port):-
 	% @tbd for unclear reasons, uncommenting this breaks the Google Maps demo.
 	%html_set_options([dialect(xhtml)]),
-	format(user_error, 'Starting weblog demo server\n', []),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),
-	http_log('Starting weblog demo on port ~w~n' , [Port]).
+  
+	http_log('Starting weblog demo on port ~w~n', [Port]),
+  print_message(informational, server_started(Port)).
 
 %%	weblog_demo is nondet
 %
@@ -229,6 +230,8 @@ prolog:message(server_running(Port,StartTime)) -->
   ['The server at port ~d is already in use (start time: '-[Port]],
   time(StartTime),
   [').'].
+prolog:message(server_started(Port)) -->
+  ['The weblog demo server started on port ~w.'-[Port]].
 
 time(Time) -->
   {http_timestamp(Time, Text)},
