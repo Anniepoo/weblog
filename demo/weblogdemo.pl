@@ -1,9 +1,8 @@
 :- module(weblogdemo, [
-	start/0,
+	start_server/0,
         weblog_demo/0,
 	server_port/1,
         stop_server/0,
-	bye/0,
         normal_debug/0
 ]).
 
@@ -53,24 +52,26 @@ server_port(4050).
 
 %	%%%%%%%%%%%%%%%%%%%%  SERVER CONTROL  %%%%%%%%%%%%%%%%%%%
 
-%%	start is nondet
+%%	start_server is nondet
 %
-%	Starts the server
+%	Starts the weblog demo server.
 %	nondet because the server might not start
 %
-start:-
+start_server:-
 	server_port(Port),
-  start(Port).
+  start_server(Port).
 
-start(Port):-
+start_server(Port):-
   must_be(between(1000,9999), Port),
   http_server_property(Port, start_time(StartTime)), !,
   print_message(informational, server_running(Port,StartTime)).
-start(Port):-
+start_server(Port):-
 	% @tbd for unclear reasons, uncommenting this breaks the Google Maps demo.
 	%html_set_options([dialect(xhtml)]),
 	http_server(http_dispatch, [port(Port), timeout(3600)]),
-  
+
+  at_halt(stop_server(Port)),
+
 	http_log('Starting weblog demo on port ~w~n', [Port]),
   print_message(informational, server_started(Port)).
 
@@ -81,7 +82,7 @@ start(Port):-
 %
 %
 weblog_demo:-
-       start,
+       start_server,
        server_port(Port),
        format(string(S), 'http://127.0.0.1:~w/' , [Port]),
        www_open_url(S).
@@ -97,16 +98,14 @@ normal_debug :-
 %
 stop_server :-
 	server_port(Port),
-	http_stop_server(Port, []),
-	format(user_error, 'Server halted on port ~n', [Port]).
+  stop_server(Port).
 
-%%      bye is det
-%
-%  shut down server and exit
-%
-bye :-
-	stop_server,
-	halt.
+stop_server(Port):-
+  must_be(between(1000,9999), Port),
+  http_server_property(Port, _), !,
+	http_stop_server(Port, []),
+  print_message(informational, server_stopped(Port)).
+stop_server(_).
 
 %
 %  No other good place for this, so it's here
@@ -232,6 +231,8 @@ prolog:message(server_running(Port,StartTime)) -->
   [').'].
 prolog:message(server_started(Port)) -->
   ['The weblog demo server started on port ~w.'-[Port]].
+prolog:message(server_stopped(Port)) -->
+  ['The weblog demo server at port ~d has stopped.'-[Port]].
 
 time(Time) -->
   {http_timestamp(Time, Text)},
