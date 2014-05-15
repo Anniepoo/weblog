@@ -1,7 +1,7 @@
 :- module(weblogdemo, [
-	start_server/0,
+  start_server/0,
+  stop_server/0,
         weblog_demo/0,
-        stop_server/0,
         normal_debug/0
 ]).
 
@@ -25,26 +25,21 @@
 
 :- use_module(library(debug)).
 :- use_module(library(error)).
-:- use_module(library(http/http_header)).
-:- use_module(library(settings)).
-% threaded server
-:- use_module(library(http/thread_httpd)).
-% basic dispatch
-:- use_module(library(http/http_dispatch)).
-% to set the dialect
-:- use_module(library(http/html_write)).
-% logging - turns on and gets http_log
-:- use_module(library(http/http_log)).
-% head - so we can refer to resources
 :- use_module(library(http/html_head)).
-
+:- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_files)).
+:- use_module(library(http/http_header)).
+:- use_module(library(http/http_log)).
+:- use_module(library(http/thread_httpd)).
+:- use_module(library(settings)).
+:- use_module(library(uri)).
 :- use_module(library(www_browser)).
 
 :- use_module(weblog(formatting/boxes)).
 
 :- setting(http:port, nonneg, env('PORT', 4050),
-    'Port the http server listens to').
+    'Port the HTTP server listens to.').
 
 %	%%%%%%%%%%%%%%%%%%%%  SERVER CONTROL  %%%%%%%%%%%%%%%%%%%
 
@@ -78,10 +73,11 @@ start_server(Port):-
 %
 %
 weblog_demo:-
-       start_server,
   setting(http:port, Port),
-       format(string(S), 'http://127.0.0.1:~w/' , [Port]),
-       www_open_url(S).
+  start_server(Port),
+  uri_authority_components(Authority, uri_authority(_,_,'127.0.0.1',Port)),
+  uri_components(Url, uri_components(http,Authority,_,_,_)),
+  www_open_url(Url).
 
 normal_debug :-
        debug(html_form),
