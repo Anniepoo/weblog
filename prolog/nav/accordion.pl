@@ -127,7 +127,6 @@ accordion(Options, _, _, _) :-
 
 accordion(Options, HTML) -->
 	{
-	    debug(weblog, 'accordion got ~q: ~q', [Options, HTML] ),
 	    valid_accordion_html(HTML),
 	    option(id(ID), Options, accordion),
 	    phrase(accordion_javascript(Options), CScript),

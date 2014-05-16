@@ -11,6 +11,9 @@
 
 :- http_handler(root(buttons), buttons_demo_page, [id(buttons)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(buttons, 'Buttons').
+
 buttons_demo_page(_Request) :-
 	reply_html_page(
 	    title('Buttons Demo'),
@@ -38,6 +41,4 @@ buttons_demo_body -->
 	    h2('del.icio.us'),
 	    \delicious([site_name('Buttons Demo')])
 	     ]).
-
-
 

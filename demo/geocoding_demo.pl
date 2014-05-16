@@ -13,6 +13,9 @@
 
 :- http_handler(root(geocoding), geocoding_handler, [id(geocoding)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(geocoding, 'Geocoding').
+
 geocoding_handler(Request) :-
 	http_parameters(Request, [
 	   loc(Address, [default('VNU University, Amsterdam, Netherlands')])

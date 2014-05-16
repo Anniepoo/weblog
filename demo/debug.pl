@@ -65,7 +65,7 @@ portray_list_innerds([H|T]) :-
 :- use_module(weblogdemo).
 
 % reexport so user can control from the interactor
-:- reexport(weblogdemo, [weblog_demo/0, start/0, stop_server/0]).
+:- reexport(weblogdemo, [weblog_demo/0, start_server/0, stop_server/0]).
 
 %%	pldoc is det
 %

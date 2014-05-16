@@ -10,6 +10,9 @@
 
 :- http_handler(root(map), map_handler, [id(map)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(map, 'Maps').
+
 map_handler(_Request) :-
 	reply_html_page(
 	    [title('Map Demo'),

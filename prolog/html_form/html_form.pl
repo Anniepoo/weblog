@@ -11,9 +11,6 @@
 			error_message//2,
 			form_field//3,
 			form_invalidate/0,
-			length_input_minmax/2,
-			numeric_minmax/2,
-			value/1,
 			length_input_minmax/5,
 			numeric_minmax/5,
 			value/4
@@ -82,7 +79,7 @@ and then in login_form you do something like
 login_form(Request) -->
  ....
       form([action='/spamform', method=POST], [
-	     \(html_form:error_message([for=name], p([class=oops], 'you have to type a name'))),
+	     \(html_form:error_message([for=name], html(p([class=oops], 'you have to type a name')))),
 	     \(html_form:form_field(Request, length_input_minmax(3, '>'), input([name=name, type=textarea], []))),
 	     \(html_form:error_message([for=age], p([class=oops], 'Problem with age'))),
 	     \(html_form:form_field(Request, numeric_minmax(14, '>'), input([name=age, type=textarea], [])))
@@ -99,18 +96,21 @@ login_form(Request) -->
 :- meta_predicate   validated_form(0, 0).
 
 % these just suppress some annoying warnings
-:- dynamic length_input_minmax/2, numeric_minmax/2, value/1.
 :- dynamic length_input_minmax/5, numeric_minmax/5, value/4.
+
+:- html_meta(error_message(+,html,?,?)).
+
+:- meta_predicate   form_field(+, 3, +, ?, ?).
 
 %
 %  Handler for a form to be validated.
-%%  validated_form(+FormReplyGoal:goal, +LandingReplyGoal:goal) is det
+%%  validated_form(:FormReplyGoal, :LandingReplyGoal) is det
 %
 %  @param FormReplyGoal is a handler that creates the form page
 %  @param LandingReplyGoal is the handler for the landing page.
 %
 validated_form(FormReplyGoal, LandingReplyGoal) :-
-	debug(html_form, '=========~nFormReplyGoal:  ~w~n~nLandingReplyGoal:  ~w~n',
+	debug(html_form, '=========~nFormReplyGoal:  ~w~n~nLandingReplyGoal:  ~w',
 	      [FormReplyGoal, LandingReplyGoal]),
 	setup_call_cleanup(
 	    setup_for_form,
@@ -140,10 +140,10 @@ setup_for_form :-
 %
 has_invalid_entries  :-
 	html_form:'$$form_validate'(validity(_, false)),
-	debug(html_form, 'form has invalid entries~n' , []),
+	debug(html_form, 'form has invalid entries' , []),
 	!.
 
-%  error_message(+Options:list, +termHtml:termerized_html)// semidet
+%  error_message(+Options:list, :Html)// semidet
 % DCG to include an error message that will only expand beyond
 % nothing if the entry is invalid.
 %
@@ -154,7 +154,7 @@ error_message(Options, _TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	   html_form:'$$form_validate'(validity(ForTerm, true)),
-	   debug(html_form, 'for=~w is valid~n', [ForTerm])
+	   debug(html_form, 'for=~w is valid', [ForTerm])
 	},
 	[].
 
@@ -162,15 +162,15 @@ error_message(Options, TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	   html_form:'$$form_validate'(validity(ForTerm, false)),
-	   debug(html_form, 'for=~w is invalid~n', [ForTerm])
+	   debug(html_form, 'for=~w is invalid', [ForTerm])
 	},
-	html(TermHtml).
+	TermHtml.
 
 error_message(Options, _TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	  \+ html_form:'$$form_validate'(validity(ForTerm, _)),
-	   debug(html_form, 'for=~w is unknown validity~n', [ForTerm])
+	   debug(html_form, 'for=~w is unknown validity', [ForTerm])
 	},
 	html(p('No validity check for ' - ForTerm)).
 
@@ -179,12 +179,10 @@ error_message(Options, TermHtml) -->
 	{
 	    \+ memberchk(for=_, Options),
 	    debug(html_form,
-	      'Missing for= option in error_message(~w, ~w)~n',
+	      'Missing for= option in error_message(~w, ~w)',
 		  [Options, TermHtml])
 	},
 	html(p('missing for option')).
-
-:- meta_predicate   form_field(+, 3, +).
 
 %% form_invalidate is det
 %
@@ -192,7 +190,7 @@ error_message(Options, TermHtml) -->
 form_invalidate :-
 	 assert(html_form:'$$form_validate'(validity(_, false))).
 
-%% form_field(+Request:list, :Validator:term, +FormField)// is semidet
+%% form_field(+Request:list, :Validator, +FormField)// is semidet
 %
 % unifies when form validates
 %
@@ -205,7 +203,7 @@ form_field(Request, Validator, input(Attribs, Content)) -->
 	   call(Validator, Name, Value, Request),
 	   assert(html_form:'$$form_validate'(validity(Name, true))),
 	   filled_in_field(input(Attribs, Content), Value, FilledInField),
-	   debug(html_form, 'the form field ~w=~w validates~n', [Name, Value])
+	   debug(html_form, 'the form field ~w=~w validates', [Name, Value])
 	},
 	html(FilledInField).
 
@@ -221,7 +219,7 @@ form_field(Request, Validator, input(Attribs, Content)) -->
 	   \+ call(Validator, Name, Value, Request),
 	   assert(html_form:'$$form_validate'(validity(Name, false))),
 	   filled_in_field(input(Attribs, Content), Value, FilledInField),
-	   debug(html_form, 'the form field ~w=~w does not validate~n', [Name, Value])
+	   debug(html_form, 'the form field ~w=~w does not validate', [Name, Value])
 	},
 	html(FilledInField).
 
@@ -241,7 +239,7 @@ form_field(_Request, _Validator, input(Attribs, Content)) -->
 	 % but we need to make sure whole form is invalid
 	   assert(html_form:'$$form_validate'(
 			      validity('$$notreallyaname', false))),
-	   debug(html_form, 'the form field ~w=... does not validate~n', [Name])
+	   debug(html_form, 'the form field ~w=... does not validate', [Name])
 	},
 	html(input(Attribs, Content)).
 
@@ -249,7 +247,7 @@ form_field(_Request, _Validator, input(Attribs, Content)) -->
 	{
 	    \+ memberchk(name=_, Attribs),
 	    debug(html_form,
-		  'The form field input(~w, ~w) is missing name field~n',
+		  'The form field input(~w, ~w) is missing name field',
 		  [Attribs, Content])
 	},
 	html([input(Attribs, Content)]).

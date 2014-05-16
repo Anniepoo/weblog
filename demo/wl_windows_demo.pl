@@ -8,8 +8,10 @@
 
 :- use_module(weblog(formatting/wl_windows)).
 
-
 :- http_handler(root(wl_windows), windows_handler, [id(wl_windows)]).
+
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(wl_windows, 'Windows and popups').
 
 windows_handler(_Request) :-
 	reply_html_page(
@@ -52,6 +54,4 @@ rollover_popup_options(open_time(100)).
 rollover_popup_options(close_time(500)).
 rollover_popup_options(close_method(bounce)).
 footnote_options(footnote).
-
-
 
