@@ -5,10 +5,12 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-
 :- use_module(weblog(html_form/autocomplete)).
 
 :- http_handler(root(autocomplete), autocomplete_demo_page, [id(autocomplete)]).
+
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(autocomplete, 'Auto Complete').
 
 autocomplete_demo_page(_Request) :-
 	reply_html_page(

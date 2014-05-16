@@ -6,12 +6,13 @@
 */
 
 :- use_module(library(http/http_dispatch)).
-:- ensure_loaded(weblog(debug_page/debug_page)).
+:- use_module(weblog(debug_page/debug_page)).
+
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(debug_demo, 'Debugging Tools').
 
 :- http_handler(root(debugdemo) ,
 	http_redirect(moved_temporary,
 		      location_by_id(debug_page)),
 	[id(debug_demo)]).
-
-
 

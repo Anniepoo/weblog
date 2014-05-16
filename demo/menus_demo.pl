@@ -13,6 +13,9 @@
 
 :- http_handler(root(menu), menu_demo_page, [id(menu)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(menu, 'Menus').
+
 menu_demo_page(_Request) :-
 	reply_html_page(
 	    title('Menu Demo'),
@@ -29,13 +32,13 @@ menu_demo_body -->
 		   li([class='ui-state-disabled'],
 		     span('A disabled item')),
 		   li(a(href('http://www.swi-prolog.org'), 'SWI-Prolog')),
-		   li([a([href='#'], 'Questionable Food'),
+		   li([a(href='#', 'Questionable Food'),
 		       ul([
-			   li(a(href='spam.com', 'Spam')),
+			   li(a(href='http://www.spam.com', 'Spam')),
 			   li(a(href='http://www.kraftrecipes.com/Products/ProductInfoDisplay.aspx?siteid=1&product=2100065883', 'Kraft Mac and Cheese')),
 			   li([span('From Hormel'),
 			       ul([
-				   li(a([href='http://www.hormel.com/products/Variety.aspx?ID=14&RecipesOnly=False'], 'Chili')),
+				   li(a(href='http://www.hormel.com/products/Variety.aspx?ID=14&RecipesOnly=False', 'Chili')),
 				   li(a(href='http://www.hormel.com/products/Variety.aspx?ID=17&RecipesOnly=False#', 'Baco-bits'))
 			       ])
 			      ])
@@ -43,5 +46,4 @@ menu_demo_body -->
 		      ])
 	         ])
 	    ]).
-
 

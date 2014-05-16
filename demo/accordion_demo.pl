@@ -10,6 +10,9 @@
 
 :- http_handler(root(accordion), accordion_demo_page, [id(accordion)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(accordion, 'Accordion').
+
 accordion_demo_page(_Request) :-
 	reply_html_page(
 	    title('Accordion Demo'),

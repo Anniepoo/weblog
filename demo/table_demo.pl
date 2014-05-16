@@ -12,6 +12,9 @@
 
 :- http_handler(root(wl_table), table_handler, [id(wl_table)]).
 
+:- multifile(weblogdemo:label/2).
+weblogdemo:label(wl_table, 'Table Generation').
+
 table_handler(_Request) :-
 	reply_html_page(
 	    title('Table Demo'),
