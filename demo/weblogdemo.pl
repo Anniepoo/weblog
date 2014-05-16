@@ -54,10 +54,10 @@ server_port(4050).
 
 %	%%%%%%%%%%%%%%%%%%%%  SERVER CONTROL  %%%%%%%%%%%%%%%%%%%
 
-%%	start is nondet
+%%	start is semidet
 %
 %	Starts the server
-%	nondet because the server might not start
+%	semidet because the server might not start
 %
 start:-
 	started,!,
