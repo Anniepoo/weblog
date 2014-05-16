@@ -1,4 +1,4 @@
----+ widgets/clippy directory README
+# widgets/clippy directory README
 
 This directory contains libs that display an animated agent.
 
@@ -15,6 +15,7 @@ Others that might be included:
  
  
  
- 
+ 
+
  
  

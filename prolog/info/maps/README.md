@@ -1,4 +1,4 @@
----+ info/maps directory README
+# info/maps directory README
 
 This directory contains libs useful for displaying maps.
 

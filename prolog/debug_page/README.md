@@ -1,4 +1,4 @@
----+ debug_page directory README
+# debug_page directory README
 
 This directory contains libs that add additional endpoints to your web application which
 are useful for debugging.

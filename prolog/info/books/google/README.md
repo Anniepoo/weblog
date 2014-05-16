@@ -1,4 +1,4 @@
----+ info/books directory README
+# info/books directory README
 
 This directory contains libs useful for interacting with Google books.
 
@@ -20,6 +20,7 @@ Examples would be
  
  
  
- 
+ 
+
  
  

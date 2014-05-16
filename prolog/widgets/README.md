@@ -1,4 +1,4 @@
----+ widgets directory README
+# widgets directory README
 
 This directory contains libs that display a 'widget' which does NOT
 fall into any of these categories:
@@ -20,6 +20,7 @@ So far this category includes
  
  
  
- 
+ 
+
  
  

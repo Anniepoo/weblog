@@ -1,4 +1,4 @@
----+ info directory README
+# info directory README
 
 This directory contains libs useful for displaying specialized
 types of information. Examples would be
@@ -27,6 +27,7 @@ types of information. Examples would be
  
  
  
- 
+ 
+
  
  

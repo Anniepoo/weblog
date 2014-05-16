@@ -1,4 +1,4 @@
----+ demo directory README
+# demo directory README
 
 This directory contains the pages for the weblog_demo.
 

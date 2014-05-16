@@ -1,4 +1,4 @@
----+ info directory README
+# info directory README
 
 This directory contains libs useful for displaying 
 leaflet Maps.

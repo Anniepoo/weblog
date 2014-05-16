@@ -1,7 +1,7 @@
 ./static
 
 
----++ Static Files
+## Static Files
 
 Usually when you add a file under this directory you'll want to add it to ./resources/resources.pl
 so it's known as a resource in the system.

@@ -1,4 +1,4 @@
----+ formatting directory README
+# formatting directory README
 
 This directory contains modules useful for controlling page layout.
 
@@ -21,23 +21,3 @@ boxes - supports visual boxes on screen with headers
 tables - support for tables of data
 
 tabs - support for slideout tabs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 

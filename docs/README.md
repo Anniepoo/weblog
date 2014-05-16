@@ -1,4 +1,4 @@
----+ docs directory README
+# docs directory README
 
 This directory contains documentation for weblog.
 

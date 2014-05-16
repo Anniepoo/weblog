@@ -1,4 +1,4 @@
----+ info/books directory README
+# info/books directory README
 
 This directory contains libs useful for displaying print media
 on the web.
@@ -17,6 +17,7 @@ Examples would be
  
  
  
- 
+ 
+
  
  
