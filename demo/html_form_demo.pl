@@ -20,7 +20,7 @@ test_form_page_handler(Request) :-
 
 test_form_content(_Request) -->
 	{
-	 debug(html_form, 'in test_form_content~n', [])
+	 debug(html_form, 'in test_form_content', [])
 	},
      html([
       h1('Validated Form'),
@@ -29,13 +29,13 @@ test_form_content(_Request) -->
       form([action='/testform', method='POST'], [
 	       p([
 	          label([for=name],'Name:'),
-	          \error_message([for=name], p([class=oops],
-					  'You need to type your name in here')),
+	          \error_message([for=name], html(p([class=oops],
+					  'You need to type your name in here'))),
 	          \form_field(Request, length_input_minmax(3, '>'),
 			 input([name=name, type=textarea], []))]),
 	       p([
 	          label([for=age], 'Age:'),
-	          \error_message([for=age], p([class=oops], 'Age under 14 or not a number')),
+	          \error_message([for=age], html(p([class=oops], 'Age under 14 or not a number'))),
 	          \form_field(Request, numeric_minmax(14, '>'),
 			 input([name=age, type=textarea], []))]),
 	       p([
