@@ -12,6 +12,9 @@
 % Needed for http:location/3, don't remove even if red!!!
 :- use_module(library(http/http_path)).
 
+:- dynamic user:portray/1.
+:- multifile user:portray/1.
+
 :- multifile http:location/3.
 
 http:location(pldoc, root('help/source'), [priority(10)]).
