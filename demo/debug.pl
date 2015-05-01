@@ -53,7 +53,7 @@ the way
 
 */
 portray_list_innerds([]).
-portray_list_innerds([H]) :-
+portray_list_innerds([H]) :- !,
 	print(H).
 portray_list_innerds([H|T]) :-
 	print(H),
