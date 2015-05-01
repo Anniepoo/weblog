@@ -7,7 +7,6 @@
 :- use_module(library(http/html_head)).
 
 :- meta_predicate book_viewer(1, ?, ?).
-:- style_check(-atom).
 
 /**    book_viewer(+Generator:callable)// is det
 
