@@ -14,16 +14,17 @@ weblogdemo:label(testcontrols, 'Control Test').
 
 test_controls_page_handler(_Request) :-
 	reply_html_page(
-	    [title('Controls')],
-	    [
-	       h1('Some Controls'),
-	       p('radio buttons using images'),
-	       form([action='/testcontrols'], [
-		   \image_radio_set(radio_info),
-		   input([type=submit, name=submitt, value=submitt], [])
-					      ])
-
-	    ]).
+    weblog_demo,
+	  title('Controls'),
+    [
+      h1('Some Controls'),
+      p('radio buttons using images'),
+      form([action='/testcontrols'], [
+	      \image_radio_set(radio_info),
+	      input([type=submit, name=submitt, value=submitt], [])
+      ])
+    ]
+  ).
 
 radio_info(set_name(demoset)).
 radio_info(id(reddot)).

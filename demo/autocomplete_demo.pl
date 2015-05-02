@@ -14,8 +14,10 @@ weblogdemo:label(autocomplete, 'Auto Complete').
 
 autocomplete_demo_page(_Request) :-
 	reply_html_page(
-	    title('Autocomplete Demo'),
-	    \autocomplete_demo_body).
+    weblog_demo,
+    title('Autocomplete Demo'),
+    \autocomplete_demo_body
+  ).
 
 autocomplete_demo_body -->
 	html([

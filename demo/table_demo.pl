@@ -17,8 +17,9 @@ weblogdemo:label(wl_table, 'Table Generation').
 
 table_handler(_Request) :-
 	reply_html_page(
-	    title('Table Demo'),
-	    [
+    weblog_demo,
+	  title('Table Demo'),
+	  [
 	     style(
 'tr.even td, tr.even {
 	     background-color: #aaaaff;
@@ -46,7 +47,8 @@ table_handler(_Request) :-
 	     hr([]),
 	     p('Table From Facts with explicit rows'),
 	     \wl_table(grades_table_cells, [rows(['Arnie Adams', 'Brenda Burns'])])
-	    ]).
+	  ]
+  ).
 
 grade_labels(name, 'Student').
 grade_labels(quiz1, 'Quiz 1').
@@ -101,12 +103,11 @@ next_handler(Request) :-
 				  page(Page, [integer, default(0)])
 				 ]),
 	Next is Page + 1,
-	reply_html_page(title('Next!'),
-			[
-			 p('Your number is ' , Page),
-			 a(href=location_by_id(next_handler) + [page(Next)],
-			   'Next')
-			]).
-
-
-
+	reply_html_page(
+    weblog_demo,
+    title('Next!'),
+		[
+			p('Your number is ' , Page),
+			a(href=location_by_id(next_handler) + [page(Next)], 'Next')
+		]
+  ).

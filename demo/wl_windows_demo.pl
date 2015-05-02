@@ -15,14 +15,16 @@ weblogdemo:label(wl_windows, 'Windows and popups').
 
 windows_handler(_Request) :-
 	reply_html_page(
-	    title('Windows Demo'),
-	    [
-	       h1('Windows Demo'),
-	       h2('Clickable Popup'),
-	       \popup(click_popup_options,
-		     p('click me'),
-		     div(p('some random information'))),
-
+    weblog_demo,
+    title('Windows Demo'),
+    [
+      h1('Windows Demo'),
+      h2('Clickable Popup'),
+      \popup(
+        click_popup_options,
+        p('click me'),
+        div(p('some random information'))
+      ),
 	       h2('Rollover Popup'),
 	       \popup(rollover_popup_options,
 		     p('roll over me'),
@@ -45,8 +47,8 @@ windows_handler(_Request) :-
 		   \popup(footnote_options, '6',
 			  a(href('http://www.google.com'),
 		  'A longitudinal, transgenerational, intercultural, bigendered, long winded investigation of many sleeping postures, including vertical bipedal stance, supine, and reverse Trendelenburg, and other postures on occurance of REM sleep in a sleep laboratory setting, Feendly, James, PhD, LoveDoc, Lawrence, PhD, HallOvit, Gustfor, MD, et al, Jrnl Irreprod. Results 18-13'))])
-
-	    ]).
+    ]
+  ).
 
 click_popup_options(open_on(click)).
 

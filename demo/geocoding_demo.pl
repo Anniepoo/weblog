@@ -22,8 +22,9 @@ geocoding_handler(Request) :-
 				 ]),
 	gaddr_latlong(Address, FA, Type, _Bnds, Loc, _View),
 	reply_html_page(
-	    title('GeoCoding Demo'),
-	    [
+    weblog_demo,
+	  title('GeoCoding Demo'),
+	  [
 	     style(
 '#gmap, #leafletmap {
     width: 80%;
@@ -39,12 +40,15 @@ geocoding_handler(Request) :-
 						    ]),
 	    \geo_map(geocoding_callback(Address, FA, Type, Loc)),
 	    \gps_demo
-	    ]).
+	  ]
+).
 
 geocoding_handler(_Request) :-
 	reply_html_page(
-	    title('Oops!'),
-	    [p('sorry, couldn\'t geocode that')]).
+    weblog_demo,
+    title('Oops!'),
+    [p('sorry, couldn\'t geocode that')]
+  ).
 
 geocoding_callback(_, _, _, _, id(leafletmap)).
 geocoding_callback(_, _, _, _, provider(leaflet)).

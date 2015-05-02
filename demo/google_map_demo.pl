@@ -17,8 +17,9 @@ weblogdemo:label(googlemap, 'Google Map').
 
 google_map_handler(_Request) :-
 	reply_html_page(
-	    title('Google Map Demo'),
-	    [
+    weblog_demo,
+    title('Google Map Demo'),
+    [
 	    h1('Google Map demo page'),
 	     p('Weblog contributors'),
 	    \gmap([
@@ -27,5 +28,5 @@ google_map_handler(_Request) :-
 		      point(52.334434,4.863596),        % VNU
 		      point(29.720576,-95.34296)        % Univ. of Houston
 		       ])
-	    ]).
-
+    ]
+  ).

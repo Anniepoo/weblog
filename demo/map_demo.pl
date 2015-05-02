@@ -15,24 +15,27 @@ weblogdemo:label(map, 'Maps').
 
 map_handler(_Request) :-
 	reply_html_page(
-	    [title('Map Demo'),
-	     style(type('text/css'),
+    weblog_demo,
+	  [
+      title('Map Demo'),
+	    style(type('text/css'),
 '#gmap, #lmap, #googleplex {
   width: 80%;
   height: 400px;
 }')
-	    ],
-	    [
-	     h1('Map demo page'),
-	     h2('Really simple map'),
-	     \geo_map(simple),
-	     h2('Google Maps'),
-	     p('Weblog contributors'),
-	     \geo_map(gmap_info),
-	     h2('Leaflet'),
-	     p('VNU Campus'),
+	  ],
+	  [
+	    h1('Map demo page'),
+	    h2('Really simple map'),
+	    \geo_map(simple),
+	    h2('Google Maps'),
+	    p('Weblog contributors'),
+	    \geo_map(gmap_info),
+	    h2('Leaflet'),
+	    p('VNU Campus'),
 	    \geo_map(lmap_info)
-	    ]).
+	  ]
+  ).
 
 simple(point(37.482214,-122.176552)).    % Annie
 

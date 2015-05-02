@@ -65,6 +65,12 @@
 :- setting(http:port, nonneg, env('PORT', 4050),
     'Port the HTTP server listens to.').
 
+:- multifile(user:head//2).
+:- multifile(user:body//2).
+
+user:body(weblog_demo, Content) -->
+  html(body([nav(a(href='index.htm','Back to index')),Content])).
+
 
 
 %! weblog_demo is det.
@@ -89,8 +95,9 @@ redir_to_index(Request):-
 
 index_page(_):-
 	reply_html_page(
-	    title('Weblog Demo'),
-	    [
+    weblog_demo,
+	  title('Weblog Demo'),
+	  [
 	    \html_requires(css('demo.css')),
 	    h1('Weblog demo page'),
 	    \abox('Input', [\demo_item(testform),
@@ -113,7 +120,8 @@ index_page(_):-
 	    p('This page also happens to demo boxes, which doesn\'t otherwise have a demo page'),
 	    p('geohashing doesn\'t have a demo page, but is extensively used in the Impatient Geohasher application, get it on Github'),
 	    p('info/stock/crox/croxstock.pl doesn\'t have a demo page.')
-	    ]).
+	  ]
+  ).
 
 %! demo_item(+Item:atom)
 % Pass the location id and it generates the demo badge

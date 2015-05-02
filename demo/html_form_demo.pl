@@ -11,12 +11,17 @@ weblogdemo:label(testform, 'Validated Form').
 
 test_form_page_handler(Request) :-
 	validated_form(
-	    reply_html_page(
-		[title('Form Page')],
-		\(html_form_demo:test_form_content(Request))),
-	    reply_html_page(
-		[title('Thanks')],
-		\(html_form_demo:test_landing_page_content(Request)))).
+    reply_html_page(
+      weblog_demo,
+		  title('Form Page'),
+		  \(html_form_demo:test_form_content(Request))
+    ),
+	  reply_html_page(
+      weblog_demo,
+		  title('Thanks'),
+		  \(html_form_demo:test_landing_page_content(Request))
+    )
+  ).
 
 test_form_content(_Request) -->
 	{

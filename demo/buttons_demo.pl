@@ -15,9 +15,7 @@
 weblogdemo:label(buttons, 'Buttons').
 
 buttons_demo_page(_Request) :-
-	reply_html_page(
-	    title('Buttons Demo'),
-	    \buttons_demo_body).
+	reply_html_page(weblog_demo, title('Buttons Demo'), \buttons_demo_body).
 
 buttons_demo_body -->
 	html([

@@ -14,9 +14,7 @@
 weblogdemo:label(accordion, 'Accordion').
 
 accordion_demo_page(_Request) :-
-	reply_html_page(
-	    title('Accordion Demo'),
-	    \acc_demo_body).
+	reply_html_page(weblog_demo, title('Accordion Demo'), \acc_demo_body).
 
 acc_demo_body -->
 	html([

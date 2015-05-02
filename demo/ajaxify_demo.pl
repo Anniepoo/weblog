@@ -17,9 +17,7 @@
 weblogdemo:label(ajaxify, 'Ajaxify').
 
 ajaxify_demo_page(_Request) :-
-	reply_html_page(
-	    title('Ajaxify Demo'),
-	    \ajaxify_demo_body).
+	reply_html_page(weblog_demo, title('Ajaxify Demo'), \ajaxify_demo_body).
 
 ajaxify_demo_body -->
 	html([

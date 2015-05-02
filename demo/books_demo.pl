@@ -14,9 +14,7 @@
 weblogdemo:label(books, 'Books').
 
 books_demo_page(_Request) :-
-	reply_html_page(
-	    title('Book Display Demo'),
-	    \books_demo_body).
+	reply_html_page(weblog_demo, title('Book Display Demo'), \books_demo_body).
 
 books_demo_body -->
 	html([
