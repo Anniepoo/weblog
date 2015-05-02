@@ -2,7 +2,7 @@
 
     A (for now) rudimentary google maps component.
 
-     This code provided to weblog by Cliopatria project
+     This code provided to weblog by the ClioPatria project
      Licensed under LGPL
 */
 
@@ -12,6 +12,8 @@
 
 :- use_module(library(http/html_write)).
 :- use_module(library(uri)).
+
+:- use_module(weblog(info/api_key_support)).
 :- ensure_loaded(weblog(resources/resources)).
 
 % this makes sure there's always a setting
@@ -30,23 +32,20 @@ gmap_authority('maps.googleapis.com').
 gmap_path('/maps/api/js').
 gmap_fragment(_NoFragment).
 
-prolog:message(missing_key_file(File)) -->
-  ['Key file ~w is missing'-[File], nl].
-:-
+:- initialization(init_gmap).
+
+init_gmap:-
   % Print an error message if the keyfile is not present.
-  (
-    absolute_file_name(
-      weblog('keys/googlekey'),
-      File,
-      [access(read), file_errors(fail), file_type(prolog)]
-    )
-  ->
-    load_settings(File, [undefined(error)])
-  ;
-% AO - 9/21/13 making this less in your face
-%
-% print_message(warning, missing_key_file('googlekey.pl'))
-  debug(weblog, 'Google map key file missing (keys/googlekey.pl)', [])
+  (   absolute_file_name(
+        weblog('keys/googlekey'),
+        File,
+        [access(read),file_errors(fail),file_type(prolog)]
+      )
+  -> load_settings(File, [undefined(error)])
+  ;   print_message(
+        informational,
+        missing_key('Google Maps','keys/googlekey.pl')
+      )
   ).
 
 % needed for some coord calc stuff
@@ -224,5 +223,3 @@ def_icons_helper(Generator, [H|T]) -->
 def_icons_helper(Generator, [H|T]) -->
 	html(\[' // ~w could not be generated (missing values?)~n'-[H]]),
 	def_icons_helper(Generator, T).
-
-

@@ -14,6 +14,7 @@ Reply = json([astergdem=192,lng=10.2,lat=50.01]).
 :- use_module(library(http/html_write)).
 :- use_module(library(uri)).
 
+:- use_module(weblog(info/api_key_support)).
 :- ensure_loaded(weblog(resources/resources)).
 
 % TBD - this has a defect. settings are per-module, but
@@ -26,20 +27,18 @@ Reply = json([astergdem=192,lng=10.2,lat=50.01]).
   'Geonames key.  Get one at http://www.geonames.org/'
 ).
 
-prolog:message(missing_key_file(File)) -->
-  ['Key file ~w is missing.'-[File], nl].
-:-
-  % Print an error message if the keyfile is not present.
-  (
-    absolute_file_name(
-      weblog('keys/geonameskey'),
-      File,
-      [access(read), file_errors(fail), file_type(prolog)]
-    )
-  ->
-    load_settings(File)
-  ;
-    debug(weblog, 'Geonames key missing', [])
+:- initialization(init_geonames).
+init_geonames:-
+  (   absolute_file_name(
+        weblog('keys/geonameskey'),
+        File,
+        [access(read),file_errors(fail),file_type(prolog)]
+      )
+  ->  load_settings(File)
+  ;   print_message(
+        informational,
+        missing_key('Geonames','keys/geonameskey.pl')
+      )
   ).
 
 geo_weather_widget(_) -->

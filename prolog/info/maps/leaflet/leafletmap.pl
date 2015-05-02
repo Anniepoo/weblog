@@ -14,9 +14,14 @@
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(settings)).
+
 :- use_module(weblog(info/html/html_comments)).
+:- use_module(weblog(info/maps/map)). % Calculate coordinates.
+:- use_module(weblog(info/api_key_support)).
 :- use_module(weblog(support/javascript_utils)).
 :- ensure_loaded(weblog(resources/resources)).
+
+:- meta_predicate lmap(1, ?, ?).
 
 % this makes sure there's always a setting
 % weblog users - do NOT change this. Copy keys/cloudmadekey.pl.example
@@ -28,30 +33,21 @@
   'Cloudmade map key.  Get one at http://account.cloudmade.com/register'
 ).
 
-prolog:message(missing_key_file(File)) -->
-  ['Key file ~w is missing.'-[File], nl].
-:-
-  % Print an error message if the keyfile is not present.
-  (
-    absolute_file_name(
-      weblog('keys/cloudmadekey'),
-      File,
-      [access(read), file_errors(fail), file_type(prolog)]
-    )
-  ->
-    load_settings(File)
-  ;
-% AO - 9/21/13 making this less in your face
-%
-%    print_message(warning, missing_key_file('cloudmadekey.pl'))
-    debug(weblog, 'Cloudmade map key missing (keys/cloudmakekey.pl)', [])
+:- initialization(init_leafletmap).
+init_leafletmap:-
+  (   absolute_file_name(
+        weblog('keys/cloudmadekey'),
+        File,
+        [access(read),file_errors(fail),file_type(prolog)]
+      )
+  ->  load_settings(File)
+  ;   print_message(
+        informational,
+        missing_key('CloudMade Map','keys/cloudmakekey.pl')
+      )
   ).
 
-% needed for some coord calc stuff
-:- use_module(weblog(info/maps/map)).
 
-
-:- meta_predicate  lmap(1, ?, ?).
 
 %%	lmap(+Generator)// is det.
 %
