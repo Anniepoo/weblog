@@ -1,10 +1,18 @@
 :- module(load, []).
-/** <module>  Set up server environment
-   Weblog
 
-   Copyright (c) 2012, University of Houston
-   Which has released it under the terms of the LGPL
+/** <module> Load file
+
+Sets up the server environment for **weblog**.
+
+Copyright (c) 2012, University of Houston.
+Which has released it under the terms of the LGPL
 */
+
+:- use_module(library(http/http_log)). % HTTP logging.
+:- use_module(library(http/http_session)). % HTTP sessions.
+
+:- dynamic user:file_search_path/2.
+:- multifile user:file_search_path/2.
 
 :- initialization(init_weblog_demo).
 
@@ -19,15 +27,3 @@ init_weblog_demo:-
   assert(user:file_search_path(css, weblog('static/css'))),
   assert(user:file_search_path(js, weblog('static/js'))),
   assert(user:file_search_path(icons, weblog('static/icons'))).
-
-% Turn on the logger
-:- use_module(library(http/http_log)).
-% Turn on sessions
-:- use_module(library(http/http_session)).
-% Needed for http:location/3, don't remove even if red
-:- use_module(library(http/http_path)).
-
-% these are suspicious
-%http:location(admin, '/admin' , []).
-%http:location(demo, '/demo', []).
-

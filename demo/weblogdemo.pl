@@ -1,11 +1,12 @@
-:- module(weblogdemo, [
-  start_server/0,
-  stop_server/0,
-        weblog_demo/0,
-        normal_debug/0
-]).
+:- module(
+  weblogdemo,
+  [
+    weblog_demo/0
+  ]
+).
 
-/**   <module> Web Log Demo
+/** <module> Weblog Demo
+
    This code based on
       Installer for Cogbot
       HHP Virtual Web Application
@@ -19,7 +20,6 @@
    @license This code governed by the Cogbot New BSD License
    @tbd figure out why google maps isn't happy with xhtml
    @tbd should the file handlers for css, etc be in here?
-
 */
 
 :- use_module(library(debug)).
@@ -59,85 +59,35 @@
 % in order to appear on the weblog demo page.
 :- multifile(weblogdemo:label/2).
 
+:- http_handler(root(.) , redir_to_index, [id(indexroot)]).
+:- http_handler(root('index.htm'), index_page , [id(index)]).
+
 :- setting(http:port, nonneg, env('PORT', 4050),
     'Port the HTTP server listens to.').
 
-%	%%%%%%%%%%%%%%%%%%%%  SERVER CONTROL  %%%%%%%%%%%%%%%%%%%
 
-%%	start_server is nondet
-%
-%	Starts the weblog demo server.
-%	nondet because the server might not start
-%
-start_server:-
-  setting(http:port, Port),
-  start_server(Port).
 
-start_server(Port):-
-  must_be(between(1000,9999), Port),
-  http_server_property(Port, start_time(StartTime)), !,
-  print_message(informational, server_running(Port,StartTime)).
-start_server(Port):-
-	% @tbd for unclear reasons, uncommenting this breaks the Google Maps demo.
-	%html_set_options([dialect(xhtml)]),
-	http_server(http_dispatch, [port(Port), timeout(3600)]),
+%! weblog_demo is det.
+%	Start the server in debug mode and show	the index page.
 
-  at_halt(stop_server(Port)),
-
-	http_log('Starting weblog demo on port ~w~n', [Port]),
-  print_message(informational, server_started(Port)).
-
-%%	weblog_demo is nondet
-%
-%	Start the server in debug mode and show
-%	the index page
-%
-%
 weblog_demo:-
-  setting(http:port, Port),
   start_server(Port),
   uri_authority_components(Authority, uri_authority(_,_,'127.0.0.1',Port)),
-  uri_components(Url, uri_components(http,Authority,_,_,_)),
-  www_open_url(Url).
+  uri_components(Uri, uri_components(http,Authority,_,_,_)),
+  www_open_url(Uri).
 
-normal_debug :-
-       debug(html_form),
-       % @tbd There seem to be no debug messages for this topic?
-       debug(http(request)).
+%! redir_to_index(+Request:list) is det.
+%	Handle bare domain request by redirection to the demo index.
+%
+%	@param Request The HTTP request in the usual list format.
 
-%%	stop_server is det
-%
-%	Stop the web server
-%
-stop_server :-
-  setting(http:port, Port),
-  stop_server(Port).
-
-stop_server(Port):-
-  must_be(between(1000,9999), Port),
-  http_server_property(Port, _), !,
-	http_stop_server(Port, []),
-  print_message(informational, server_stopped(Port)).
-stop_server(_).
-
-%
-%  No other good place for this, so it's here
-%
-:- http_handler(root(.) , redir_to_index,
-		[id(indexroot)]).
-
-%%	redir_to_index(+Request:http_request) is det
-%
-%	handle bare domain request by redirection to index
-%
-%	@param Request the HTTP request as the usual list format
-%
-redir_to_index(Request) :-
+redir_to_index(Request):-
 	http_redirect(moved_temporary, location_by_id(index), Request).
 
-:- http_handler(root('index.htm'), index_page , [id(index)]).
+%! index_page(+Request:list) is det.
+% Replies with a HTML page enumerating the **weblog** demos.
 
-index_page(_Request) :-
+index_page(_):-
 	reply_html_page(
 	    title('Weblog Demo'),
 	    [
@@ -165,22 +115,57 @@ index_page(_Request) :-
 	    p('info/stock/crox/croxstock.pl doesn\'t have a demo page.')
 	    ]).
 
-%%	demo_item(+Item:location_id)
-%
-%	Pass the location id and it generates the demo badge
-%
+%! demo_item(+Item:atom)
+% Pass the location id and it generates the demo badge
+
 demo_item(Item) -->
-	{
-	    weblogdemo:label(Item, Label)
-	    ;
-	    atom_concat('Oops, No Label For ', Item, Label)
-	},
-	html([
-	    p(a(href=location_by_id(Item), ['Demo ', Label]))
-	     ]).
+  {display_label(Item, Label)},
+  html(p(a(href=location_by_id(Item), ['Demo ',Label]))).
+
+%! display_label(+Item:atom, -Label:atom) is det.
+
+display_label(Item, Label):-
+  weblogdemo:label(Item, Label), !.
+display_label(Item, Label):-
+  atom_concat('Oops, no display label found for ', Item, Label).
 
 
-% Messages
+
+% HELPERS %
+
+%! start_server(+Port:between(1000,9999)) is det.
+
+start_server(Port):-
+  var(Port), !,
+  setting(http:port, Port),
+  start_server(Port).
+start_server(Port):-
+  must_be(between(1000,9999), Port),
+  (   http_server_property(Port, start_time(StartTime))
+  ->  print_message(warning, server_running(Port,StartTime))
+  ;   % @tbd Uncommenting the following breaks the Google Maps demo.
+      %html_set_options([dialect(xhtml)]),
+      http_server(http_dispatch, [port(Port),timeout(3600)]),
+      at_halt(stop_server(Port)),
+      http_log('Starting weblog demo on port ~w~n', [Port]),
+      print_message(informational, server_started(Port))
+  ).
+
+
+%! stop_server(+Port:between(1000,9999)) is det.
+% Stops the Web server.
+
+stop_server(Port):-
+  (   must_be(between(1000,9999), Port),
+      http_server_property(Port, _)
+  ->  http_stop_server(Port, []),
+      print_message(informational, server_stopped(Port))
+  ;   true
+  ).
+
+
+
+% MESSAGES %
 
 :- multifile(prolog:message//1).
 
@@ -196,4 +181,3 @@ prolog:message(server_stopped(Port)) -->
 time(Time) -->
   {http_timestamp(Time, Text)},
   [Text].
-
