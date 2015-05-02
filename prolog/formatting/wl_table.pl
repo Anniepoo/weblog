@@ -1,64 +1,121 @@
-:- module(wl_table, [wl_direct_table//1,
-		     wl_table//2]).
+:- module(
+  wl_table,
+  [
+    wl_direct_table//1, % +Data:list(list)
+    wl_direct_table//2, % +Data:list(list)
+                        % +Options:list
+    wl_table//2
+  ]
+).
+
 /** <module>  Utilities for laying out HTML tables
 
 These are oriented towards presenting tables of data, not towards
 controlling layout
 
+@author Anne Ogborn
+@author Wouter Beek
 */
 
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
 :- use_module(library(http/http_wrapper), [http_current_request/1]).
 
-/**	wl_direct_table(+Data:listoflists)// is semidet
+:- html_meta(direct_table_body(+,+,+,+,html,?,?)).
+:- html_meta(direct_table_cells(+,+,html,?,?)).
+:- html_meta(direct_table_header(+,+,html,-,?,?)).
 
-	Given a list, each of whose members is either a list
-	or a term head(List), outputs an HTML table representing
-	the data.
+:- meta_predicate(html_call(2,?,?)).
+:- meta_predicate(html_call(3,+,?,?)).
+:- meta_predicate(wl_direct_table(+,:,?,?)).
 
-	Upon encountering a head(List) term the elements of List are
-	output in th tags.
+:- predicate_options(wl_direct_table//2, 2, [
+     attributes(+list),
+     caption(+callable),
+     cell(+callable),
+     indexed(+boolean),
+     maximum_number_of_rows(nonneg)
+   ]).
 
-	Bare lists are output as td tags
+is_meta(caption).
+is_meta(header).
 
-	fails silently if it can't parse the data
 
-	The generated html sets the class of body
-	rows to even or odd alternately to allow
-	alternate row styling
-*/
-wl_direct_table([]) --> [].
-wl_direct_table([H|T]) -->
-         html([table(\direct_table_body(1, [H|T]))]).
 
-direct_table_body(_, []) --> [].
-direct_table_body(RowNum, [H|T]) -->
-	 {
-	     is_list(H),
-	     NewRowNum is RowNum + 1,
-	     (	 0 =:= RowNum mod 2
-	     ->	 EvenOdd = even
-	     ;	 EvenOdd = odd
-	     )
-	 },
-         html(tr(class=EvenOdd, \direct_table_cells(td, H))),
-	 direct_table_body(NewRowNum, T).
-direct_table_body(RowNum, [head(HR)|T]) -->
-	direct_header_row(HR),
-	direct_table_body(RowNum, T).
+%! wl_direct_table(+Data:list(list))// is semidet.
+% @see wl_direct_table//2
 
-direct_header_row([]) --> [].
-direct_header_row([H|T]) -->
-	html(tr([\direct_table_cells(th, [H|T])])).
+wl_direct_table(Data) -->
+  wl_direct_table(Data, []).
 
-direct_table_cells(_, []) --> [].
-direct_table_cells(Tag, [H|T]) -->
-	{
-	   Cell =.. [Tag, H]
-	},
-	html([Cell]),
-	direct_table_cells(Tag, T).
+%! wl_direct_table(+Data:list(list), +Options:list)// is semidet.
+% Given a list, each of whose members is either a list
+% or a term head(List), outputs an HTML table representing the data.
+
+% Upon encountering a head(List) term the elements of List are
+% output as TH tags.
+%
+% Bare lists are output as TD tags,
+%
+% Fails silently if the data cannot be parsed.
+%
+% The generated HTML sets the class of body rows to even or odd
+% alternately to allow alternate row styling.
+
+wl_direct_table(Data0, Options0) -->
+  {
+    meta_options(is_meta, Options0, Options),
+    option(attributes(Attrs), Options, []),
+    option(caption(Caption), Options, _),
+    option(cell(Cell), Options, html),
+    option(indexed(Indexed), Options, false),
+    option(maximum_number_of_rows(Max), Options, inf)
+  }, !,
+  html(
+    table(Attrs, [
+      \table_caption(Caption),
+      \direct_table_header(Indexed, Data0, Cell, Data),
+      tbody(\direct_table_body(1, Max, Indexed, Data, Cell))
+    ])
+  ).
+
+direct_table_header(Indexed, [head(H)|T], Cell, T) --> !,
+  html(
+    thead(
+      tr([
+        \header_index_cell(Indexed),
+        \direct_table_cells(header, H, Cell)
+      ])
+    )
+  ).
+direct_table_header(_, T, _, T) --> html([]).
+
+direct_table_body(_, _, _, [], _) --> html([]).
+direct_table_body(Row, Max, Indexed, [H|T], Cell) -->
+  {
+    Row @=< Max,
+    (   0 =:= Row mod 2
+    ->  EvenOdd = even
+    ;   EvenOdd = odd
+    ),
+    NewRow is Row + 1
+  },
+  html(
+    tr(class=EvenOdd, [
+      \index_cell(Row, Indexed),
+      \direct_table_cells(data, H, Cell)
+    ])
+  ),
+  direct_table_body(NewRow, Max, Indexed, T, Cell).
+
+direct_table_cells(_, [], _) --> html([]).
+direct_table_cells(Tag, [H|T], Cell) -->
+  (   {Tag == data}
+  ->  html(td(\html_call(Cell, H)))
+  ;   {Tag == header}
+  ->  html(th(\html_call(Cell, H)))
+  ),
+  direct_table_cells(Tag, T, Cell).
 
 :- html_meta wl_table(3, +, ?, ?).
 
@@ -75,8 +132,8 @@ direct_table_cells(Tag, [H|T]) -->
 	DataGen is expected to be an arity 3 predicate
 	my_data_gen(Key, Column, Value)
 
-	wl_table outputs an HTML table showing the data
-	for all possible solutions to Key, Column
+	wl_table outputs a HTML table showing the data
+	for all possible solutions to pairs of Key and Column.
 
 	Note that if you want the keys you'll have to make sure
 	the key is included as a column name.
@@ -188,9 +245,57 @@ table_row(Key, [H|T], DataGen) -->
 	table_row(Key, T, DataGen).
 
 
-%
-%  which options require module resolution
-%
-is_meta(header).
+
+% HELPERS %
+
+%! header_index_cell(+Indexed:boolean)// is det.
+
+header_index_cell(true) --> html(th('#')).
+header_index_cell(false) --> html([]).
 
 
+%! index_cell(+Row:nonneg, +Indexed:boolean)// is det.
+
+index_cell(_, false) --> html([]).
+index_cell(Row, true) --> html(td(Row)).
+
+
+%! html_call(:Goal)// is det.
+
+html_call(NoGoal) -->
+  {\+ ground(NoGoal)}, !,
+  html([]).
+html_call(Goal, X, Y):-
+  call(Goal, X, Y).
+
+
+%! html_call(:Goal)// is det.
+
+html_call(NoGoal, _) -->
+  {\+ ground(NoGoal)}, !,
+  html([]).
+html_call(Goal, Arg, X, Y):-
+  call(Goal, Arg, X, Y).
+
+
+%! succ_inf(
+%!   +X:or([nonneg,oneof([inf])]),
+%!   -Y:or([nonneg,oneof([inf])])
+%! ) is det.
+
+succ_inf(inf, inf):- !.
+succ_inf(X, Y):- succ(X, Y).
+
+
+%! table_caption(:Caption)// is det.
+% Generates the HTML table caption,
+% where the content of the caption element is set by a DCG rule.
+%
+% @arg Caption A DCG rule generating the content of the caption element,
+%              or uninstantiated, in which case no caption is generated.
+
+table_caption(NoCaption) -->
+  {\+ ground(NoCaption)}, !,
+  html([]).
+table_caption(Caption) -->
+  html(caption(\html_call(Caption))).

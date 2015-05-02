@@ -20,10 +20,7 @@ table_handler(_Request) :-
     weblog_demo,
 	  title('Table Demo'),
 	  [
-	     style(
-'tr.even td, tr.even {
-	     background-color: #aaaaff;
-	    }'),
+	     style('tr.even td, tr.even { background-color: #aaaaff; }'),
 	     h1('Table Demo'),
 	     p('Table from nested list data'),
 	     \wl_direct_table([
