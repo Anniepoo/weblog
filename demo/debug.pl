@@ -1,12 +1,9 @@
-:- module(debug, []).
+/* Debug file
 
-/** <module> Debug file
+Load the **weblog** demo together with some developer tools
+and documentation.
 
-Consult this file to bring up **weblog**'s development environment.
-
-To run the **weblog** demo server:
-  - Query `query weblog_demo/0`
-  - Visit `http://localhost:4040`
+See load.pl for starting the demo.
 
 To run the SWI-Prolog documentation server (pldoc):
   - Query `pldoc/0`
@@ -16,17 +13,9 @@ To run the SWI-Prolog documentation server (pldoc):
 Released under the LGPL as part of the Weblog project.
 */
 
-% This library allows for exploiting the color and attribute facilities
-% of most modern terminals by using ANSI escape sequences.
-% The Windows console (swipl-win) does not (yet) support ANSI (color) codes.
-:- use_module(library(ansi_term)).
 :- use_module(library(portray_text)).
 
-:- use_module(load).
 :- use_module(load_pldoc_server).
-:- reexport(load_pldoc_server, [pldoc/0]).
-:- use_module(weblogdemo).
-:- reexport(weblogdemo, [weblog_demo/0]).
 
 % Assumes that lists of integers represent strings
 % and shows the characters with the corresponding codes.
@@ -57,14 +46,4 @@ portray_list_innerds([H|T]) :-
 % in case API keys are missing.
 :- debug(weblog).
 
-:- multifile prolog:message//1.
-
-prolog:message(weblog_banner) -->
-  ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'],
-  ['%                                           %\n'],
-  ['%    To run the pldoc server query pldoc.   %\n'],
-  ['% To run the weblog demo query weblog_demo. %\n'],
-  ['%                                           %\n'],
-  ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'].
-
-:- print_message(banner, weblog_banner).
+:- [load].
