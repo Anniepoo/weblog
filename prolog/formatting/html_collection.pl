@@ -56,7 +56,6 @@ The following class names are assigned (useful for styling):
 
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/html_pl_term)).
 :- use_module(weblog(support/html_meta)).
 
 :- meta_predicate(html_pair(3,+,+,?,?)).
@@ -128,7 +127,7 @@ html_collection_item(_, _, _, ItemWriter, H) -->
 % @see Wrapper around html_pair//3 using the default element writer.
 
 html_pair(E1, E2) -->
-  html_pair(html_pl_term, E1, E2).
+  html_pair(html, E1, E2).
 
 %! html_pair(:ItemWriter, +Element1, +Element2)// is det.
 % Generates an HTML representation for a pair.
@@ -142,7 +141,7 @@ html_pair(ItemWriter, E1, E2) -->
 % @see Wrapper around html_pairs//2 using the default element writer.
 
 html_pairs(L) -->
-  html_pairs(html_pl_term, L).
+  html_pairs(html, L).
 
 %! html_pairs(:ItemWriter, +Pairs:list(pair))// is det.
 
@@ -157,7 +156,7 @@ html_pairs(ItemWriter, [X-Y|T]) -->
 % @see Wrapper around html_quadruple//5 using the default element writer.
 
 html_quadruple(E1, E2, E3, E4) -->
-  html_quadruple(html_pl_term, E1, E2, E3, E4).
+  html_quadruple(html, E1, E2, E3, E4).
 
 %! html_quadruple(
 %!   :ItemWriter,
@@ -177,7 +176,7 @@ html_quadruple(ItemWriter, E1, E2, E3, E4) -->
 % @see Wrapper around html_set//2 using the default element writer.
 
 html_set(L) -->
-  html_set(html_pl_term, L).
+  html_set(html, L).
 
 %! html_set(:ItemWriter, +Items:list)// is det.
 
@@ -190,7 +189,7 @@ html_set(ItemWriter, L) -->
 % @see Wrapper around html_triple//4 that using the default element writer.
 
 html_triple(E1, E2, E3) -->
-  html_triple(html_pl_term, E1, E2, E3).
+  html_triple(html, E1, E2, E3).
 
 %! html_triple(:ItemWriter, +Element1, +Element2, +Element3)// is det.
 % Generates an HTML representation for a triple.
@@ -210,7 +209,7 @@ html_triple(ItemWriter, E1, E2, E3) -->
 % @see Wrapper around html_tuple//2 using the default element writer.
 
 html_tuple(L) -->
-  html_tuple(html_pl_term, L).
+  html_tuple(html, L).
 
 %! html_tuple(:ItemWriter, +Items:list)// is det.
 % Generates an HTML representation for a tuple.

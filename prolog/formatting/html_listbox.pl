@@ -19,7 +19,6 @@ Support for generating HTML drop-down lists.
 :- use_module(library(lists)).
 :- use_module(library(option)).
 
-:- use_module(weblog(formatting/html_pl_term)).
 :- use_module(weblog(support/html_meta)).
 
 :- predicate_options(html_listbox//2, 2, [

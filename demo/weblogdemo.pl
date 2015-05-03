@@ -48,6 +48,7 @@
 :- use_module(html_form_demo).
 :- use_module(google_map_demo).
 :- use_module(listbox_demo).
+:- use_module(list_demo).
 :- use_module(map_demo).
 :- use_module(menus_demo).
 :- use_module(table_demo).
@@ -113,6 +114,7 @@ index_page(_):-
 			       \demo_item(books)]),
 	    \abox('Formatting', [
 			       \demo_item(collection),
+			       \demo_item(list),
 			       \demo_item(listbox),
 			       \demo_item(wl_table),
 		               \demo_item(wl_windows)]),
