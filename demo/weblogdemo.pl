@@ -44,12 +44,13 @@
 :- use_module(clippy_demo).
 :- use_module(collection_demo).
 :- use_module(debug_demo).
+:- use_module(font_demo).
 :- use_module(geocoding_demo).
-:- use_module(html_form_demo).
 :- use_module(google_map_demo).
-:- use_module(listbox_demo).
-:- use_module(list_demo).
+:- use_module(html_form_demo).
 :- use_module(link_demo).
+:- use_module(list_demo).
+:- use_module(listbox_demo).
 :- use_module(map_demo).
 :- use_module(menus_demo).
 :- use_module(table_demo).
@@ -115,6 +116,7 @@ index_page(_):-
 			       \demo_item(books)]),
 	    \abox('Formatting', [
 			       \demo_item(collection),
+			       \demo_item(font),
 			       \demo_item(link),
 			       \demo_item(list),
 			       \demo_item(listbox),
