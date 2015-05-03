@@ -42,10 +42,12 @@
 :- use_module(books_demo).
 :- use_module(buttons_demo).
 :- use_module(clippy_demo).
+:- use_module(collection_demo).
 :- use_module(debug_demo).
 :- use_module(geocoding_demo).
 :- use_module(html_form_demo).
 :- use_module(google_map_demo).
+:- use_module(listbox_demo).
 :- use_module(map_demo).
 :- use_module(menus_demo).
 :- use_module(table_demo).
@@ -110,6 +112,8 @@ index_page(_):-
 			       \demo_item(buttons),
 			       \demo_item(books)]),
 	    \abox('Formatting', [
+			       \demo_item(collection),
+			       \demo_item(listbox),
 			       \demo_item(wl_table),
 		               \demo_item(wl_windows)]),
 	    \abox('Debug', [\demo_item(debug_demo),

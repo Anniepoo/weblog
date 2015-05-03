@@ -15,18 +15,20 @@ controlling layout
 
 @author Anne Ogborn
 @author Wouter Beek
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
 
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
 :- use_module(library(http/http_wrapper), [http_current_request/1]).
 
+:- use_module(weblog(support/html_meta)).
+
 :- html_meta(direct_table_body(+,+,+,+,html,?,?)).
 :- html_meta(direct_table_cells(+,+,html,?,?)).
 :- html_meta(direct_table_header(+,+,html,-,?,?)).
 
-:- meta_predicate(html_call(2,?,?)).
-:- meta_predicate(html_call(3,+,?,?)).
 :- meta_predicate(wl_direct_table(+,:,?,?)).
 
 :- predicate_options(wl_direct_table//2, 2, [
@@ -258,24 +260,6 @@ header_index_cell(false) --> html([]).
 
 index_cell(_, false) --> html([]).
 index_cell(Row, true) --> html(td(Row)).
-
-
-%! html_call(:Goal)// is det.
-
-html_call(NoGoal) -->
-  {\+ ground(NoGoal)}, !,
-  html([]).
-html_call(Goal, X, Y):-
-  call(Goal, X, Y).
-
-
-%! html_call(:Goal)// is det.
-
-html_call(NoGoal, _) -->
-  {\+ ground(NoGoal)}, !,
-  html([]).
-html_call(Goal, Arg, X, Y):-
-  call(Goal, Arg, X, Y).
 
 
 %! succ_inf(
