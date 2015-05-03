@@ -31,7 +31,7 @@ error(
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 
-:- use_module(weblog(formatting/html_list)).
+:- use_module(library(formatting/html_list)).
 
 
 

@@ -7,12 +7,12 @@
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
-:- use_module(weblog(resources/resources)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(library(http/js_write)).
 :- use_module(library(http/http_parameters)).
 
+:- use_module(library(resources/resources)).
 
 :- html_meta  ajaxify(1, html, ?, ?).
 

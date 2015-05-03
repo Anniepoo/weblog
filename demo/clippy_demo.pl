@@ -2,13 +2,12 @@
 /** <module>  Demo page for Clippy
 
 */
-% basic dispatch
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/html_write)).
-
-:- use_module(weblog(widgets/agents/clippy)).
-:- use_module(library(http/js_write)).
 :- use_module(library(http/html_head)).
+:- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/js_write)).
+
+:- use_module(library(widgets/agents/clippy)).
 
 :- http_handler(root(clippy), clippy_demo_page, [id(clippy)]).
 

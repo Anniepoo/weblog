@@ -6,7 +6,7 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/wl_windows)).
+:- use_module(library(formatting/wl_windows)).
 
 :- http_handler(root(wl_windows), windows_handler, [id(wl_windows)]).
 

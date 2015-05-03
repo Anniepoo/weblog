@@ -4,7 +4,8 @@
 :- use_module(library(http/http_error)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_session)).
-:- use_module(login_box).
+
+:- use_module(library(identity/login_prototype/login_box)).
 
 
 % Just so we can read the pldocs

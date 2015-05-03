@@ -3,7 +3,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/html_listbox)).
+:- use_module(library(formatting/html_listbox)).
 
 :- http_handler(root(listbox), listbox_page_handler, [id(listbox)]).
 

@@ -14,8 +14,8 @@ Reply = json([astergdem=192,lng=10.2,lat=50.01]).
 :- use_module(library(http/html_write)).
 :- use_module(library(uri)).
 
-:- use_module(weblog(info/api_key_support)).
-:- ensure_loaded(weblog(resources/resources)).
+:- use_module(library(info/api_key_support)).
+:- ensure_loaded(library(resources/resources)).
 
 % TBD - this has a defect. settings are per-module, but
 % we want all settings shared for geonames

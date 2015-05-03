@@ -15,8 +15,8 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(settings)).
 
-:- use_module(weblog(info/maps/google/gmap)).
-:- use_module(weblog(info/maps/leaflet/leafletmap)).
+:- use_module(library(info/maps/google/gmap)).
+:- use_module(library(info/maps/leaflet/leafletmap)).
 
 
 :- meta_predicate geo_map(1, ?, ?).

@@ -6,7 +6,8 @@
 */
 
 :- use_module(library(http/http_dispatch)).
-:- use_module(weblog(debug_page/debug_page)).
+
+:- use_module(library(debug_page/debug_page)).
 
 :- multifile(weblogdemo:label/2).
 weblogdemo:label(debug_demo, 'Debugging Tools').

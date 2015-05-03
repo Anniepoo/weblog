@@ -6,7 +6,7 @@
 :- use_module(library(http/html_head)).
 :- use_module(library(http/js_write)).
 
-:- ensure_loaded(weblog(resources/resources)).
+:- ensure_loaded(library(resources/resources)).
 
 /**     wl_menu(+ID)// is det
 

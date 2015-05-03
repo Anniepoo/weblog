@@ -13,8 +13,8 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(uri)).
 
-:- use_module(weblog(info/api_key_support)).
-:- ensure_loaded(weblog(resources/resources)).
+:- use_module(library(info/api_key_support)).
+:- ensure_loaded(library(resources/resources)).
 
 % this makes sure there's always a setting
 % weblog users - do NOT change this. Copy keys/googlekey.pl.example
@@ -49,7 +49,7 @@ init_gmap:-
   ).
 
 % needed for some coord calc stuff
-:- use_module(weblog(info/maps/map)).
+:- use_module(library(info/maps/map)).
 
 /**    gmap(+Generator:closure)// is det
 

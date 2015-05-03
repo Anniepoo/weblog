@@ -3,7 +3,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/html_list)).
+:- use_module(library(formatting/html_list)).
 
 :- http_handler(root(list), list_page_handler, [id(list)]).
 

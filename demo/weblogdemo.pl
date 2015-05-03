@@ -57,8 +57,8 @@
 :- use_module(testcontrols_demo).
 :- use_module(wl_windows_demo).
 
-:- use_module(weblog(debug_page/server_stats)).
-:- use_module(weblog(formatting/boxes)).
+:- use_module(library(debug_page/server_stats)).
+:- use_module(library(formatting/boxes)).
 
 % A weblog demo module must add a clause to this predicate
 % in order to appear on the weblog demo page.

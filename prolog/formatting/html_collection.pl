@@ -56,7 +56,7 @@ The following class names are assigned (useful for styling):
 
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(support/html_meta)).
+:- use_module(library(support/html_meta)).
 
 :- meta_predicate(html_pair(3,+,+,?,?)).
 :- meta_predicate(html_pairs(3,+,?,?)).

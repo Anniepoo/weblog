@@ -7,9 +7,10 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
-:- ensure_loaded(weblog(resources/resources)).
 
-:- use_module(weblog(nav/menu)).
+:- ensure_loaded(library(resources/resources)).
+
+:- use_module(library(nav/menu)).
 
 :- http_handler(root(menu), menu_demo_page, [id(menu)]).
 

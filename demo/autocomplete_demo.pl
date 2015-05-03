@@ -5,7 +5,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(html_form/autocomplete)).
+:- use_module(library(html_form/autocomplete)).
 
 :- http_handler(root(autocomplete), autocomplete_demo_page, [id(autocomplete)]).
 

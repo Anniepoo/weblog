@@ -6,7 +6,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(info/maps/map)).
+:- use_module(library(info/maps/map)).
 
 :- http_handler(root(map), map_handler, [id(map)]).
 

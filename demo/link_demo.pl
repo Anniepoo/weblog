@@ -3,7 +3,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/html_link)).
+:- use_module(library(formatting/html_link)).
 
 :- http_handler(root(link), link_page_handler, [id(link)]).
 

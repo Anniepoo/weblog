@@ -6,7 +6,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(nav/accordion)).
+:- use_module(library(nav/accordion)).
 
 :- http_handler(root(accordion), accordion_demo_page, [id(accordion)]).
 

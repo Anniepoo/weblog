@@ -22,7 +22,7 @@ Support for generating HTML lists.
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
 
-:- use_module(weblog(support/html_meta)).
+:- use_module(library(support/html_meta)).
 
 :- meta_predicate(html_def_list(+,:,?,?)).
 :- meta_predicate(html_def_list_item(3,+,?,?)).

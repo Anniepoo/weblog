@@ -23,10 +23,10 @@ init_weblog_demo:-
   source_file(init_weblog_demo, ThisFile),
   file_directory_name(ThisFile, ThisDirectory),
   assert(user:file_search_path(weblogtest, ThisDirectory)),
-  assert(user:file_search_path(weblog, weblogtest('../prolog'))),
-  assert(user:file_search_path(css, weblog('static/css'))),
-  assert(user:file_search_path(js, weblog('static/js'))),
-  assert(user:file_search_path(icons, weblog('static/icons'))).
+  assert(user:file_search_path(library, weblogtest('../prolog'))),
+  assert(user:file_search_path(css, library('static/css'))),
+  assert(user:file_search_path(js, library('static/js'))),
+  assert(user:file_search_path(icons, library('static/icons'))).
 :- init_weblog_demo.
 
 :- use_module(weblogdemo).

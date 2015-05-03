@@ -6,7 +6,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(info/books/google/books)).
+:- use_module(library(info/books/google/books)).
 
 :- http_handler(root(books), books_demo_page, [id(books)]).
 

@@ -15,11 +15,11 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(settings)).
 
-:- use_module(weblog(info/html/html_comments)).
-:- use_module(weblog(info/maps/map)). % Calculate coordinates.
-:- use_module(weblog(info/api_key_support)).
-:- use_module(weblog(support/javascript_utils)).
-:- ensure_loaded(weblog(resources/resources)).
+:- use_module(library(info/html/html_comments)).
+:- use_module(library(info/maps/map)). % Calculate coordinates.
+:- use_module(library(info/api_key_support)).
+:- use_module(library(support/javascript_utils)).
+:- ensure_loaded(library(resources/resources)).
 
 :- meta_predicate lmap(1, ?, ?).
 

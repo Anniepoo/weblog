@@ -27,7 +27,7 @@ and display them in HTML.
 
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/html_pl_term)).
+:- use_module(library(formatting/html_pl_term)).
 
 :- meta_predicate(html_call(3,+,?,?)).
 

@@ -23,7 +23,7 @@ controlling layout
 :- use_module(library(option)).
 :- use_module(library(http/http_wrapper), [http_current_request/1]).
 
-:- use_module(weblog(support/html_meta)).
+:- use_module(library(support/html_meta)).
 
 :- html_meta(direct_table_body(+,+,+,+,html,?,?)).
 :- html_meta(direct_table_cells(+,+,html,?,?)).

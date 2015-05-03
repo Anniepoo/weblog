@@ -7,7 +7,7 @@
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
 
-:- ensure_loaded(weblog(resources/resources)).
+:- ensure_loaded(library(resources/resources)).
 
 :- html_meta accordion(+, html, ?, ?).
 :- predicate_options(accordion//2, 1, [

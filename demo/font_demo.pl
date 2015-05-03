@@ -3,7 +3,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(info/fonts/google_fonts)).
+:- use_module(library(info/fonts/google_fonts)).
 
 :- http_handler(root(font), font_page_handler, [id(font)]).
 

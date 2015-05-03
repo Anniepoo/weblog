@@ -10,14 +10,14 @@
 */
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
-
-:- ensure_loaded(weblog(resources/resources)).
 :- use_module(library(http/js_write)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/json_convert)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_json)).
+
+:- ensure_loaded(library(resources/resources)).
 
 :- html_meta autocomplete(1, ?, ?).
 

@@ -3,7 +3,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(html_form/radio)).
+:- use_module(library(html_form/radio)).
 
 :- http_handler(root(testcontrols) ,
 		test_controls_page_handler,

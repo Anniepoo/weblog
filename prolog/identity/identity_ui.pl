@@ -5,7 +5,7 @@
 
 
 */
-:- use_module(weblog(identity/identity)).
+:- use_module(library(identity/identity)).
 
 
 /**	login_link(+Generator:callable)// is det

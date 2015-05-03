@@ -10,8 +10,9 @@
 
 */
 
-:- use_module(weblog(identity/stormpath/stormpath)).
 :- use_module(library(http/http_dispatch)).
+
+:- use_module(library(identity/stormpath/stormpath)).
 
 logged_in_as(Generator, Name, Role) -->
 	{
@@ -48,7 +49,8 @@ ensure_handler_exists(login, URI) :-
 login_handler(Request) :-
 	reply_html_page(weblog_login,
 			title('Log in'),
-			\login_form
+			\login_form(Request)
 		       ).
 
-
+login_form(_) -->
+  html('TODO').

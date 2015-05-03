@@ -8,7 +8,7 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_write)).
 
-:- use_module(weblog(formatting/wl_table)).
+:- use_module(library(formatting/wl_table)).
 
 :- http_handler(root(wl_table), table_handler, [id(wl_table)]).
 

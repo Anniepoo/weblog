@@ -8,8 +8,8 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_head)).
 
-:- use_module(weblog(info/maps/map)).
-:- use_module(weblog(info/geocoding/google/glatlong)).
+:- use_module(library(info/geocoding/google/glatlong)).
+:- use_module(library(info/maps/map)).
 
 :- http_handler(root(geocoding), geocoding_handler, [id(geocoding)]).
 

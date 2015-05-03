@@ -18,10 +18,10 @@
 
 */
 
-:- use_module(weblog(info/stock/crox/croxstock)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(dcg/basics)).
 
+:- use_module(library(info/stock/crox/croxstock)).
 
 /**     code_graticule(?Code:codes, ?Grat:graticule) is semidet
 
