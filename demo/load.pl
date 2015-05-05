@@ -22,14 +22,14 @@ init_weblog_demo:-
   % which swipl was called.
   source_file(init_weblog_demo, ThisFile),
   file_directory_name(ThisFile, ThisDirectory),
-  assert(user:file_search_path(weblogtest, ThisDirectory)),
-  assert(user:file_search_path(library, weblogtest('../prolog'))),
-  assert(user:file_search_path(css, library('static/css'))),
-  assert(user:file_search_path(js, library('static/js'))),
-  assert(user:file_search_path(icons, library('static/icons'))).
+  assert(user:file_search_path(wl_demo, ThisDirectory)),
+  assert(user:file_search_path(library, wl_demo('../prolog'))),
+  assert(user:file_search_path(css, library(wl/resource/css))),
+  assert(user:file_search_path(js, library(wl/resource/js))),
+  assert(user:file_search_path(icon, library(wl/resource/icon))).
 :- init_weblog_demo.
 
-:- use_module(weblogdemo).
+:- use_module(weblog_demo).
 
 :- multifile prolog:message//1.
 

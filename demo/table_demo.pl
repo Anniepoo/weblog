@@ -1,21 +1,27 @@
 :- module(table_demo, []).
 
-/** <module> Demo page for tables
+/** <module> Table demo
 
+Generates an HTML demo page for **Weblog** data tables.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
 
+:- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
-:- use_module(library(http/html_write)).
+:- use_module(library(wl/format/wl_table)).
 
-:- use_module(library(formatting/wl_table)).
-
-:- http_handler(root(wl_table), table_handler, [id(wl_table)]).
+:- http_handler(root(table), table_demo, [id(table)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(wl_table, 'Table Generation').
+weblogdemo:label(table, 'data tables').
 
-table_handler(_Request) :-
+
+
+table_demo(_):-
   Data = [
     head(['Name', 'Quiz1', 'Quiz2', 'Midterm', 'Final']),
     ['Abigail Ames', 73, 84, 92, 87],
@@ -23,7 +29,7 @@ table_handler(_Request) :-
     ['Charlie Clark', 99, 100, 89, 94]
   ],
 	reply_html_page(
-    weblog_demo,
+    wl_demo,
 	  title('Table Demo'),
 	  [
 	    style('tr.even td, tr.even { background-color: #aaaaff; }'),
@@ -114,7 +120,7 @@ next_handler(Request) :-
 				 ]),
 	Next is Page + 1,
 	reply_html_page(
-    weblog_demo,
+    wl_demo,
     title('Next!'),
 		[
 			p('Your number is ' , Page),

@@ -1,4 +1,0 @@
-% Obtain a Google map key from 
-% https://developers.google.com/maps/documentation/javascript/tutorial?hl=en#api_key
-
-setting(gmap:google_map_key, 'yourkeygoeshere').

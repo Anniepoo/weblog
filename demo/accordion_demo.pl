@@ -1,20 +1,27 @@
 :- module(accordion_demo, []).
-/** <module>  Demo handler for accordion
 
+/** <module> Accordion demo
+
+Generates an HTML demo page for the accordion component.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
-% basic dispatch
+
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
+:- use_module(library(wl/nav/accordion)).
 
-:- use_module(library(nav/accordion)).
-
-:- http_handler(root(accordion), accordion_demo_page, [id(accordion)]).
+:- http_handler(root(accordion), accordion_demo, [id(accordion)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(accordion, 'Accordion').
+weblogdemo:label(accordion, 'accordion menus').
 
-accordion_demo_page(_Request) :-
-	reply_html_page(weblog_demo, title('Accordion Demo'), \acc_demo_body).
+
+
+accordion_demo(_) :-
+	reply_html_page(wl_demo, title('Accordion Demo'), \acc_demo_body).
 
 acc_demo_body -->
 	html([

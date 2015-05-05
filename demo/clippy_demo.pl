@@ -1,21 +1,30 @@
 :- module(clippy_demo, []).
-/** <module>  Demo page for Clippy
 
+/** <module> Clippy demo
+
+Generates an HTML demo page for the Clippy agent.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
+
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/js_write)).
-
-:- use_module(library(widgets/agents/clippy)).
+:- use_module(library(wl/resource/jquery)).
+:- use_module(library(wl/widget/agent/clippy)).
 
 :- http_handler(root(clippy), clippy_demo_page, [id(clippy)]).
 
 :- multifile(weblogdemo:label/2).
 weblogdemo:label(clippy, 'Clippy').
 
+
+
 clippy_demo_page(_Request) :-
-	reply_html_page(weblog_demo, title('Clippy Demo'), \clippy_demo_body).
+	reply_html_page(wl_demo, title('Clippy demo'), \clippy_demo_body).
 
 clippy_demo_body -->
 	html([
@@ -37,4 +46,3 @@ function  dospeak() {
 	     ]).
 
 clippy_opts(character('Clippy')).
-

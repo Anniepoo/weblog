@@ -1,5 +1,0 @@
-% Obtain a geonames key from 
-% http://www.geonames.org/
-
-setting(geonames:geonames_username, 'yourkeygoeshere').
-

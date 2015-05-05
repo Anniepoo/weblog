@@ -1,34 +1,44 @@
 :- module(collection_demo, []).
 
+/** <module> Collection demo
+
+Generates an HTML demo page for **Weblog** collections (sets, tuples).
+
+@author Wouter Beek
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2015
+*/
+
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
+:- use_module(library(wl/format/wl_collection)).
 
-:- use_module(library(formatting/html_collection)).
-
-:- http_handler(root(collection), collection_page_handler, [id(collection)]).
+:- http_handler(root(collection), collection_demo, [id(collection)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(collection, 'Collection terms (sets, tuples)').
+weblogdemo:label(collection, 'collections (sets, tuples)').
 
-collection_page_handler(_):-
+
+
+collection_demo(_):-
   Data = [a,b,[c,d,[]]],
   reply_html_page(
-    weblog_demo,
+    wl_demo,
     title('Collections'),
     [
       h1('Collections'),
 
-      h2('Set'),
+      h2('Weblog set'),
       p('Prolog code:'),
-      \prolog_code(html_set, Data),
+      \prolog_code(wl_set, Data),
       p('HTML rendering:'),
-      \html_set(Data),
+      \wl_set(Data),
 
-      h2('Tuple'),
+      h2('Weblog tuple'),
       p('Prolog code:'),
-      \prolog_code(html_tuple, Data),
+      \prolog_code(wl_tuple, Data),
       p('HTML rendering:'),
-      \html_tuple(Data)
+      \wl_tuple(Data)
     ]
   ).
 

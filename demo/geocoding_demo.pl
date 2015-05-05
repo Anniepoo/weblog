@@ -1,32 +1,41 @@
 :- module(geocoding_demo, []).
-/** <module>  Demo handler for geocoding and gps
 
+/** <module> Geocoding demo
+
+Generates an HTML demo page for geocoding and GPS components.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
 
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/html_write)).
-:- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_head)).
+:- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_parameters)).
+:- use_module(library(wl/info/geocoding/google/glatlong)).
+:- use_module(library(wl/info/map/map)).
 
-:- use_module(library(info/geocoding/google/glatlong)).
-:- use_module(library(info/maps/map)).
+:- html_resource(wl_gps, [requires([js('wlgps.js'),virtual(true)])]).
 
-:- http_handler(root(geocoding), geocoding_handler, [id(geocoding)]).
+:- http_handler(root(geocoding), geocoding_demo, [id(geocoding)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(geocoding, 'Geocoding').
+weblogdemo:label(geocoding, 'geocoding').
 
-geocoding_handler(Request) :-
+
+
+geocoding_demo(Request) :-
 	http_parameters(Request, [
-	   loc(Address, [default('VNU University, Amsterdam, Netherlands')])
+	   loc(Address, [default('VU University Amsterdam (VUA), Netherlands')])
 				 ]),
 	gaddr_latlong(Address, FA, Type, _Bnds, Loc, _View),
 	reply_html_page(
-    weblog_demo,
+    wl_demo,
 	  title('GeoCoding Demo'),
 	  [
 	     style(
-'#gmap, #leafletmap {
+'#google_map, #leafletmap {
     width: 80%;
     height: 400px;
        }
@@ -45,7 +54,7 @@ geocoding_handler(Request) :-
 
 geocoding_handler(_Request) :-
 	reply_html_page(
-    weblog_demo,
+    wl_demo,
     title('Oops!'),
     [p('sorry, couldn\'t geocode that')]
   ).

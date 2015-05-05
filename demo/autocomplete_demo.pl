@@ -1,20 +1,28 @@
 :- module(autocomplete_demo, []).
-/** <module> Demo page for autocomplete widget
 
+/** <module> Auto-complete demo
+
+Generates an HTML demo page for the auto-completion widget.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
+
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
+:- use_module(library(wl/form/wl_autocomplete)).
 
-:- use_module(library(html_form/autocomplete)).
-
-:- http_handler(root(autocomplete), autocomplete_demo_page, [id(autocomplete)]).
+:- http_handler(root(autocomplete), autocomplete_demo, [id(autocomplete)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(autocomplete, 'Auto Complete').
+weblogdemo:label(autocomplete, 'auto-completion').
 
-autocomplete_demo_page(_Request) :-
-	reply_html_page(
-    weblog_demo,
+
+
+autocomplete_demo(_):-
+  reply_html_page(
+    wl_demo,
     title('Autocomplete Demo'),
     \autocomplete_demo_body
   ).

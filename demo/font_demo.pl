@@ -1,20 +1,28 @@
 :- module(font_demo, []).
 
+/** <module> Font demo
+
+Generates an HTML demo page for Google fonts.
+
+@author Wouter Beek
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2015
+*/
+
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
+:- use_module(library(wl/info/font/google_font)).
 
-:- use_module(library(info/fonts/google_fonts)).
-
-:- http_handler(root(font), font_page_handler, [id(font)]).
+:- http_handler(root(font), font_demo, [id(font)]).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(font, 'Fonts').
+weblogdemo:label(font, 'fonts').
 
-font_page_handler(_):-
+font_demo(_):-
   findall(Font, google_font(Font), Fonts0),
   random_sublist(Fonts, 10, Fonts0),
   reply_html_page(
-    weblog_demo,
+    wl_demo,
     title('Fonts'),
     [
       h1('Fonts'),

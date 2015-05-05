@@ -1,19 +1,21 @@
 :- module(debug_demo, []).
-/** <module>  The debug demo just redirects to the normal debug page
 
-     Though that may change some day.
+/** <module> Debug demo
 
+Loads the normal debug page as part of the **Weblog** demo.
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
 */
 
 :- use_module(library(http/http_dispatch)).
-
-:- use_module(library(debug_page/debug_page)).
+:- use_module(library(wl/page/debug_page)).
 
 :- multifile(weblogdemo:label/2).
-weblogdemo:label(debug_demo, 'Debugging Tools').
+weblogdemo:label(debug_demo, 'debug tools').
 
-:- http_handler(root(debugdemo) ,
-	http_redirect(moved_temporary,
-		      location_by_id(debug_page)),
-	[id(debug_demo)]).
-
+:- http_handler(
+  root(debug_demo),
+  http_redirect(moved_temporary, location_by_id(debug_page)),
+  [id(debug_demo)]
+).

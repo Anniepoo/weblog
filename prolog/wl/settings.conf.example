@@ -1,0 +1,23 @@
+/*
+This file contains the settings for *Weblog*.
+*/
+
+
+
+% @see Obtain a GeoNames key from http://www.geonames.org/
+
+setting(api_key(geonames), i_am_not_a_valid_key_paste_one_in_here).
+
+
+
+% @see Obtain a CloudMade key from
+%      http://support.cloudmade.com/answers/api-keys-and-authentication
+
+setting(api_key(cloudmade), i_am_not_a_valid_key_paste_one_in_here).
+
+
+
+% @see Obtain a Google key from
+%      https://developers.google.com/maps/documentation/javascript/tutorial?hl=en#api_key
+
+setting(api_key(google_map), i_am_not_a_valid_key_paste_one_in_here).
