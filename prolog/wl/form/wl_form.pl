@@ -107,7 +107,7 @@ login_form(Request) -->
 %  @param LandingReplyGoal is the handler for the landing page.
 %
 validated_form(FormReplyGoal, LandingReplyGoal) :-
-	debug(html_form, '=========~nFormReplyGoal:  ~w~n~nLandingReplyGoal:  ~w',
+	debug(wl_form, '=========~nFormReplyGoal:  ~w~n~nLandingReplyGoal:  ~w',
 	      [FormReplyGoal, LandingReplyGoal]),
 	setup_call_cleanup(
 	    setup_for_form,
@@ -137,7 +137,7 @@ setup_for_form :-
 %
 has_invalid_entries  :-
 	html_form:'$$form_validate'(validity(_, false)),
-	debug(html_form, 'form has invalid entries' , []),
+	debug(wl_form, 'form has invalid entries' , []),
 	!.
 
 %  error_message(+Options:list, :Html)// semidet
@@ -151,7 +151,7 @@ error_message(Options, _TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	   html_form:'$$form_validate'(validity(ForTerm, true)),
-	   debug(html_form, 'for=~w is valid', [ForTerm])
+	   debug(wl_form, 'for=~w is valid', [ForTerm])
 	},
 	[].
 
@@ -159,7 +159,7 @@ error_message(Options, TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	   html_form:'$$form_validate'(validity(ForTerm, false)),
-	   debug(html_form, 'for=~w is invalid', [ForTerm])
+	   debug(wl_form, 'for=~w is invalid', [ForTerm])
 	},
 	TermHtml.
 
@@ -167,7 +167,7 @@ error_message(Options, _TermHtml) -->
 	{
 	   memberchk(for=ForTerm, Options),
 	  \+ html_form:'$$form_validate'(validity(ForTerm, _)),
-	   debug(html_form, 'for=~w is unknown validity', [ForTerm])
+	   debug(wl_form, 'for=~w is unknown validity', [ForTerm])
 	},
 	html(p('No validity check for ' - ForTerm)).
 
@@ -175,7 +175,7 @@ error_message(Options, _TermHtml) -->
 error_message(Options, TermHtml) -->
 	{
 	    \+ memberchk(for=_, Options),
-	    debug(html_form,
+	    debug(wl_form,
 	      'Missing for= option in error_message(~w, ~w)',
 		  [Options, TermHtml])
 	},
@@ -200,7 +200,7 @@ form_field(Request, Validator, input(Attribs, Content)) -->
 	   call(Validator, Name, Value, Request),
 	   assert(html_form:'$$form_validate'(validity(Name, true))),
 	   filled_in_field(input(Attribs, Content), Value, FilledInField),
-	   debug(html_form, 'the form field ~w=~w validates', [Name, Value])
+	   debug(wl_form, 'the form field ~w=~w validates', [Name, Value])
 	},
 	html(FilledInField).
 
@@ -216,7 +216,7 @@ form_field(Request, Validator, input(Attribs, Content)) -->
 	   \+ call(Validator, Name, Value, Request),
 	   assert(html_form:'$$form_validate'(validity(Name, false))),
 	   filled_in_field(input(Attribs, Content), Value, FilledInField),
-	   debug(html_form, 'the form field ~w=~w does not validate', [Name, Value])
+	   debug(wl_form, 'the form field ~w=~w does not validate', [Name, Value])
 	},
 	html(FilledInField).
 
@@ -236,14 +236,14 @@ form_field(_Request, _Validator, input(Attribs, Content)) -->
 	 % but we need to make sure whole form is invalid
 	   assert(html_form:'$$form_validate'(
 			      validity('$$notreallyaname', false))),
-	   debug(html_form, 'the form field ~w=... does not validate', [Name])
+	   debug(wl_form, 'the form field ~w=... does not validate', [Name])
 	},
 	html(input(Attribs, Content)).
 
 form_field(_Request, _Validator, input(Attribs, Content)) -->
 	{
 	    \+ memberchk(name=_, Attribs),
-	    debug(html_form,
+	    debug(wl_form,
 		  'The form field input(~w, ~w) is missing name field',
 		  [Attribs, Content])
 	},

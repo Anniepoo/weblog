@@ -44,6 +44,7 @@ portray_list_innerds([H|T]) :-
 % Ensure that we print debug messages from weblog.
 % This is particularly important for communicating to the user
 % in case API keys are missing.
-:- debug(wl).
+:- debug(croxstock).
+:- debug(wl_form).
 
 :- [load].

@@ -1,10 +1,20 @@
 :- module(croxstock, [crstock_stats/4]).
-/** <module> Stock market stats (just the DJIA opening) from crox.net
 
+/** <module> Croxstock
+
+Stock market stats (just the DJIA opening) from crox.net
+
+@author Anne Ogborn
+@license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
+
+:- use_module(library(debug)).
 :- use_module(library(http/http_client)).
 
 :- dynamic stock_stat/4.
+
+
 
 /**   crstock_stats(+Market:atom, +Stat:atom, +Date:term, -Value:float) is semidet
 
@@ -32,7 +42,7 @@ crstock_stats(djia, opening, YY - MM - DD, Value) :-
 	number(Value),
 	!.
 crstock_stats(djia, opening, YY - MM - DD, Value) :-
-	debug(crstock, 'getting value for ~d ~d ~d', [YY, MM, DD]),
+	debug(croxstock, 'getting value for ~d ~d ~d', [YY,MM,DD]),
 	(   YY < 100 -> YYYY is YY + 2000 ; YYYY = YY),
 	format(atom(URL), 'http://geo.crox.net/djia/~d/~d/~d', [YYYY, MM, DD]),
 	http_get(URL, Reply, []),
