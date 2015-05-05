@@ -1,4 +1,9 @@
-:- module(wl_window, [wl_popup//3]).
+:- module(
+  wl_window,
+  [
+    wl_popup//3
+  ]
+).
 
 /** <module> Weblog window
 
@@ -12,7 +17,7 @@ Support for bringing up windows inside a Web page.
 :- use_module(library(http/html_write)).
 :- use_module(library(wl/resource/jquery)).
 
-:- html_meta popup(1, html, html, ?, ?).
+:- html_meta wl_popup(1,html,html,?,?).
 
 :- html_resource(
   js(wl_window),
