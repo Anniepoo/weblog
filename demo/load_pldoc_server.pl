@@ -13,10 +13,7 @@ Starts a server on localhost that disseminates **weblog**'s documentation.
 
 http:location(pldoc, root('help/source'), [priority(10)]).
 
-:- initialization(load_pldoc_server).
 
-load_pldoc_server:-
-  doc_server(4040).
 
 %! pldoc is det.
 %	Run the SWI-Prolog documentation server (pldoc) on port 4040
