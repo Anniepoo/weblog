@@ -2,7 +2,7 @@
 
 /** <module> Collection demo
 
-Generates an HTML demo page for **Weblog** collections (sets, tuples).
+Generates an HTML demo page for **WebLog** collections (sets, tuples).
 
 @author Wouter Beek
 @license Lesser General Public License Vers. 3, June 2007.
@@ -28,13 +28,13 @@ collection_demo(_):-
     [
       h1('Collections'),
 
-      h2('Weblog set'),
+      h2('WebLog set'),
       p('Prolog code:'),
       \prolog_code(wl_set, Data),
       p('HTML rendering:'),
       \wl_set(Data),
 
-      h2('Weblog tuple'),
+      h2('WebLog tuple'),
       p('Prolog code:'),
       \prolog_code(wl_tuple, Data),
       p('HTML rendering:'),

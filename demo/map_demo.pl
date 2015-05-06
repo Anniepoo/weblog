@@ -34,7 +34,7 @@ map_demo(_) :-
 	    h2('Really simple map'),
 	    \geo_map(simple),
 	    h2('Google Maps'),
-	    p('Weblog contributors'),
+	    p([b('WebLog'),' contributors']),
 	    \geo_map(gmap_info),
 	    h2('Leaflet'),
 	    p('VU University Amsterdam (VUA) campus'),

@@ -2,7 +2,7 @@
 
 /** <module> Table demo
 
-Generates an HTML demo page for **Weblog** data tables.
+Generates an HTML demo page for **WebLog** data tables.
 
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.

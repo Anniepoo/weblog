@@ -15,7 +15,7 @@
   ]
 ).
 
-/** <module> Weblog link
+/** <module> Links
 
 Support for generating various HTML links.
 

@@ -38,7 +38,7 @@
   ]
 ).
 
-/** <module> Weblog collections
+/** <module> Collections
 
 DCG rules for generating HTML descriptions of collections such as
 sets and tuples (including pairs, triples and quadruples).

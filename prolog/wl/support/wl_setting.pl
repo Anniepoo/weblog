@@ -6,9 +6,9 @@
   ]
 ).
 
-/** <module> Weblog settings
+/** <module> WebLog settings
 
-Loads an manages settings for Weblog.
+Loads an manages settings for WebLog.
 
 @author Wouter Beek
 @version 2015

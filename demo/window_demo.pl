@@ -2,7 +2,7 @@
 
 /** <module> Window demo
 
-Generates an HTML demo page for **Weblog** windows.
+Generates an HTML demo page for **WebLog** windows.
 
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.

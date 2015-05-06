@@ -1,26 +1,19 @@
-# widgets directory README
+Widgets directory
+=================
 
-This directory contains libs that display a 'widget' which does NOT
-fall into any of these categories:
+This directory contains modules for displaying Web widgets that do _not_ into one of the following categories:
+  
+  * Display of a type of information (those are in `/prolog/wl/info`)
+  
+  * Navigation (those are in `/prolog/wl/nav`)
+  
+  * Help arranging the page (those are in `/prolog/wl/format`)
 
-* Display of a type of information (those are in info)
-* Navigation (those are in nav)
-* Help arranging the page (those are in formatting)
+So far this category includes:
+  
+  $ Clippy :
+  A binding to **`clippy-js`**, a JavaScript implementation of the infamous Microsoft virtual agent.
+  
+  $ Configurator :
+  A tool for selecting options.
 
-So far this category includes
-
-* Clippy - a binding to clippy-js, a javascript implementation of the infamous Microsoft Agent
-* Configurator - a tool for selecting options
-
-
-
- 
- 
-
- 
- 
- 
- 
-
- 
- 

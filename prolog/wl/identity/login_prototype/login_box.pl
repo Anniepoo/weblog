@@ -6,7 +6,7 @@
 :- use_module(library(http/http_session)).
 :- use_module(library(http/http_dispatch)).
 
-/** <module> Login Box Weblog Pattern
+/** <module> Login Box WebLog Pattern
 
   This module implements predicates related to the login pattern.
   Closely related to user_database, register_box, logout_box.

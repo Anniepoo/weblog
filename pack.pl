@@ -7,5 +7,5 @@ maintainer('Anne Ogborn', 'anniepoo@yahoo.com').
 maintainer('Wouter Beek', 'me@wouterbeek.com').
 name(weblog).
 packager('Wouter Beek', 'me@wouterbeek.com').
-title('weblog').
+title('WebLog').
 version('0.0.6').

@@ -3,7 +3,7 @@
 		  abox//3
 		 ]).
 
-/** <module> Weblog box
+/** <module> Boxes
 
 Support for generating HTML boxes that curround content.
 

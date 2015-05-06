@@ -1,11 +1,11 @@
 /* Load file
 
-To run the **weblog** demo server:
+To run the **WebLog** demo server:
   - Query `query weblog_demo/0`
   - Visit `http://localhost:4040`
 
 @copyright Copyright (C) 2012, University of Houston.
-Released under the LGPL as part of the Weblog project.
+Released under the LGPL as part of the WebLog project.
 */
 
 % This library allows for exploiting the color and attribute facilities
@@ -37,7 +37,7 @@ prolog:message(weblog_banner) -->
   ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'],
   ['%                                           %\n'],
   ['%    To run the pldoc server query pldoc.   %\n'],
-  ['% To run the weblog demo query weblog_demo. %\n'],
+  ['% To run the WebLog demo query weblog_demo. %\n'],
   ['%                                           %\n'],
   ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'].
 

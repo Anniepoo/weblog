@@ -5,7 +5,7 @@
   ]
 ).
 
-/** <module> Weblog window
+/** <module> Windows and popups
 
 Support for bringing up windows inside a Web page.
 

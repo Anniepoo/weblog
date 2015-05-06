@@ -8,7 +8,7 @@
   ]
 ).
 
-/** <module> Weblog table
+/** <module> Data tables
 
 Utilities for generating and HTML tables containing data (not layout).
 

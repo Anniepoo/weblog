@@ -7,9 +7,9 @@
   ]
 ).
 
-/** <module> Weblog utilities
+/** <module> WebLog utilities
 
-Misc utilities useful with weblog
+Misc utilities useful with **WebLog**.
 
 This module should not become a kitchen sink.
 

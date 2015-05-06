@@ -2,7 +2,7 @@
 
 /** <module> Link demo
 
-Generates an HTML demo page for **Weblog** links.
+Generates an HTML demo page for **WebLog** links.
 
 @author Wouter Beek
 @license Lesser General Public License Vers. 3, June 2007.

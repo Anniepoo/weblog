@@ -4,7 +4,7 @@
 	    nc//3			% +Format, +Value, +Options
 	  ]).
 
-/** <module> Weblog number
+/** <module> WebLog number
 
 @author Jan Wielemaker
 @author Anne Ogborn

@@ -1,16 +1,13 @@
-weblog 
-======
+**WebLog**
+==========
 
-Web Library for [SWI-Prolog](http://www.swi-prolog.org).
-Rev 0.1.0
+A Web library for [SWI-Prolog](http://www.swi-prolog.org).
+Version 0.1.0
 
-Licensed under the Lesser General Public License Vers. 3, June 2007.
+Licensed under the Lesser General Public License Vers. 3, June 2007,
+see license.txt
 
-https://www.gnu.org/copyleft/lesser.html
-
-A copy of which should accompany this library.
-
-SWI-Prolog ships with an excellent Web framework.
+[SWI-Prolog](http://www.swi-prolog.org) ships with an excellent Web framework.
 This library builds on that work and provides additional predicates that ease doing common Web tasks.
 
 Some of the code is simply snippets that are extracted from SWI-Prolog related stuff, or other sources, but we have tried to extract everything to the point that it is a reasonable library.
@@ -44,8 +41,16 @@ Starting the demo
 The demo is started with the following:
 
 ```bash
-$ swipl debug.pl
-?* weblogdemo:weblog_demo
+$ swipl demo/debug.pl
+?- weblog_demo.
+```
+
+Reading the documentation
+-------------------------
+
+```bash
+$ swipl demo/debug.pl
+?- pldoc.
 ```
 
 
@@ -56,106 +61,63 @@ Libraries
 Every subdirectory of this library contains a `README.md` file that explains the contents of that directory.
 Here is an overview of the directories:
   
-  * `demo`
+  $ `'/demo'` :
   Every major module (ideally) has a demo page.
   Examining the demo code is often an excellent way to learn to use a feature.
   
-  * `docs`
-  Documentation for **weblog**.
+  $ `'/docs'` :
+  Documentation for **WebLog**.
   
-  * `prolog`
-    
-    * `prolog/format`
+  $ `'/prolog/wl'` :
+    $ `'/prolog/wl/format'` :
     Tools that assist with generating HTML elements such as tables, boxes, and other page layout elements.
     
-    * `prolog/html_form`
+    $ `'/prolog/wl/html_form'` :
     Tools for generating HTML forms with validation.
     
-    * `prolog/identity`
+    $ `'/prolog/wl/identity'` :
     Tools to make logging into a Web page easier (thanks Thanos!).
     For the moment this is a prototype (see `TODO.md`).
     
-    * `prolog/info`
+    $ `'/prolog/wl/info'` :
     Contains tools for displaying various sorts of information.
     This includes tools for displaying specific types of info, handling feeds (geohashing data, geocoding), and often a combination of those (e.g. twitter buttons).
     
-    * `prolog/nav`
+    $ `'/prolog/wl/nav'` :
     Navigation widgets such as menus, links, etc.
     
-    * `prolog/page`
+    $ `'/prolog/wl/page'` :
     Loading these modules causes your server to serve a couple of pages with useful debugging info.
     
-    * `prolog/resource`
+    $ `'/prolog/wl/resource'` :
     Resource definitions for other modules, such as definitions of commonly used JavaScript libraries.
     
-    * `prolog/support`
+    $ `'/prolog/wl/support'` :
     Utility bits that have generally been useful, such as utilities for HTML comments handling.
     
-    * `prolog/widget`
-
-Manifesto
-=========
-
-The library should remain bits and pieces you can use as you like, with little cost of inheriting **weblog** into a custom project of your own.
-For instance, if all you want is the accordion widget you should not have to change the way in which your project is coded in order to use it.
-
-The only real 'common' pieces are `/prolog/resources`, which defines the resource inclusion names and `/prolog/static` which holds the various bits of JavaScript that are needed by some of the widgets.
-For the moment a truly lean install of **weblog** might require a bit of picking through those.
-
-
-
-A Common Pattern
-================
-
-Web widgets often need a lot of rather trivial parameters for which there are often good defaults.
-A very common pattern for our widgets is to provide a closure which is called with a partially instantiated extra argument.
-The closure instantiates some variables that are handed over to the widget.
-This pattern gives the user flexibility.
-For simple use cases Prolog facts can be used as the closure.
-For more complex use cases one can describe rules.
- in 'family tree' style code.
-
-
-
-Contributing
-============
-
-We emphatically welcome contributions.
-Since this is more of a toolbox library than a unified framework, it is relatively easy to contribute bits and pieces.
-**Weblog** is an ambitious project, far beyond what one person can do.
-It is intended to be a kitchen sink project.
-It arose from collecting existing code written for various projects.
-
-Code should generally adhere to the following rules of guidance:
-  
-  * Follow [these style conventions](http://www.ai.uga.edu/mc/plcoding.pdf)
-    with the 'comma spacing by use' convention.
-  
-  * Code comments should generate reasonable pldoc.
-    See [this tutorial on using pldoc](http://www.pathwayslms.com/swipltuts/pldoc/), the SWI-Prolog documentation system.
-  
-  * Contributions should include a demo page.
-  
-  * So far the main controbutors have done a laughably bad job of following these rules themselves :-P
+    $ `'/prolog/wl/widget'` :
+    ...
 
 
 
 Contributors
 ============
 
-We want to thank the following folks:
+Please read the **WebLog** MANIFESTO.md before contributing.
+
+The list of current contributors:
   
-  * Anne Ogborn
-    HTML tables, forms, accordion, maps.
+  $ Anne Ogborn :
+  HTML tables, forms, accordion, maps.
   
-  * Thanos Tintinidis
+  $ Thanos Tintinidis :
   HTML login and validated forms.
   
-  * Jan Wielemaker
+  $ Jan Wielemaker :
   Original google maps code, underlying HTML and HTTP libraries and of course SWI-Prolog!
   
-  * University of Houston
+  $ University of Houston :
   Contributed the original library.
   
-  * [Wouter Beek](http://www.wouterbeek.com)
+  $ [Wouter Beek](http://www.wouterbeek.com) :
   Converted to Prolog package.

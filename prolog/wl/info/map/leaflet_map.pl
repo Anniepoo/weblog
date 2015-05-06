@@ -10,7 +10,7 @@
 A (for now) rudimentary leaflet maps component.
 
 Leaflet Maps requires a tile provider.
-**Weblog** supports the Cloudmade title provider.
+**WebLog** supports the Cloudmade title provider.
 
 ---
 

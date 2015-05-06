@@ -2,7 +2,7 @@
 
 /** <module> Radio demo
 
-Generates an HTML demo page for **Weblog** radio options.
+Generates an HTML demo page for **WebLog** radio options.
 
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.

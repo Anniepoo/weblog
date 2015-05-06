@@ -1,6 +1,6 @@
 /* Debug file
 
-Load the **weblog** demo together with some developer tools
+Load the **WebLog** demo together with some developer tools
 and documentation.
 
 See load.pl for starting the demo.
@@ -10,7 +10,7 @@ To run the SWI-Prolog documentation server (pldoc):
   - Visit `http://127.0.0.1:4040/help/source`
 
 @copyright Copyright (C) 2012, University of Houston.
-Released under the LGPL as part of the Weblog project.
+Released under the LGPL as part of the WebLog project.
 */
 
 :- use_module(library(portray_text)).
@@ -41,7 +41,7 @@ portray_list_innerds([H|T]) :-
 	write(','),
 	portray_list_innerds(T).
 
-% Ensure that we print debug messages from weblog.
+% Ensure that we print debug messages from WebLog.
 % This is particularly important for communicating to the user
 % in case API keys are missing.
 :- debug(croxstock).

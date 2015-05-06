@@ -2,7 +2,7 @@
 
 /** <module> Load pldoc server
 
-Starts a server on localhost that disseminates **weblog**'s documentation.
+Starts a server on localhost that disseminates **WebLog**'s documentation.
 */
 
 :- use_module(library(doc_http)).

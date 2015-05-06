@@ -5,14 +5,14 @@
   ]
 ).
 
-/** <module> Weblog Demo
+/** <module> WebLog Demo
 
 This code is based on:
   * Installer for Cogbot
   * HHP Virtual Web Application
 
 Architecture:
-   This is an http server. It serves a demo of weblog.
+   This is an http server. It serves a demo of WebLog.
 This module contains preds for overall server control
 
 @author Anne Ogborn
@@ -61,8 +61,8 @@ This module contains preds for overall server control
 
 :- html_resource(css('demo.css'), []).
 
-% A weblog demo module must add a clause to this predicate
-% in order to appear on the weblog demo page.
+% A WebLog demo module must add a clause to this predicate
+% in order to appear on the WebLog demo page.
 :- multifile(weblogdemo:label/2).
 
 :- http_handler(root(.) , redir_to_index, [id(indexroot)]).
@@ -97,15 +97,15 @@ redir_to_index(Request):-
 	http_redirect(moved_temporary, location_by_id(index), Request).
 
 %! index_page(+Request:list) is det.
-% Replies with a HTML page enumerating the **weblog** demos.
+% Replies with a HTML page enumerating the **WebLog** demos.
 
 index_page(_):-
   reply_html_page(
     wl_demo,
-    title('Weblog Demo'),
+    title('WebLog Demo'),
     [
       \html_requires(css('demo.css')),
-      h1('Weblog demo page'),
+      h1('WebLog demo page'),
       \abox('Input', [
         \demo_item(ajaxify),
         \demo_item(form),
@@ -176,7 +176,7 @@ start_server(Port):-
       %html_set_options([dialect(xhtml)]),
       http_server(http_dispatch, [port(Port),timeout(3600)]),
       at_halt(stop_server(Port)),
-      http_log('Starting weblog demo on port ~w~n', [Port]),
+      http_log('Starting WebLog demo on port ~w~n', [Port]),
       print_message(informational, server_started(Port))
   ).
 
@@ -203,9 +203,9 @@ prolog:message(server_running(Port,StartTime)) -->
   time(StartTime),
   [').'].
 prolog:message(server_started(Port)) -->
-  ['The weblog demo server started on port ~w.'-[Port]].
+  ['The WebLog demo server started on port ~w.'-[Port]].
 prolog:message(server_stopped(Port)) -->
-  ['The weblog demo server at port ~d has stopped.'-[Port]].
+  ['The WebLog demo server at port ~d has stopped.'-[Port]].
 
 time(Time) -->
   {http_timestamp(Time, Text)},

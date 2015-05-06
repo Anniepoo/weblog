@@ -2,7 +2,7 @@
 
 /** <module> Debug demo
 
-Loads the normal debug page as part of the **Weblog** demo.
+Loads the normal debug page as part of the **WebLog** demo.
 
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.

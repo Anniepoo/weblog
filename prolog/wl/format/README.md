@@ -12,16 +12,3 @@ In short, if you're wondering whether something belongs here or in nav,
 if it's primary purpose is to navigate around the site, it belongs in nav.
 If it's primary purpose is to deal with a lack of screen real estate
 or to help layout a page, it belongs here.
-
-Yes, that's vague.
-
-Current modules:
-  
-  * wl_box.pl
-  Supports visual boxes on screen with headers.
-  
-  * wl_tab.pl
-  Support for slideout tabs.
-  
-  * wl_table.pl
-  Support for tables of data.

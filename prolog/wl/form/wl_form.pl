@@ -11,7 +11,7 @@
   ]
 ).
 
-/**  <module> HTML form validator
+/** <module> Server-side validation for form submissions
 
 This module handles the common web task of creating a form,
 validating the input, and, if not valid, redirecting the user
@@ -76,9 +76,12 @@ login_form(Request) -->
 					       ....]
 ==
 
+---
+
 @author Anne Ogborn
 @copyright Copyright (c) 2012, University of Houston all rights reserved.
 @license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
 
 :- use_module(library(http/http_parameters)).

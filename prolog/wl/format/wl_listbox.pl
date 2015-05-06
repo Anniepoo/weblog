@@ -7,7 +7,7 @@
   ]
 ).
 
-/** <module> Weblog listbox
+/** <module> Listboxes
 
 Support for generating HTML drop-down lists.
 

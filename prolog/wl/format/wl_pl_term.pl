@@ -7,7 +7,7 @@
   ]
 ).
 
-/** <module> Weblog Prolog term
+/** <module> Prolog terms
 
 Generates simple HTML representations for Prolog terms.
 

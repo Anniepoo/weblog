@@ -2,17 +2,20 @@
 			    image_radio_set//1
 			   ]).
 
-/**  <module>  Radio buttons
+/** <module> (Sets of) radio buttons with images
 
 Support for generating sets of HTML radio buttons.
 
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.
+@version 2013-2015
 */
 
 :- use_module(library(http/html_write)).
 
 :- meta_predicate image_radio_set(1, ?, ?).
+
+
 
 %! image_radio_set(+Generator:goal)// is det
 % Creates a set of radio buttons with images instead of the default rendering.

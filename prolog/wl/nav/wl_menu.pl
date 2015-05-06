@@ -1,6 +1,6 @@
 :- module(wl_menu, [wl_menu//1]).
 
-/**  <module> Weblog menu
+/**  <module> WebLog menu
 
 Support for the jQueryUI menu widget.
 

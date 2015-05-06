@@ -3,7 +3,7 @@ info/maps directory
 
 This directory contains modules that are useful for displaying maps.
 
-**Weblog** supports several map providers:
+**WebLog** supports several map providers:
   
   * Google Maps
 

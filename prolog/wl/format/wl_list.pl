@@ -10,7 +10,7 @@
   ]
 ).
 
-/** <module> Weblog list
+/** <module> Description, ordered and unordered lists
 
 Support for generating HTML lists.
 

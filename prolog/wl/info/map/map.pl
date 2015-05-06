@@ -4,7 +4,7 @@
 	    average_geopoints/2
 	  ]).
 
-/**  <module> Weblog maps
+/**  <module> WebLog maps
 
 A  provider-neutral maps component.
 
