@@ -83,7 +83,7 @@ ajaxify_broadcast(Name, return, HTML) -->
   html(OHTML),
   html(\js_script(
        {|javascript(PID, Name)||
-	    $(PID).keyup(event, function() {
+	    $(PID).keyup(function(event) {
 	        if ( event.which == 13 ) {
 		    ajaxify.talk(Name);
                     event.preventDefault();
