@@ -34,6 +34,8 @@ error(
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(wl/format/wl_list)).
 
+:- html_meta(handle_id_link(+,+,html,?,?)).
+
 
 
 %! wl_pl_term(@Term)// is det.
@@ -55,7 +57,7 @@ wl_pl_term(HandleId, callable(Module,Callable)) --> !,
   {compound_name_arity(Callable, Functor, Arity)},
   wl_pl_predicate(HandleId, Module:Functor/Arity).
 % Error term.
-wl_pl_term(HandleId, exception(Exception)) -->
+wl_pl_term(HandleId, exception(Exception)) --> !,
   wl_pl_error(HandleId, Exception).
 % File.
 wl_pl_term(_, file(File)) --> !,
@@ -391,10 +393,6 @@ wl_pl_error_mode(Mode) -->
   html(span(class=mode, Mode)).
 
 
-wl_pl_error_status_code(StatusCode) -->
-  html(span(class=status_code, StatusCode)).
-
-
 wl_pl_error_stream(Stream) -->
   {with_output_to(atom(Atom), write_canonical(Stream))},
   html(span(class=stream, Atom)).
@@ -430,14 +428,13 @@ wl_pl_how(HandleId, Module, How) -->
     ])
   ).
 wl_pl_how(HandleId, Module, How) -->
-  {
-    How =.. [HowClass,Line],
-    http_link_to_id(HandleId, [line(Line),module(Module)], Uri)
-  },
+  {How =.. [HowClass,Line]},
   html(
     span(class=how, [
       \wl_pl_how_class(HowClass),
-      span(class=line, a(href=Uri, Line))
+      span(class=line,
+        \handle_id_link(HandleId, [line(Line),module(Module)], html(Line))
+      )
     ])
   ).
 
@@ -451,9 +448,15 @@ wl_pl_integer(Format, Integer) -->
   html(span(class=integer, FormattedInteger)).
 
 
+wl_pl_module(_, Module) -->
+  {var(Module)}, !,
+  html([]).
 wl_pl_module(HandleId, Module) -->
-  {http_link_to_id(HandleId, [module(Module)], Uri)},
-  html(span(class=module, a(href=Uri, Module))).
+  html(
+    span(class=module,
+      \handle_id_link(HandleId, [module(Module)], html(Module))
+    )
+  ).
 
 
 wl_pl_nested_predicate_sequence(_, []) --> [].
@@ -468,42 +471,53 @@ wl_pl_nested_predicate_sequence(HandleId, [H|T]) -->
 
 
 wl_pl_operator(HandleId, Module, op(Precedence,Type,Name)) -->
-  {
-    http_link_to_id(
-      HandleId,
-      [operator(Module:op(Precedence,Type,Name))],
-      Uri
-    )
-  },
   html(
     span(class=operator, [
       \wl_pl_module(HandleId, Module),
       ':',
-      a(href=Uri, [
-        'op(',
-        span(class=operator_precedence, Precedence),
-        ',',
-        span(class=operator_type, Type),
-        ',',
-        span(class=operator_name, \wl_pl_term(HandleId, Name)),
-        ')'
-      ])
+      \handle_id_link(
+        HandleId,
+        [operator(Module:op(Precedence,Type,Name))],
+        html([
+          'op(',
+          span(class=operator_precedence, Precedence),
+          ',',
+          span(class=operator_type, Type),
+          ',',
+          span(class=operator_name, \wl_pl_term(HandleId, Name)),
+          ')'
+        ])
+      )
     ])
   ).
 
 
-wl_pl_predicate(HandleId, Module:Functor/Arity) -->
-  wl_pl_predicate(HandleId, Module, Functor, Arity).
-
-wl_pl_predicate(HandleId, Module, Functor/Arity) -->
-  wl_pl_predicate(HandleId, Module, Functor, Arity).
-
-wl_pl_predicate(HandleId, Module, Functor, Arity) -->
-  {http_link_to_id(HandleId, [predicate(Module:Functor/Arity)], Uri)},
+wl_pl_predicate(HandleId, Module:Functor/Arity) --> !,
   html(
     span(class=predicate, [
       \wl_pl_module(HandleId, Module),
       ':',
-      a(href=Uri, \wl_pl_functor_and_arity(Functor, Arity))
+      \handle_id_link(
+        HandleId,
+        [predicate(Module:Functor/Arity)],
+        html(\wl_pl_functor_and_arity(Functor, Arity))
+      )
     ])
   ).
+wl_pl_predicate(HandleId, Functor/Arity) -->
+  html(
+    span(class=predicate, [
+      \handle_id_link(
+        HandleId,
+        [predicate(Functor/Arity)],
+        html(\wl_pl_functor_and_arity(Functor, Arity))
+      )
+    ])
+  ).
+
+handle_id_link(HandleId, _, Content) -->
+  {var(HandleId)}, !,
+  html(Content).
+handle_id_link(HandleId, Params, Content) -->
+  {http_link_to_id(HandleId, Params, Uri)},
+  html(a(href=Uri, Content)).

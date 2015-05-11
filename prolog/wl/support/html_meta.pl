@@ -89,6 +89,6 @@ html_call(Goal, Arg1, Arg2, Arg3, X, Y):-
 html_catch(Goal, X, Y):-
   catch(
     call(Goal, X, Y),
-    Exception,
-    call(wl_pl_term(Exception), X, Y)
+    Error,
+    call(wl_pl_term(exception(Error)), X, Y)
   ).

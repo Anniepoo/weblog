@@ -1,27 +1,51 @@
 /*
-     CSS for the Weblog Demo
-     
-     Note - nothing should be in here that is needed generally,
-     that should go in weblog.css
+CSS for the WebLog Demo
+
+Note that nothing should be in here that is needed generally.
+Needed parts should go in `weblog.css`.
 */
-tr.even td, tr.even {
-	     background-color: #aaaaff;
-	    }
-        
+
 .abox.header {
-    background-color: #8888ff;
-    color: #000000;
-    align: center;
-    margin-bottom: 0px;
+  background-color: #8888ff;
+  color: #000000;
+  align: center;
+  margin-bottom: 0px;
 }
 
 .abox.content {
-    margin-top: 0px;
-    align: center;
-    border: 1px solid #8888ff;
-    margin-bottom: 24px;
+  margin-top: 0px;
+  align: center;
+  border: 1px solid #8888ff;
+  margin-bottom: 24px;
+}
+
+.action {
+  font-weight: bold;
+}
+
+.error,
+.fail {
+  background-color: LightCoral;
+}
+
+.error_kind {
+  color: Maroon;
+  font-weight: bold;
+}
+
+.exit_status_code,
+.file,
+.max_errors,
+.mime,
+.program {
+  font-family: monospace;
 }
 
 p {
-    margin: 0px;
+  margin: 0px;
+}
+
+tr.even td,
+tr.even {
+  background-color: #aaaaff;
 }

@@ -49,6 +49,7 @@ This module contains preds for overall server control
 :- use_module(debug_demo).
 :- use_module(font_demo).
 :- use_module(geocoding_demo).
+:- use_module(html_catch_demo).
 :- use_module(html_form_demo).
 :- use_module(link_demo).
 :- use_module(list_demo).
@@ -80,7 +81,13 @@ This module contains preds for overall server control
 
 user:head(wl_demo, Content) -->
   {http_absolute_location(icon('favicon.ico'), Icon, [])},
-  html(head([\wl_favicon(Icon),Content])).
+  html(
+    head([
+      \wl_favicon(Icon),
+      \html_requires(css('demo.css')),
+      Content
+    ])
+  ).
 
 user:body(wl_demo, Content) -->
   html(body([nav(a(href='index.htm','Back to index')),Content])).
@@ -112,7 +119,6 @@ index_page(_):-
     wl_demo,
     title('WebLog Demo'),
     [
-      \html_requires(css('demo.css')),
       h1('WebLog demo page'),
       \abox('Input', [
         \demo_item(ajaxify),
@@ -129,6 +135,7 @@ index_page(_):-
       \abox('Formatting', [
         \demo_item(collection),
         \demo_item(font),
+        \demo_item(html_catch),
         \demo_item(link),
         \demo_item(list),
         \demo_item(listbox),

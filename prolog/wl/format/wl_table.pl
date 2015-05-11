@@ -31,12 +31,12 @@ Utilities for generating and HTML tables containing data (not layout).
   direct_table_header(+,+,html,-,?,?).
 
 :- predicate_options(wl_direct_table//2, 2, [
-     attributes(+list),
-     caption(+callable),
-     cell(+callable),
-     indexed(+boolean),
-     maximum_number_of_rows(nonneg)
-   ]).
+  attributes(+list),
+  caption(+callable),
+  cell(+callable),
+  indexed(+boolean),
+  maximum_number_of_rows(nonneg)
+]).
 
 is_meta(caption).
 is_meta(header).
@@ -120,10 +120,11 @@ direct_table_cells(Tag, [H|T], Cell) -->
 
 :- html_meta wl_table(3, +, ?, ?).
 
-:- predicate_options(wl_table/4, 2,
-		     [ header(goal),
-		       columns(list),
-		       rows(list) ]).
+:- predicate_options(wl_table/4, 2, [
+  columns(+list),
+  header(+callable),
+  rows(+list)
+]).
 
 /**	wl_table(+DataGen:goal, +OptionListIn:list)// is semidet
 

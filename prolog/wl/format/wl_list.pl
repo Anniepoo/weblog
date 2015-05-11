@@ -32,6 +32,14 @@ Support for generating HTML lists.
   wl_list_item(+,3,+,?,?),
   wl_list_items(+,3,+,?,?).
 
+:- predicate_options(wl_def_list//2, 2, [
+  item_writer(+callable)
+]).
+:- predicate_options(wl_list//2, 2, [
+  item_writer(+callable),
+  ordered(+boolean)
+]).
+
 is_meta(item_writer).
 
 

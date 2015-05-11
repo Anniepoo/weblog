@@ -15,13 +15,13 @@ Generates accordion-style navigational elements.
 :- html_meta accordion(+, html, ?, ?).
 
 :- predicate_options(accordion//2, 1, [
-	collapsible(boolean),
-	inactive(text),
-	active(text),
-	height(oneof([fill, content])),
-	hoverintent(boolean),
-	sortable(boolean)
-	       ]).
+	active(+text),
+	collapsible(+boolean),
+	height(+oneof([fill,content])),
+	hoverintent(+boolean),
+	inactive(+text),
+	sortable(+boolean)
+]).
 
 /**	accordion(+Options:list, +HTML:html)// is det
 

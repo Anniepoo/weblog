@@ -26,9 +26,9 @@ Support for generating HTML drop-down lists.
   wl_options(3,+,?,?).
 
 :- predicate_options(wl_listbox//2, 2, [
-     attributes(+list),
-     item_writer(+callable)
-   ]).
+  attributes(+list),
+  item_writer(+callable)
+]).
 
 is_meta(item_writer).
 
