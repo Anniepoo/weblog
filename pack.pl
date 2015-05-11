@@ -8,4 +8,4 @@ maintainer('Wouter Beek', 'me@wouterbeek.com').
 name(weblog).
 packager('Wouter Beek', 'me@wouterbeek.com').
 title('WebLog').
-version('0.0.6').
+version('0.1.0').

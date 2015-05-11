@@ -7,8 +7,12 @@
 
 Support for generating HTML boxes that curround content.
 
+---
+
 @author Anne Ogborn
 @license Lesser General Public License Vers. 3, June 2007.
+@see wl_box.md for a related discussion.
+@version 2013-2015
 */
 
 :- use_module(library(http/html_write)).

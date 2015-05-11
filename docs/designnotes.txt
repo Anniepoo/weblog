@@ -1,9 +1,10 @@
-# Design notes for weblog
+# Design notes for WebLog
 
 ## Questions
 
-Q: How does things like hierarchical nav work with
-generated content? e.g. the manual pages on the swipl site
+Q: How does things like hierarchical navigation work with
+generated content? e.g. the manual pages on the
+[SWI-Prolog Web site](http://www.swi-prolog.org/).
 A: The meta info is on a separate predicate, there's no reason
 that pred can't be complex. Certainly the handler meta pred
 itself should handle 'prefix'.
@@ -131,5 +132,3 @@ Labels
 #### syntax error flag
 
 errors discovered during generation of page should produce a callout box describing error on the generation page, not a failure.
-
- 
