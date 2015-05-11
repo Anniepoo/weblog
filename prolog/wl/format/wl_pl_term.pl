@@ -140,7 +140,7 @@ wl_pl_term(HandleId, Term) -->
 
 exit_status_reason(Status) -->
   (   {exit_code_reason(Status, Reason)}
-  ->  html(span(class=exit_status_reason, Reason))
+  ->  html(span(class='exit-status-reason', Reason))
   ;   html([])
   ).
 
@@ -172,8 +172,11 @@ wl_pl_error(HandleId, error(Formal,Context)) -->
   {Formal =.. [ErrorKind|_]},
   html(
     div(class=error, [
-      div(class=error_kind, ErrorKind),
-      div(class=error_formal, \wl_pl_error_formal(Formal)),
+      div(class='error-kind', ErrorKind),
+      div(class='error-formal', [
+        h3('Error formal:'),
+        \wl_pl_error_formal(Formal)
+      ]),
       \wl_pl_error_context(HandleId, Context)
     ])
   ).
@@ -189,21 +192,28 @@ wl_pl_error_context(_, VAR) -->
 wl_pl_error_context(HandleId, context(Predicates,Msg)) -->
   {is_list(Predicates)}, !,
   html(
-    div(class=context, [
+    div(class='error-context', [
+      h3('Error context:'),
       \wl_pl_nested_predicate_sequence(HandleId, Predicates),
       \wl_pl_error_message(Msg)
     ])
   ).
 wl_pl_error_context(HandleId, context(Predicate,Msg)) -->
   html(
-    div(class=context, [
+    div(class='error-context', [
+      h3('Error context:'),
       \wl_pl_predicate(HandleId, Predicate),
       \wl_pl_error_message(Msg)
     ])
   ).
 wl_pl_error_context(_, Context) -->
   {atom(Context)}, !,
-  html(span(class=context, Context)).
+  html(
+    span(class='error-context', [
+      h3('Error context:'),
+      Context
+    ])
+  ).
 
 
 wl_pl_error_formal(VAR) -->
@@ -211,7 +221,7 @@ wl_pl_error_formal(VAR) -->
 % Domain error.
 wl_pl_error_formal(domain_error(Type,Term)) -->
   html(
-    span(class=domain_error, [
+    span(class='domain-error', [
       'The term',
       \wl_pl_error_term(Term),
       'is of the proper type (i.e., ',
@@ -222,7 +232,7 @@ wl_pl_error_formal(domain_error(Type,Term)) -->
 % Existence error.
 wl_pl_error_formal(existence_error(Type,Term)) -->
   html(
-    span(class=existence_error, [
+    span(class='existence-error', [
       'Term ',
       \wl_pl_error_term(Term),
       ' is of the proper type (i.e., ',
@@ -234,7 +244,7 @@ wl_pl_error_formal(existence_error(Type,Term)) -->
 % IO error.
 wl_pl_error_formal(io_error(Mode,Stream)) -->
   html(
-    span(class=io_error, [
+    span(class='io-error', [
       \wl_pl_error_mode(Mode),
       \wl_pl_error_stream(Stream)
     ])
@@ -242,7 +252,7 @@ wl_pl_error_formal(io_error(Mode,Stream)) -->
 % Instantiation error.
 wl_pl_error_formal(instantiation_error) -->
   html(
-    span(class=instantiation_error, [
+    span(class='instantiation-error', [
       'Some terms are under-instantiated.',
       ' I.e. they are not acceptable as is,',
       ' but if some variables were bound to appropriate values ',
@@ -251,7 +261,7 @@ wl_pl_error_formal(instantiation_error) -->
   ).
 wl_pl_error_formal(instantiation_error(Term)) -->
   html(
-    span(class=instantiation_error, [
+    span(class='instantiation-error', [
       'Term ',
       \wl_pl_error_term(Term),
       ' is under-instantiated. I.e. it  is not acceptable as is,',
@@ -262,16 +272,16 @@ wl_pl_error_formal(instantiation_error(Term)) -->
 % Limit exceeded.
 wl_pl_error_formal(limit_exceeded(max_errors,Max)) -->
   html(
-    span(class=limit_exceeded, [
+    span(class='limit-exceeded', [
       'Limit exceeded. Maximum number of errors (i.e., ',
-      span(class=max_errors, Max),
+      span(class='max-errors', Max),
      ') reached.'
     ])
   ).
 % MIME error.
 wl_pl_error_formal(mime_error(_,MustBe,Is)) -->
   html(
-    span(class=mime_error, [
+    span(class='mime-error', [
       'Must be ',
       span(class=mime, MustBe),
       ' not ',
@@ -281,7 +291,7 @@ wl_pl_error_formal(mime_error(_,MustBe,Is)) -->
 % Permission error.
 wl_pl_error_formal(permission_error(Action,Type,Term)) -->
   html(
-    span(class=permission_error, [
+    span(class='permission-error', [
       \wl_pl_error_action(Action),
       \wl_pl_error_type(Type),
       \wl_pl_error_term(Term)
@@ -289,7 +299,7 @@ wl_pl_error_formal(permission_error(Action,Type,Term)) -->
   ).
 wl_pl_error_formal(permission_error(Action,Type,Term)) -->
   html(
-    span(class=permission_error, [
+    span(class='permission-error', [
       'It is not allowed to perform action ',
       \wl_pl_error_action(Action),
       ' on the object ',
@@ -302,12 +312,12 @@ wl_pl_error_formal(permission_error(Action,Type,Term)) -->
 % Process error.
 wl_pl_error_formal(process_error(Program,exit(Status))) -->
   html(
-    span(class=process_error, [
+    span(class='process-error', [
      'Process error: ',
       span(class=program, Program),
       ' exited with status ',
-      span(class=exit_status, [
-        span(class=exit_status_code, Status),
+      span(class='exit-status', [
+        span(class='exit-status-code', Status),
         \exit_status_reason(Status)
       ])
     ])
@@ -315,30 +325,30 @@ wl_pl_error_formal(process_error(Program,exit(Status))) -->
 % Representation error.
 wl_pl_error_formal(representation_error(Reason)) -->
   html(
-    span(class=representation_error, [
+    span(class='representation-error', [
       'Representation error: ',
-      span(class=error_reason, Reason)
+      span(class='error-reason', Reason)
     ])
   ).
 wl_pl_error_formal(representation_error(Reason)) -->
   html(
-    span(class=representation_error, [
+    span(class='representation-error', [
       'A limitation of the current Prolog implementation is breached: ',
-      span(class=error_reason, Reason)
+      span(class='error-reason', Reason)
     ])
   ).
 % Resource error.
 wl_pl_error_formal(resource_error(Reason)) -->
   html(
-    span(class=resource_error, [
+    span(class='resource-error', [
       'Resource error: ',
-      span(class=error_reason, Reason)
+      span(class='error-reason', Reason)
     ])
   ).
 % Shell error.
 wl_pl_error_formal(shell_error(Culprit)) -->
   html(
-    span(class=shell_error, [
+    span(class='shell-error', [
       'The shell encountered the following error: ',
       code(Culprit)
     ])
@@ -346,15 +356,15 @@ wl_pl_error_formal(shell_error(Culprit)) -->
 % Socket error.
 wl_pl_error_formal(socket_error(Reason)) -->
   html(
-    span(class=socket_error, [
+    span(class='socket-error', [
       'Socket error: ',
-      span(class=error_reason, Reason)
+      span(class='error-reason', Reason)
     ])
   ).
 % Syntax error.
 wl_pl_error_formal(syntax_error(Culprit)) -->
   html(
-    span(class=syntax_error, [
+    span(class='syntax-error', [
       'The following contains invalid syntax: ',
       code(Culprit),
       '.'
@@ -363,7 +373,7 @@ wl_pl_error_formal(syntax_error(Culprit)) -->
 % Timeout error.
 wl_pl_error_formal(timeout_error(Mode,Stream)) -->
   html(
-    span(class=timeout_error, [
+    span(class='timeout-error', [
       'Timeout error: ',
       \wl_pl_error_mode(Mode),
       \wl_pl_error_stream(Stream)
@@ -372,7 +382,7 @@ wl_pl_error_formal(timeout_error(Mode,Stream)) -->
 % Type error.
 wl_pl_error_formal(type_error(Type,Term)) -->
   html(
-    span(class=type_error, [
+    span(class='type-error', [
       'Term ',
       \wl_pl_error_term(Term),
       ' is not of type ',
@@ -400,11 +410,11 @@ wl_pl_error_stream(Stream) -->
 
 wl_pl_error_term(Term) -->
   {with_output_to(atom(Atom), write_canonical(Term))},
-  html(span(class=term, Atom)).
+  html(span(class='prolog-term', Atom)).
 
 
 wl_pl_error_type(Type) -->
-  html(span(class=error_type, Type)).
+  html(span(class='prolog-type', Type)).
 
 
 wl_pl_functor(Functor) -->
@@ -480,11 +490,11 @@ wl_pl_operator(HandleId, Module, op(Precedence,Type,Name)) -->
         [operator(Module:op(Precedence,Type,Name))],
         html([
           'op(',
-          span(class=operator_precedence, Precedence),
+          span(class='operator-precedence', Precedence),
           ',',
-          span(class=operator_type, Type),
+          span(class='operator-type', Type),
           ',',
-          span(class=operator_name, \wl_pl_term(HandleId, Name)),
+          span(class='operator-name', \wl_pl_term(HandleId, Name)),
           ')'
         ])
       )
@@ -494,7 +504,7 @@ wl_pl_operator(HandleId, Module, op(Precedence,Type,Name)) -->
 
 wl_pl_predicate(HandleId, Module:Functor/Arity) --> !,
   html(
-    span(class=predicate, [
+    span(class='prolog-predicate', [
       \wl_pl_module(HandleId, Module),
       ':',
       \handle_id_link(
@@ -506,7 +516,7 @@ wl_pl_predicate(HandleId, Module:Functor/Arity) --> !,
   ).
 wl_pl_predicate(HandleId, Functor/Arity) -->
   html(
-    span(class=predicate, [
+    span(class='prolog-predicate', [
       \handle_id_link(
         HandleId,
         [predicate(Functor/Arity)],

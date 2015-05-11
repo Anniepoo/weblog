@@ -61,6 +61,7 @@ This module contains preds for overall server control
 :- use_module(table_demo).
 :- use_module(window_demo).
 :- use_module(library(wl/format/wl_link)).
+:- use_module(library(wl/info/font/google_font)).
 
 :- html_resource(css('demo.css'), []).
 
@@ -84,6 +85,7 @@ user:head(wl_demo, Content) -->
   html(
     head([
       \wl_favicon(Icon),
+      \google_font('Share Tech Mono'),
       \html_requires(css('demo.css')),
       Content
     ])

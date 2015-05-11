@@ -8,13 +8,11 @@ Needed parts should go in `weblog.css`.
 .abox.header {
   background-color: #8888ff;
   color: #000000;
-  align: center;
   margin-bottom: 0px;
 }
 
 .abox.content {
   margin-top: 0px;
-  align: center;
   border: 1px solid #8888ff;
   margin-bottom: 24px;
 }
@@ -23,22 +21,30 @@ Needed parts should go in `weblog.css`.
   font-weight: bold;
 }
 
-.error,
-.fail {
+.error-kind {
   background-color: LightCoral;
-}
-
-.error_kind {
-  color: Maroon;
+  color: Black;
+  font-size: 30px;
   font-weight: bold;
+  margin: 5px;
 }
 
-.exit_status_code,
+.error-context ,
+.error-formal {
+  background-color: LightGrey;
+  margin: 5px;
+}
+
+
+.exit-status-code,
 .file,
-.max_errors,
+.max-errors,
 .mime,
-.program {
-  font-family: monospace;
+.program,
+.prolog-predicate,
+.prolog-type,
+.prolog-term {
+  font-family: "Share Tech Mono";
 }
 
 p {
