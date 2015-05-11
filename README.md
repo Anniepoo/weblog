@@ -23,7 +23,7 @@ Other than having a normal SWI-Prolog install, the only installation step is to 
 Setting keys
 ------------
 
-For some parts of the demoyou will need to set the following two map providers: CloudMade and Google.
+For some parts of the demo you will need to set the following two map providers: CloudMade and Google.
 This is done by copying file [1] to location [2] and enter your own API key:
 
 ```
@@ -68,34 +68,34 @@ Here is an overview of the directories:
   * `'/docs'` :
   Documentation for **WebLog**.
   
-  $ `'/prolog/wl'` :
-    $ `'/prolog/wl/format'` :
+  * `'/prolog/wl'` :
+    * `'/prolog/wl/format'` :
     Tools that assist with generating HTML elements such as tables, boxes, and other page layout elements.
     
-    $ `'/prolog/wl/html_form'` :
+    * `'/prolog/wl/html_form'` :
     Tools for generating HTML forms with validation.
     
-    $ `'/prolog/wl/identity'` :
+    * `'/prolog/wl/identity'` :
     Tools to make logging into a Web page easier (thanks Thanos!).
     For the moment this is a prototype (see `TODO.md`).
     
-    $ `'/prolog/wl/info'` :
+    * `'/prolog/wl/info'` :
     Contains tools for displaying various sorts of information.
     This includes tools for displaying specific types of info, handling feeds (geohashing data, geocoding), and often a combination of those (e.g. twitter buttons).
     
-    $ `'/prolog/wl/nav'` :
+    * `'/prolog/wl/nav'` :
     Navigation widgets such as menus, links, etc.
     
-    $ `'/prolog/wl/page'` :
+    * `'/prolog/wl/page'` :
     Loading these modules causes your server to serve a couple of pages with useful debugging info.
     
-    $ `'/prolog/wl/resource'` :
+    * `'/prolog/wl/resource'` :
     Resource definitions for other modules, such as definitions of commonly used JavaScript libraries.
     
-    $ `'/prolog/wl/support'` :
+    * `'/prolog/wl/support'` :
     Utility bits that have generally been useful, such as utilities for HTML comments handling.
     
-    $ `'/prolog/wl/widget'` :
+    * `'/prolog/wl/widget'` :
     ...
 
 
@@ -107,17 +107,17 @@ Please read the **WebLog** MANIFESTO.md before contributing.
 
 The list of current contributors:
   
-  $ Anne Ogborn :
+  * Anne Ogborn :
   HTML tables, forms, accordion, maps.
   
-  $ Thanos Tintinidis :
+  * Thanos Tintinidis :
   HTML login and validated forms.
   
-  $ Jan Wielemaker :
+  * Jan Wielemaker :
   Original google maps code, underlying HTML and HTTP libraries and of course SWI-Prolog!
   
-  $ University of Houston :
+  * University of Houston :
   Contributed the original library.
   
-  $ [Wouter Beek](http://www.wouterbeek.com) :
+  * [Wouter Beek](http://www.wouterbeek.com) :
   Converted to Prolog package.

@@ -23,15 +23,10 @@ Other than having a normal SWI-Prolog install, the only installation step is to 
 Setting keys
 ------------
 
-For some parts of the demoyou will need to set the following two map providers: CloudMade and Google.
-This is done by copying file [1] to location [2] and enter your own API key:
-
-```
-[1a]   weblog/keys/cloudmadekey.pl.example
-[1a]   weblog/keys/googlekey.pl.example
-[2a]   weblog/keys/cloudmadekey.pl
-[2a]   weblog/keys/googlekey.pl
-```
+For some parts of the demo you need custom settings in order to use
+external Web Services such as CloudMade and Google.
+This is done by copying file `/prolog/wl/settings.conf.example` to
+`/prolog/wl/settings.conf` and enter your custom settings in that file.
 
 
 
