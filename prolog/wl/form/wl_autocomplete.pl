@@ -22,7 +22,7 @@ jQuery based autocomplete widget
 :- use_module(library(http/http_json)).
 :- use_module(library(wl/resource/jquery_ui)).
 
-:- html_meta autocomplete(1, ?, ?).
+:- html_meta(wl_autocomplete(1,?,?)).
 
 
 

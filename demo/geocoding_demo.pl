@@ -26,33 +26,34 @@ weblogdemo:label(geocoding, 'geocoding').
 
 
 geocoding_demo(Request) :-
-	http_parameters(Request, [
-	   loc(Address, [default('VU University Amsterdam (VUA), Netherlands')])
-				 ]),
+gtrace,
+	http_parameters(
+    Request,
+    [loc(Address, [default('VU University Amsterdam (VUA), Netherlands')])]
+  ),
 	gaddr_latlong(Address, FA, Type, _Bnds, Loc, _View),
 	reply_html_page(
     wl_demo,
 	  title('GeoCoding Demo'),
 	  [
-	     style(
-'#google_map, #leafletmap {
-    width: 80%;
-    height: 400px;
-       }
-'),
-	     h1('Geocoding demo page'),
-	     p('Enter a location (City, State works), page will reload with the location centered in map.'),
-	     p('Geocoding also handles phrases like "coffee near Menlo Park, CA", this demo just centers the map on the first returned result'),
-	     form(action=location_by_id(geocoding), [
-		  input([name=loc, type=textarea], []),
-	          input([type=submit, name=submit, value='Find It'])
-						    ]),
+      style('\c
+#google_map, #leafletmap {\c
+  width: 80%;\c
+  height: 400px;\c
+}\c'
+      ),
+	    h1('Geocoding demo page'),
+	    p('Enter a location (City, State works), page will reload with the location centered in map.'),
+	    p('Geocoding also handles phrases like "coffee near Menlo Park, CA", this demo just centers the map on the first returned result'),
+	    form(action=location_by_id(geocoding), [
+		    input([name=loc, type=textarea], []),
+	      input([type=submit, name=submit, value='Find It'])
+			]),
 	    \geo_map(geocoding_callback(Address, FA, Type, Loc)),
 	    \gps_demo
 	  ]
-).
-
-geocoding_handler(_Request) :-
+  ).
+geocoding_demo(_) :-
 	reply_html_page(
     wl_demo,
     title('Oops!'),

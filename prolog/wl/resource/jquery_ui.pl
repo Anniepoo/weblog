@@ -18,7 +18,7 @@ Defines the HTML resources for including jQueryUI into a Web page.
 :- html_resource(
   jquery_ui_css,
   [
-    requires(['http://code.jquery.com/ui/1.11.4/themes/base/jquery-ui.css']),
+    requires(['https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css']),
     virtual(true)
   ]
 ).

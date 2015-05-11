@@ -34,15 +34,15 @@ autocomplete_demo_body -->
 		  p('All data is preloaded with the page'),
 		  p([
 		     label([for=athingy], 'Normal: '),
-		     \autocomplete(autocomplete_opts)]),
+		     \wl_autocomplete(autocomplete_opts)]),
 		  p('This demonstrates ignoring accented chars.'),
 		  p([
 		     label([for=accentthingy], 'Accents: '),
-		     \autocomplete(accent_opts)]),
+		     \wl_autocomplete(accent_opts)]),
 		  p('This data comes from the server'),
 		  p([
 		      label([for=ajaxthingy], 'Ajax: '),
-		     \autocomplete(ajax_opts)])
+		     \wl_autocomplete(ajax_opts)])
 		 ])
 	]).
 

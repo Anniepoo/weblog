@@ -2,52 +2,74 @@
 
 /** <module> Lat/long from street address
 
-    Calls Google api to get latlong info for street address.
+Calls Google API to get latitude/longitude information for a given
+street address.
 
+@author Anne Ogborn
+@author Wouter Beek
+@version 2013-2015
 */
 
 :- use_module(library(http/http_open)).
 :- use_module(library(http/json)).
-:- use_module(library(url)).
+:- use_module(library(uri)).
 
 :- dynamic(country_location/2).
 
 
-/**  gaddr_latlong(+Name:codes,
-		  -FormattedAddress:atom_or_codes,
-		  -Type:atom,
-		  -Bounds:box,
-		  -Location:point,
-		  -ViewPort:box) is det
 
-		  box is a term of form box(NELat, NELong, SWLat, SWLong)
-		  point is a term of form point(Lat, Long)
+%! gaddr_latlong(
+%!   +Name:atom,
+%!  -FormattedAddress:atom_or_codes,
+%!  -Type:atom,
+%!  -Bounds:box,
+%!  -Location:point,
+%!  -ViewPort:box
+%! ) is det.
+% Box is a term of form `box(NELat, NELong, SWLat, SWLong)`.
+% Point is a term of form `point(Lat, Long)`
+%
+% Type is an atom - known responses include
+%   * street_address
+%   * locality
+%   * establishment (only seen for 'africa' so far)
 
-		  type is an atom - known responses include
-		  * street_address
-		  * locality
-		  * establishment  (only seen for 'africa' so far)
-
-*/
-gaddr_latlong(Name,
-	      FA,
-	      TYPE,
-	      box(BoundNELat, BoundNELong, BoundSWLat, BoundSWLong),
-	      point(Loc_Lat, Loc_Long),
-	      box(View_NELat, View_NELong, View_SWLat, View_SWLong)
-	      ) :-
-	(   is_list(Name) -> atom_codes(AName , Name) ; AName = Name),
-	www_form_encode(AName , FEName),
-	atom_concat('http://maps.googleapis.com/maps/api/geocode/json?address=',
-		    FEName , PreReq),
-	atom_concat(PreReq, '&sensor=false', Req),
-	http_open(Req, Stream, []),
-	json_read(Stream , Term),
-	close(Stream),
-	json([results=[json(Results)|_],status='OK']) = Term,
-	(   member(formatted_address=FA, Results) ; FA=Name),
-	(   member(types=[TYPE|_], Results) ; TYPE=unknown),
-	member(geometry=json(GEO), Results),
+gaddr_latlong(
+  Address,
+  FA,
+  TYPE,
+  box(BoundNELat, BoundNELong, BoundSWLat, BoundSWLong),
+  point(Loc_Lat, Loc_Long),
+  box(View_NELat, View_NELong, View_SWLat, View_SWLong)
+):-
+  uri_query_components(Query, [address=Address,sensor=false]),
+  uri_components(
+    Uri,
+    uri_components(
+      http,
+      'maps.googleapis.com',
+      '/maps/api/geocode/json',
+      Query,
+      _
+    )
+  ),
+gtrace,
+  setup_call_cleanup(
+    http_open(Uri, Stream, []),
+    json_read_dict(Stream, Dict),
+    close(Stream)
+  ),
+  Dict.stats == 'OK',
+  Results = Dict.results,
+  (   FA = Results.get(formatted_address)
+  ->  true
+  ;   FA = Address
+  ),
+  (   [TYPE|_] = Results.get(types)
+  ->  true
+  ;   TYPE=unknown
+  ),
+  GEO = Results.geometry,
 	member(bounds=json([
                     northeast=json([lat=BoundNELat,lng=BoundNELong]),
                     southwest=json([lat=BoundSWLat,lng=BoundSWLong])]), GEO),
