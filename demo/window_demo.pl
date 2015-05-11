@@ -60,8 +60,8 @@ window_demo(_):-
 
 click_popup_options(open_on(click)).
 
+footnote_options(class=footnote).
+
 rollover_popup_options(open_time(100)).
 rollover_popup_options(close_time(500)).
 rollover_popup_options(close_method(bounce)).
-footnote_options(footnote).
-

@@ -17,7 +17,7 @@ Support for bringing up windows inside a Web page.
 :- use_module(library(http/html_write)).
 :- use_module(library(wl/resource/jquery)).
 
-:- html_meta wl_popup(1,html,html,?,?).
+:- html_meta(wl_popup(1,html,html,?,?)).
 
 :- html_resource(
   js(wl_window),
@@ -31,11 +31,16 @@ Support for bringing up windows inside a Web page.
 
 
 wl_popup(Options, Activator, Popup) -->
-	{call(Options, footnote)},
+	{findall(Attr, call(Options, Attr), Attrs)},
 	html([
-	    \html_requires(css(wl_window)),
-	    \html_requires(js(wl_window)),
-	    sup(class=[fn, footnote], [Activator, span(class(fnp), span(class(footcontain), Popup))])
+    \html_requires(css(wl_window)),
+	  \html_requires(js(wl_window)),
+	  sup(class=[fn,footnote], [
+      Activator,
+      span(class=fnp,
+        span([class=footcontain|Attrs], Popup)
+      )
+    ])
 	]).
 wl_popup(_, _, _) -->
 	html(p('missing required options in popup')).

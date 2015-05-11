@@ -26,7 +26,6 @@ weblogdemo:label(geocoding, 'geocoding').
 
 
 geocoding_demo(Request) :-
-gtrace,
 	http_parameters(
     Request,
     [loc(Address, [default('VU University Amsterdam (VUA), Netherlands')])]

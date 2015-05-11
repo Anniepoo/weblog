@@ -10,6 +10,7 @@ Generates an HTML demo page for maps.
 */
 
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_path)).
 :- use_module(library(http/html_write)).
 :- use_module(library(wl/info/map/map)).
 
@@ -63,11 +64,13 @@ gmap_info(
 ).
 
 lmap_info(provider(leaflet)).
-lmap_info(style(2402)).   % cloudmade 'clean'
+lmap_info(style(2402)). % cloudmade 'clean'
 lmap_info(zoom(16)).
-lmap_info(point(52.334434,4.863596)).        % VUA
+lmap_info(point(52.334434,4.863596)). % VUA
 lmap_info(icon_for(_, swiplpin)).
-lmap_info(icon(swiplpin, '/icons/swiplpin.png', '/icons/swiplpinshadow.png')).
+lmap_info(icon(swiplpin, Pin, Shadow)):-
+  http_absolute_uri(icon('swiplpin.png'), Pin),
+  http_absolute_uri(icon('swiplpinshadow.png'), Shadow).
 lmap_info(icon_size(swiplpin, 48, 61)).
 lmap_info(shadow_size(swiplpin, 81, 61)).
 lmap_info(icon_anchor(swiplpin, 24, 60)).

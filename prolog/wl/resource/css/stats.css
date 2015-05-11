@@ -50,8 +50,7 @@ table.block td.total
   font-weight: bold;
 }
 
-table.block th, tr.header th
-{ background:  url("../icons/th.png") left top;
+table.block th, tr.header th {
   border: 1px solid #444;
 }
 

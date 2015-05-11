@@ -1,17 +1,26 @@
-:- module(social_button, [reddit//1,
-		    delicious//1]).
+:- module(
+  social_button,
+  [
+    delicious//1,
+    reddit//1
+  ]).
+
 /** <module> Buttons for various social services and feeds
 
-   @tbd  email icon with prefilled subject & body
-   @tbd	 twitter
-   @tbd  facebook
-   @tbd  identi.ca
-   @tbd  RSS feed
-
+@author Anne Ogborn
+@tbd  email icon with prefilled subject & body
+@tbd	 twitter
+@tbd  facebook
+@tbd  identi.ca
+@tbd  RSS feed
+@version 2013-2015
 */
 
+:- use_module(library(http/http_path)).
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
+
+
 
 % http://www.reddit.com/buttons
 /**   reddit(+Options:list)// is det
@@ -100,13 +109,10 @@ delicious(Options) -->
               encodeURIComponent(location.href)+
             \'&title=\'+encodeURIComponent(document.title),
 	    \'delicious\',
-	    \'toolbar=no,width=550,height=550\'); return false;', [URLCoName] )
+	    \'toolbar=no,width=550,height=550\'); return false;', [URLCoName] ),
+    http_absolute_location(icon('delicious.gif'), Uri, [])
 	},
-	html([img([
-		  src('/icons/delicious.gif'),
-		      height(16),
-		      width(16),
-		      alt('Delicious')], []),
-	      a([href('#'), onclick(OnClick)], [SaveText])
-		]).
-
+	html([
+    img([alt='Delicious',height=16,src=Uri,width=16], []),
+	  a([href='#',onclick=OnClick], SaveText)
+	]).

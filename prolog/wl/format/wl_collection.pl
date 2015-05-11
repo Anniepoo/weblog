@@ -90,7 +90,7 @@ wl_collection(Class, Begin, End, ItemWriter, L) -->
       class=Class,
       \html_between(
         Begin,
-        html_collection_inner(Class, Begin, End, ItemWriter, L),
+        wl_collection_inner(Class, Begin, End, ItemWriter, L),
         End
       )
     )
