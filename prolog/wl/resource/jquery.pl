@@ -16,5 +16,5 @@ Defines the HTML resources for including jQuery into a Web page.
 
 :- html_resource(
   jquery,
-  [requires(['http://code.jquery.com/jquery-1.9.1.js']),virtual(true)]
+  [requires(['http://code.jquery.com/jquery-2.1.4.js']),virtual(true)]
 ).
