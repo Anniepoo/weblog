@@ -30,14 +30,20 @@ list_demo(_):-
       p('HTML rendering:'),
       \wl_def_list([def(a,b),def(1,2),[def(x,y)]]),
       
-      h2('List'),
+      h2('Unordered list'),
       p('Prolog code:'),
-      \prolog_code(Data),
+      \prolog_code('\\wl_list(~w)', Data),
       p('HTML rendering:'),
-      \wl_list(Data)
+      \wl_list(Data),
+      
+      h2('Ordered list'),
+      p('Prolog code:'),
+      \prolog_code('\\wl_list(~w, [ordered(true)])', Data),
+      p('HTML rendering:'),
+      \wl_list(Data, [ordered(true)])
     ]
   ).
 
-prolog_code(Data) -->
-  {format(atom(Atom), '\\wl_list(~w)', [Data])},
+prolog_code(Format, Data) -->
+  {format(atom(Atom), Format, [Data])},
   html(pre(Atom)).
