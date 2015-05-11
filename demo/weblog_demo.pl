@@ -32,6 +32,7 @@ This module contains preds for overall server control
 :- use_module(library(http/http_files)).
 :- use_module(library(http/http_header)).
 :- use_module(library(http/http_log)).
+:- use_module(library(http/http_path)).
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(settings)).
 :- use_module(library(uri)).
@@ -58,6 +59,7 @@ This module contains preds for overall server control
 :- use_module(social_buttons_demo).
 :- use_module(table_demo).
 :- use_module(window_demo).
+:- use_module(library(wl/format/wl_link)).
 
 :- html_resource(css('demo.css'), []).
 
@@ -68,11 +70,17 @@ This module contains preds for overall server control
 :- http_handler(root(.) , redir_to_index, [id(indexroot)]).
 :- http_handler(root('index.htm'), index_page , [id(index)]).
 
-:- setting(http:port, nonneg, env('PORT', 4050),
-    'Port the HTTP server listens to.').
+:- setting(
+  http:port, nonneg, env('PORT', 4050),
+  'Port the HTTP server listens to.'
+).
 
 :- multifile(user:head//2).
 :- multifile(user:body//2).
+
+user:head(wl_demo, Content) -->
+  {http_absolute_location(icon('favicon.ico'), Icon, [])},
+  html(head([\wl_favicon(Icon),Content])).
 
 user:body(wl_demo, Content) -->
   html(body([nav(a(href='index.htm','Back to index')),Content])).
