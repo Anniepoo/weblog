@@ -103,8 +103,8 @@ login_form(Request) -->
 
 
 
-%  Handler for a form to be validated.
 %%  validated_form(:FormReplyGoal, :LandingReplyGoal) is det
+%  Handler for a form to be validated.
 %
 %  @param FormReplyGoal is a handler that creates the form page
 %  @param LandingReplyGoal is the handler for the landing page.

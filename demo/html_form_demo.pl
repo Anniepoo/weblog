@@ -33,12 +33,15 @@ form_demo(Request) :-
   ).
 
 test_form_content(_) -->
-  {debug(wl_form, 'in test_form_content', [])},
+  {
+    debug(wl_form, 'in test_form_content', []),
+    http_link_to_id(form, [], Uri)
+  },
   html([
     h1('Validated Form'),
     p('This is the usual sort of validated form. You must enter a name of length >3 and an age over 14 for it to be accepted'),
     style(['.oops {    color: #F00; } ']),
-    form([action='/testform', method='POST'], [
+    form([action=Uri, method='POST'], [
 	    p([
 	      label([for=name],'Name:'),
 	      \error_message([for=name], html(p([class=oops],
