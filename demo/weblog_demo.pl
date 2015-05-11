@@ -189,9 +189,7 @@ start_server(Port):-
   must_be(between(1000,9999), Port),
   (   http_server_property(Port, start_time(StartTime))
   ->  print_message(warning, server_running(Port,StartTime))
-  ;   % @tbd Uncommenting the following breaks the Google Maps demo.
-      %html_set_options([dialect(xhtml)]),
-      http_server(http_dispatch, [port(Port),timeout(3600)]),
+  ;   http_server(http_dispatch, [port(Port),timeout(3600)]),
       at_halt(stop_server(Port)),
       http_log('Starting WebLog demo on port ~w~n', [Port]),
       print_message(informational, server_started(Port))
