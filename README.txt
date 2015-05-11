@@ -61,11 +61,11 @@ Libraries
 Every subdirectory of this library contains a `README.md` file that explains the contents of that directory.
 Here is an overview of the directories:
   
-  * `'/demo'` :
+  $ `'/demo'` :
   Every major module (ideally) has a demo page.
   Examining the demo code is often an excellent way to learn to use a feature.
   
-  * `'/docs'` :
+  $ `'/docs'` :
   Documentation for **WebLog**.
   
   $ `'/prolog/wl'` :
