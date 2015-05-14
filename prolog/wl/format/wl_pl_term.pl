@@ -32,6 +32,7 @@ error(
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(wl/format/wl_collection)).
 :- use_module(library(wl/format/wl_list)).
 
 :- html_meta(handle_id_link(+,+,html,?,?)).
@@ -56,6 +57,15 @@ wl_pl_term(_, atom(Atom)) --> !,
 wl_pl_term(HandleId, callable(Module,Callable)) --> !,
   {compound_name_arity(Callable, Functor, Arity)},
   wl_pl_predicate(HandleId, Module:Functor/Arity).
+% Dict.
+wl_pl_term(HandleId, dict(Dict)) --> !,
+  {dict_pairs(Dict, Tag, Pairs)},
+  html(
+    span(class=dict, [
+      span(class='dict-tag', \wl_pl_term(HandleId, atom(Tag))),
+      \wl_set(wl_pair, Pairs)
+    ])
+  ).
 % Error term.
 wl_pl_term(HandleId, exception(Exception)) --> !,
   wl_pl_error(HandleId, Exception).
@@ -219,7 +229,7 @@ wl_pl_error_context(_, Context) -->
 wl_pl_error_formal(VAR) -->
   {var(VAR)}, !, html([]).
 % Domain error.
-wl_pl_error_formal(domain_error(Type,Term)) -->
+wl_pl_error_formal(domain_error(Type,Term)) --> !,
   html(
     span(class='domain-error', [
       'The term',
@@ -230,7 +240,17 @@ wl_pl_error_formal(domain_error(Type,Term)) -->
     ])
   ).
 % Existence error.
-wl_pl_error_formal(existence_error(Type,Term)) -->
+wl_pl_error_formal(existence_error(key,Key,Dict)) --> !,
+  html(
+    span(class='existence-error', [
+      'Key ',
+      span(class='dict-key', \wl_pl_term(atom(Key))),
+      ' does not occur in dictionary ',
+      \wl_pl_term(dict(Dict)),
+      '.'
+    ])
+  ).
+wl_pl_error_formal(existence_error(Type,Term)) --> !,
   html(
     span(class='existence-error', [
       'Term ',
@@ -242,7 +262,7 @@ wl_pl_error_formal(existence_error(Type,Term)) -->
     ])
   ).
 % IO error.
-wl_pl_error_formal(io_error(Mode,Stream)) -->
+wl_pl_error_formal(io_error(Mode,Stream)) --> !,
   html(
     span(class='io-error', [
       \wl_pl_error_mode(Mode),
@@ -250,7 +270,7 @@ wl_pl_error_formal(io_error(Mode,Stream)) -->
     ])
   ).
 % Instantiation error.
-wl_pl_error_formal(instantiation_error) -->
+wl_pl_error_formal(instantiation_error) --> !,
   html(
     span(class='instantiation-error', [
       'Some terms are under-instantiated.',
@@ -259,7 +279,7 @@ wl_pl_error_formal(instantiation_error) -->
       ' it would be acceptable.'
     ])
   ).
-wl_pl_error_formal(instantiation_error(Term)) -->
+wl_pl_error_formal(instantiation_error(Term)) --> !,
   html(
     span(class='instantiation-error', [
       'Term ',
@@ -270,7 +290,7 @@ wl_pl_error_formal(instantiation_error(Term)) -->
     ])
   ).
 % Limit exceeded.
-wl_pl_error_formal(limit_exceeded(max_errors,Max)) -->
+wl_pl_error_formal(limit_exceeded(max_errors,Max)) --> !,
   html(
     span(class='limit-exceeded', [
       'Limit exceeded. Maximum number of errors (i.e., ',
@@ -279,7 +299,7 @@ wl_pl_error_formal(limit_exceeded(max_errors,Max)) -->
     ])
   ).
 % MIME error.
-wl_pl_error_formal(mime_error(_,MustBe,Is)) -->
+wl_pl_error_formal(mime_error(_,MustBe,Is)) --> !,
   html(
     span(class='mime-error', [
       'Must be ',
@@ -289,7 +309,7 @@ wl_pl_error_formal(mime_error(_,MustBe,Is)) -->
     ])
   ).
 % Permission error.
-wl_pl_error_formal(permission_error(Action,Type,Term)) -->
+wl_pl_error_formal(permission_error(Action,Type,Term)) --> !,
   html(
     span(class='permission-error', [
       \wl_pl_error_action(Action),
@@ -297,7 +317,7 @@ wl_pl_error_formal(permission_error(Action,Type,Term)) -->
       \wl_pl_error_term(Term)
     ])
   ).
-wl_pl_error_formal(permission_error(Action,Type,Term)) -->
+wl_pl_error_formal(permission_error(Action,Type,Term)) --> !,
   html(
     span(class='permission-error', [
       'It is not allowed to perform action ',
@@ -310,7 +330,7 @@ wl_pl_error_formal(permission_error(Action,Type,Term)) -->
     ])
   ).
 % Process error.
-wl_pl_error_formal(process_error(Program,exit(Status))) -->
+wl_pl_error_formal(process_error(Program,exit(Status))) --> !,
   html(
     span(class='process-error', [
      'Process error: ',
@@ -323,14 +343,14 @@ wl_pl_error_formal(process_error(Program,exit(Status))) -->
     ])
   ).
 % Representation error.
-wl_pl_error_formal(representation_error(Reason)) -->
+wl_pl_error_formal(representation_error(Reason)) --> !,
   html(
     span(class='representation-error', [
       'Representation error: ',
       span(class='error-reason', Reason)
     ])
   ).
-wl_pl_error_formal(representation_error(Reason)) -->
+wl_pl_error_formal(representation_error(Reason)) --> !,
   html(
     span(class='representation-error', [
       'A limitation of the current Prolog implementation is breached: ',
@@ -338,7 +358,7 @@ wl_pl_error_formal(representation_error(Reason)) -->
     ])
   ).
 % Resource error.
-wl_pl_error_formal(resource_error(Reason)) -->
+wl_pl_error_formal(resource_error(Reason)) --> !,
   html(
     span(class='resource-error', [
       'Resource error: ',
@@ -346,7 +366,7 @@ wl_pl_error_formal(resource_error(Reason)) -->
     ])
   ).
 % Shell error.
-wl_pl_error_formal(shell_error(Culprit)) -->
+wl_pl_error_formal(shell_error(Culprit)) --> !,
   html(
     span(class='shell-error', [
       'The shell encountered the following error: ',
@@ -354,7 +374,7 @@ wl_pl_error_formal(shell_error(Culprit)) -->
     ])
   ).
 % Socket error.
-wl_pl_error_formal(socket_error(Reason)) -->
+wl_pl_error_formal(socket_error(Reason)) --> !,
   html(
     span(class='socket-error', [
       'Socket error: ',
@@ -362,7 +382,7 @@ wl_pl_error_formal(socket_error(Reason)) -->
     ])
   ).
 % Syntax error.
-wl_pl_error_formal(syntax_error(Culprit)) -->
+wl_pl_error_formal(syntax_error(Culprit)) --> !,
   html(
     span(class='syntax-error', [
       'The following contains invalid syntax: ',
@@ -371,7 +391,7 @@ wl_pl_error_formal(syntax_error(Culprit)) -->
     ])
   ).
 % Timeout error.
-wl_pl_error_formal(timeout_error(Mode,Stream)) -->
+wl_pl_error_formal(timeout_error(Mode,Stream)) --> !,
   html(
     span(class='timeout-error', [
       'Timeout error: ',

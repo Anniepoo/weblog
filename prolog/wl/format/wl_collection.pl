@@ -5,6 +5,7 @@
                       % :End
                       % :ItemWriter
                       % +Items:list
+    wl_pair//1, % +Pair:pair
     wl_pair//2, % +Element1
                 % +Element2
     wl_pair//3, % :ItemWriter
@@ -121,6 +122,12 @@ wl_collection_item(_, _, _, ItemWriter, H) -->
   html(span(class=element, \html_call(ItemWriter, H))).
 
 
+
+%! wl_pair(+Pair:pair)// is det.
+% @see Wrapper around wl_pair//3 using the default element writer.
+
+wl_pair(E1-E2) -->
+  wl_pair(E1, E2).
 
 %! wl_pair(+Element1, +Element2)// is det.
 % @see Wrapper around wl_pair//3 using the default element writer.
