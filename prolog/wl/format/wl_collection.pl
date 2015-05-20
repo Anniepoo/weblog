@@ -111,7 +111,7 @@ wl_collection_inner(Class, Begin, End, ItemWriter, [H]) --> !,
 wl_collection_inner(Class, Begin, End, ItemWriter, [H|T]) -->
   html([
     \wl_collection_item(Class, Begin, End, ItemWriter, H),
-    ',',
+    ", ",
     \wl_collection_inner(Class, Begin, End, ItemWriter, T)
   ]).
 
