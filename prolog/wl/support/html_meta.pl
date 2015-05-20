@@ -16,7 +16,13 @@
                   % +Argument1
                   % +Argument2
                   % +Argument3
-    html_catch//1 % :Goal
+    html_catch//1, % :Goal
+    html_if_then//2, % :If
+                     % :Then
+    html_if_then_else//3, % :If
+                          % :Then
+                          % :Else
+    html_ignore//1 % :Content
   ]
 ).
 
@@ -43,6 +49,11 @@ and display them in HTML.
 :- html_meta(html_between(html,html,?,?)).
 :- html_meta(html_between(html,html,html,?,?)).
 :- html_meta(html_catch(html,?,?)).
+:- html_meta(html_if_then(0,html,?,?)).
+:- html_meta(html_if_then_else(0,html,html,?,?)).
+:- html_meta(html_ignore(html,?,?)).
+
+
 
 
 
@@ -92,3 +103,28 @@ html_catch(Goal, X, Y):-
     Error,
     call(wl_pl_term(exception(Error)), X, Y)
   ).
+
+
+
+%! html_if_then(:If, :Then)// is det.
+
+html_if_then(If, Then) -->
+  html_if_then_else(If, Then, html([])).
+
+
+
+%! html_if_then_else(:If, :Then, :Else)// is det.
+
+html_if_then_else(If, Then, Else) -->
+  (   {call(If)}
+  ->  html(Then)
+  ;   html(Else)
+  ).
+
+
+
+%! html_ignore(:Content)// is det.
+
+html_ignore(Content) -->
+  html(Content), !.
+html_ignore(_) --> html([]).
