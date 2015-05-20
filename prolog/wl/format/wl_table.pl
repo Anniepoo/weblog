@@ -39,6 +39,7 @@ Utilities for generating and HTML tables containing data (not layout).
 ]).
 
 is_meta(caption).
+is_meta(cell).
 is_meta(header).
 
 
