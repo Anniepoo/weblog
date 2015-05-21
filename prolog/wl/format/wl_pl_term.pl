@@ -120,6 +120,24 @@ wl_pl_term(HandleId, predicates(Module,Predicates)) --> !,
 % Predicate term.
 wl_pl_term(HandleId, predicate(Predicate)) --> !,
   wl_pl_predicate(HandleId, Predicate).
+% Stream character.
+wl_pl_term(HandleId, stream_character(Char)) --> !,
+  html(span(class='stream-character', \wl_pl_term(HandleId, Char))).
+% Stream column.
+wl_pl_term(HandleId, stream_column(Col)) --> !,
+  html(span(class='stream-column', \wl_pl_term(HandleId, integer(Col)))).
+% Stream line.
+wl_pl_term(HandleId, stream_line(Line)) --> !,
+  html(span(class='stream-line', \wl_pl_term(HandleId, integer(Line)))).
+% Stream position.
+wl_pl_term(HandleId, stream_position(_,Line,Col,Char)) --> !,
+  html(
+    span(class='stream-position', [
+      \wl_pl_term(HandleId, stream_line(Line)),
+      \wl_pl_term(HandleId, stream_column(Col)),
+      \wl_pl_term(HandleId, stream_character(Char))
+    ])
+  ).
 % String.
 wl_pl_term(_, string(String)) --> !,
   html(span(cass=string, String)).
