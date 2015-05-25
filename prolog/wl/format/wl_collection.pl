@@ -1,7 +1,8 @@
 :- module(
   wl_collection,
   [
-    wl_collection//4, % :Begin
+    wl_collection//5, % :Begin
+                      % :Separator
                       % :End
                       % :ItemWriter
                       % +Items:list
@@ -59,10 +60,10 @@ The following class names are assigned (useful for styling):
 :- use_module(library(wl/support/html_meta)).
 
 :- html_meta
-  wl_collection(html,html,3,+,?,?),
-  wl_collection(+,html,html,3,+,?,?),
-  wl_collection_inner(+,html,html,3,+,?,?),
-  wl_collection_item(+,html,html,3,+,?,?),
+  wl_collection(html,html,html,3,+,?,?),
+  wl_collection(+,html,html,html,3,+,?,?),
+  wl_collection_inner(+,html,html,html,3,+,?,?),
+  wl_collection_item(+,html,html,html,3,+,?,?),
   wl_pair(3,+,+,?,?),
   wl_pairs(3,+,?,?),
   wl_quadruple(3,+,+,+,+,?,?),
@@ -72,26 +73,27 @@ The following class names are assigned (useful for styling):
 
 
 
-%! wl_collection(:Begin, :End, :ItemWriter, +Items:list)// is det.
+%! wl_collection(:Begin, :Separator, :End, :ItemWriter, +Items:list)// is det.
 
-wl_collection(Begin, End, ItemWriter, L) -->
-  wl_collection(collection, Begin, End, ItemWriter, L).
+wl_collection(Begin, Separator, End, ItemWriter, L) -->
+  wl_collection(collection, Begin, Separator, End, ItemWriter, L).
 
 %! wl_collection(
 %!   +Class:atom,
 %!   :Begin,
+%!   :Separator,
 %!   :End,
 %!   :ItemWriter,
 %!   +Items:list
 %! )// is det.
 
-wl_collection(Class, Begin, End, ItemWriter, L) -->
+wl_collection(Class, Begin, Separator, End, ItemWriter, L) -->
   html(
     span(
       class=Class,
       \html_between(
         Begin,
-        wl_collection_inner(Class, Begin, End, ItemWriter, L),
+        wl_collection_inner(Class, Begin, Separator, End, ItemWriter, L),
         End
       )
     )
@@ -100,25 +102,26 @@ wl_collection(Class, Begin, End, ItemWriter, L) -->
 %! wl_collection_inner(
 %!   +Class:atom,
 %!   :Begin,
+%!   :Separator,
 %!   :End,
 %!   :ItemWriter,
 %!   +Items:list
 %! )// is det.
 
-wl_collection_inner(_, _, _, _, []) --> !, html([]).
-wl_collection_inner(Class, Begin, End, ItemWriter, [H]) --> !,
-  wl_collection_item(Class, Begin, End, ItemWriter, H).
-wl_collection_inner(Class, Begin, End, ItemWriter, [H|T]) -->
+wl_collection_inner(_, _, _, _, _, []) --> !, html([]).
+wl_collection_inner(Class, Begin, Separator, End, ItemWriter, [H]) --> !,
+  wl_collection_item(Class, Begin, Separator, End, ItemWriter, H).
+wl_collection_inner(Class, Begin, Separator, End, ItemWriter, [H|T]) -->
   html([
-    \wl_collection_item(Class, Begin, End, ItemWriter, H),
-    ", ",
-    \wl_collection_inner(Class, Begin, End, ItemWriter, T)
+    \wl_collection_item(Class, Begin, Separator, End, ItemWriter, H),
+    Separator,
+    \wl_collection_inner(Class, Begin, Separator, End, ItemWriter, T)
   ]).
 
-wl_collection_item(Class, Begin, End, ItemWriter, H) -->
+wl_collection_item(Class, Begin, Separator, End, ItemWriter, H) -->
   {is_list(H)}, !,
-  wl_collection(Class, Begin, End, ItemWriter, H).
-wl_collection_item(_, _, _, ItemWriter, H) -->
+  wl_collection(Class, Begin, Separator, End, ItemWriter, H).
+wl_collection_item(_, _, _, _, ItemWriter, H) -->
   html(span(class=element, \html_call(ItemWriter, H))).
 
 
@@ -139,7 +142,14 @@ wl_pair(E1, E2) -->
 % Generates an HTML representation for a pair.
 
 wl_pair(ItemWriter, E1, E2) -->
-  wl_collection(pair, html(&(lang)), html(&(rang)), ItemWriter, [E1,E2]).
+  wl_collection(
+    pair,
+    html(&(lang)),
+    html(', '),
+    html(&(rang)),
+    ItemWriter,
+    [E1,E2]
+  ).
 
 
 
@@ -177,6 +187,7 @@ wl_quadruple(ItemWriter, E1, E2, E3, E4) -->
   wl_collection(
     quadruple,
     html(&(lang)),
+    html(', '),
     html(&(rang)),
     ItemWriter,
     [E1,E2,E3,E4]
@@ -193,7 +204,7 @@ wl_set(L) -->
 %! wl_set(:ItemWriter, +Items:list)// is det.
 
 wl_set(ItemWriter, L) -->
-  wl_collection(set, html(&(123)), html(&(125)), ItemWriter, L).
+  wl_collection(set, html(&(123)), html(', '), html(&(125)), ItemWriter, L).
 
 
 
@@ -210,6 +221,7 @@ wl_triple(ItemWriter, E1, E2, E3) -->
   wl_collection(
     triple,
     html(&(lang)),
+    html(', '),
     html(&(rang)),
     ItemWriter,
     [E1,E2,E3]
@@ -227,4 +239,11 @@ wl_tuple(L) -->
 % Generates an HTML representation for a tuple.
 
 wl_tuple(ItemWriter, L) -->
-  wl_collection(tuple, html(&(lang)), html(&(rang)), ItemWriter, L).
+  wl_collection(
+    tuple,
+    html(&(lang)),
+    html(', '),
+    html(&(rang)),
+    ItemWriter,
+    L
+  ).
