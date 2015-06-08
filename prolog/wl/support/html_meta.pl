@@ -117,8 +117,8 @@ html_if_then(If, Then) -->
 
 html_if_then_else(If, Then, Else) -->
   (   {call(If)}
-  ->  html(Then)
-  ;   html(Else)
+  ->  Then
+  ;   Else
   ).
 
 
@@ -126,5 +126,6 @@ html_if_then_else(If, Then, Else) -->
 %! html_ignore(:Content)// is det.
 
 html_ignore(Content) -->
-  html(Content), !.
-html_ignore(_) --> html([]).
+  Content, !.
+html_ignore(_) -->
+  html([]).

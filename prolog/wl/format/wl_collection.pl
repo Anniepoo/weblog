@@ -112,11 +112,9 @@ wl_collection_inner(_, _, _, _, _, []) --> !, html([]).
 wl_collection_inner(Class, Begin, Separator, End, ItemWriter, [H]) --> !,
   wl_collection_item(Class, Begin, Separator, End, ItemWriter, H).
 wl_collection_inner(Class, Begin, Separator, End, ItemWriter, [H|T]) -->
-  html([
-    \wl_collection_item(Class, Begin, Separator, End, ItemWriter, H),
-    Separator,
-    \wl_collection_inner(Class, Begin, Separator, End, ItemWriter, T)
-  ]).
+  wl_collection_item(Class, Begin, Separator, End, ItemWriter, H),
+  Separator,
+  wl_collection_inner(Class, Begin, Separator, End, ItemWriter, T).
 
 wl_collection_item(Class, Begin, Separator, End, ItemWriter, H) -->
   {is_list(H)}, !,
