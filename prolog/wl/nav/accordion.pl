@@ -10,7 +10,7 @@ Generates accordion-style navigational elements.
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
-:- use_module(library(wl/resource/jquery_ui)).
+:- use_module(library(wl/resource/wl_jquery_ui)).
 
 :- html_meta accordion(+, html, ?, ?).
 
@@ -137,7 +137,7 @@ accordion(Options, HTML) -->
 	    atom_codes(AScript, CScript)
 	},
 	html([
-	    \html_requires(jquery_ui),
+	    \html_requires(wl_jquery_ui),
 	         div(id=ID, HTML),
 	         script(AScript)
 	     ]),

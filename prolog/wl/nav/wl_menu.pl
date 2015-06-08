@@ -11,7 +11,7 @@ Support for the jQueryUI menu widget.
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/js_write)).
-:- use_module(library(wl/resource/jquery_ui)).
+:- use_module(library(wl/resource/wl_jquery_ui)).
 
 :- html_resource(menu_css, [virtual(true), requires([css('menu.css')])]).
 
@@ -37,7 +37,7 @@ Support for the jQueryUI menu widget.
 
 wl_menu(ID) -->
   html([
-    \html_requires(jquery_ui),
+    \html_requires(wl_jquery_ui),
     \html_requires(menu_css),
     \html_post(head,
       \js_script({|javascript(ID)||

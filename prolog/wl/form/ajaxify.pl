@@ -17,7 +17,7 @@ Turn any HTML generation into ajax.
 :- use_module(library(http/js_write)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(lists)).
-:- use_module(library(wl/resource/jquery)).
+:- use_module(library(wl/resource/wl_jquery)).
 
 :- html_meta
   ajax_wrapper(1, html, +),
@@ -27,7 +27,7 @@ Turn any HTML generation into ajax.
 
 :- html_resource(
   ajaxify_base,
-  [requires([jquery,js('wlajaxify.js')]),virtual(true)]
+  [requires([wl_jquery,js('wlajaxify.js')]),virtual(true)]
 ).
 
 

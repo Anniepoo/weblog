@@ -15,13 +15,13 @@ Support for bringing up windows inside a Web page.
 
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
-:- use_module(library(wl/resource/jquery)).
+:- use_module(library(wl/resource/wl_jquery)).
 
 :- html_meta(wl_popup(1,html,html,?,?)).
 
 :- html_resource(
   js(wl_window),
-  [ordered(true),requires([jquery_ui,js('wlwindows.js')]),virtual(true)]
+  [ordered(true),requires([wl_jquery_ui,js('wlwindows.js')]),virtual(true)]
 ).
 :- html_resource(
   css(wl_window),

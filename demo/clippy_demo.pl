@@ -13,7 +13,7 @@ Generates an HTML demo page for the Clippy agent.
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/js_write)).
-:- use_module(library(wl/resource/jquery)).
+:- use_module(library(wl/resource/wl_jquery)).
 :- use_module(library(wl/widget/agent/clippy)).
 
 :- http_handler(root(clippy), clippy_demo_page, [id(clippy)]).
@@ -28,7 +28,7 @@ clippy_demo_page(_Request) :-
 
 clippy_demo_body -->
 	html([
-	  \html_requires(jquery),
+	  \html_requires(wl_jquery),
 	  h1('Clippy'),
 	  p('"Office XP is so easy to use that Clippy is no longer necessary, or useful," explained Lisa Gurry, a Microsoft product manager. "With new features like smart tags and Task Panes, Office XP enables people to get more out of the product than ever before. These new simplicity and ease-of-use improvements really make Clippy obsolete," she said.'),
 	  \clippy(clippy_opts),

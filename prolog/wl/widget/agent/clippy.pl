@@ -12,14 +12,14 @@ Loads a Clippy virtual agent into a Web page.
 :- use_module(library(http/html_write)).
 :- use_module(library(http/js_write)).
 :- use_module(library(quasi_quotations)).
-:- use_module(library(wl/resource/jquery)).
+:- use_module(library(wl/resource/wl_jquery)).
 
 :- meta_predicate clippy(1, ?, ?).
 
 :- html_resource(
   clippy,
   [
-    requires([jquery,css('clippy.css'),js('clippy.min.js')]),
+    requires([wl_jquery,css('clippy.css'),js('clippy.min.js')]),
     virtual(true)
   ]
 ).
