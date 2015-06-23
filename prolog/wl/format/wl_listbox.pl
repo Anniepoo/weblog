@@ -66,7 +66,7 @@ wl_listbox(L, Options0) -->
     ;   selectchk(option(_,_,true), L, L0),
         memberchk(option(_,_,true), L0)
     ->  merge_options([multiple(true)], Attrs0, Attrs)
-    ;   merge_options([multiple(false)], Attrs0, Attrs)
+    ;   Attrs = Attrs0
     )
   },
   html(select(Attrs, \wl_options(ItemWriter, L))).
