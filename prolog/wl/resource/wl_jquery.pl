@@ -17,9 +17,9 @@ Defines the HTML resources for including jQuery into a Web page.
 :- dynamic(user:file_search_path/2).
 :- multifile(user:file_search_path/2).
 
-user:file_search_path(css, library(wl/resource/css)).
+user:file_search_path(js, library(wl/resource/js)).
 
-:- http_handler(css(.), serve_files_in_directory(css), [prefix]).
+:- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 
 :- if(debugging(js(jquery))).
   :- html_resource(
