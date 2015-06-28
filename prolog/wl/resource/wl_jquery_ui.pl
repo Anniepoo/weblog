@@ -10,6 +10,7 @@ Defines the HTML resources for including jQueryUI into a Web page.
 @version 2015
 */
 
+:- use_module(library(http/html_head)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_server_files)).
 :- use_module(library(wl/resource/wl_jquery)).

@@ -1,16 +1,14 @@
-:- module(wl_jquery, []).
+:- module(wl_pengines, []).
 
-/** <module> Weblog version of jQuery
+/** <module>
 
-Defines the HTML resources for including jQuery into a Web page.
+Resource definition for including Pengine JavaScript code in HTML.
 
-@author Anne Ogborn
 @author Wouter Beek
 @license Lesser General Public License Vers. 3, June 2007.
 @version 2015
 */
 
-:- use_module(library(debug)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_server_files)).
@@ -22,14 +20,4 @@ user:file_search_path(js, library(wl/resource/js)).
 
 :- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 
-:- if(debugging(js(jquery))).
-  :- html_resource(
-    js(jquery),
-    [requires([js('jquery-2.1.4.js')]),virtual(true)]
-  ).
-:- else.
-  :- html_resource(
-    js(jquery),
-    [requires([js('jquery-2.1.4.min.js')]),virtual(true)]
-  ).
-:- endif.
+:- html_resource(js(pengines), [requires([js('pengines.js')]),virtual(true)]).
