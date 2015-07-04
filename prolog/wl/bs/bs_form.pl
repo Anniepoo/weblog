@@ -45,7 +45,7 @@ bs_input_submit -->
   bs_input_submit('Submit').
 
 bs_input_submit(Label) -->
-  html(input([class=[btn,'btn-default'],type=submit,value=Label])).
+  html(button([class=[btn,'btn-default',submit],type=submit], Label)).
 
 bs_input_text(Class, Label) -->
   bs_input(text, Class, Label).
