@@ -24,18 +24,26 @@ user:file_search_path(js, library(wl/resource/js)).
 :- http_handler(css(.), serve_files_in_directory(css), [prefix]).
 :- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 
-:- html_resource(
-  css('jquery-ui'),
-  [
-    requires(['https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css']),
-    virtual(true)
-  ]
-).
+:- if(debugging(css('jquery-css'))).
+  :- html_resource(
+    css('jquery-ui'),
+    [requires([css('jquery-ui-1.11.4.css')]), virtual(true)]
+  ).
+:- else.
+  :- html_resource(
+    css('jquery-ui'),
+    [requires([css('jquery-ui-1.11.4-min.css')]), virtual(true)]
+  ).
+:- endif.
 
+:- if(debugging(js('jquery-ui'))).
+  :- html_resource(
+    js('jquery-ui'),
+    [ordered(true),requires([js(jquery),js('jquery-ui-1.11.4.js')]),virtual(true)]
+  ).
+:- else.
 :- html_resource(
   js('jquery-ui'),
-  [
-    requires([js(jquery),css('jquery-ui'),'http://code.jquery.com/ui/1.11.4/jquery-ui.js']),
-    virtual(true)
-  ]
+  [ordered(true),requires([js(jquery),js('jquery-ui-1.11.4-min.js')]),virtual(true)]
 ).
+:- endif.
