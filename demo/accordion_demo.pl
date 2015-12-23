@@ -98,7 +98,7 @@ acc_demo_body -->
 		        ]))
 	         ]),
 	    h2('Hover Open!'),
-	    p('This is broken in jQueryui'),
+	    p('This is no longer broken in jQueryui'),
 	    \accordion([id(hovercraft),
 			hover(true)
 			], [
