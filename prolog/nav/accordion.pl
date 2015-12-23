@@ -329,49 +329,63 @@ hover_post_options(_) -->
     interval: 100\n\c
   });\n\c
  \n\c
-  $.event.special.hoverintent = {\n\c
-    setup: function() {\n\c
-   $( this ).bind( \"mouseover\", jQuery.event.special.hoverintent.handler );\n\c
-    },\n\c
-    teardown: function() {\n\c
- $( this ).unbind( \"mouseover\", jQuery.event.special.hoverintent.handler );\n\c
-    },\n\c
-    handler: function( event ) {\n\c
-      var that = this,\n\c
-        args = arguments,\n\c
-        target = $( event.target ),\n\c
-        cX, cY, pX, pY;\n\c
- \n\c
-      function track( event ) {\n\c
-        cX = event.pageX;\n\c
-        cY = event.pageY;\n\c
-      };\n\c
-      pX = event.pageX;\n\c
-      pY = event.pageY;\n\c
-      function clear() {\n\c
-        target\n\c
-          .unbind( \"mousemove\", track )\n\c
-          .unbind( \"mouseout\", arguments.callee );\n\c
-        clearTimeout( timeout );\n\c
-      }\n\c
-      function handler() {\n\c
-     if ( ( Math.abs( pX - cX ) + Math.abs( pY - cY ) ) < cfg.sensitivity ) {\n\c
-          clear();\n\c
-          event.type = \"hoverintent\";\n\c
-          // prevent accessing the original event since the new event\n\c
-          // is fired asynchronously and the old event is no longer\n\c
-          // usable (#6028)\n\c
-          event.originalEvent = {};\n\c
-          jQuery.event.handle.apply( that, args );\n\c
-        } else {\n\c
-          pX = cX;\n\c
-          pY = cY;\n\c
-          timeout = setTimeout( handler, cfg.interval );\n\c
-        }\n\c
-      }\n\c
-      var timeout = setTimeout( handler, cfg.interval );\n\c
-      target.mousemove( track ).mouseout( clear );\n\c
-      return true;\n\c
-    }\n\c
-  };\n".
+  $.event.special.hoverintent = {
+         setup: function() {
+             $( this ).bind( 'mouseover', jQuery.event.special.hoverintent.handler );
+         },
+         teardown: function() {
+             $( this ).unbind( 'mouseover', jQuery.event.special.hoverintent.handler );
+         },
+         handler: function( event ) {
+             var currentX, currentY, timeout,
+                 args = arguments,
+                 target = $( event.target ),
+                 previousX = event.pageX,
+                 previousY = event.pageY;
 
+	     function track( event ) {
+                 currentX = event.pageX;
+                 currentY = event.pageY;
+	     };
+
+             function clear() {
+      	         target
+                .unbind( 'mousemove', track )
+                .unbind( 'mouseout', clear );
+	         clearTimeout( timeout );
+             }
+
+             function handler() {
+                 var prop,
+	             orig = event;
+
+                 if ( ( Math.abs( previousX - currentX ) +
+	                Math.abs( previousY - currentY ) ) < 7 ) {
+	                    clear();
+
+	                    event = $.Event( 'hoverintent' );
+                            for ( prop in orig ) {
+		                if ( !( prop in event ) ) {
+		                    event[ prop ] = orig[ prop ];
+                                }
+	                    }
+                            // Prevent accessing the original event since the new event
+                            // is fired asynchronously and the old event is no longer
+                            // usable (#6028)
+                            delete event.originalEvent;
+
+                            target.trigger( event );
+                 } else {
+                     previousX = currentX;
+                     previousY = currentY;
+                     timeout = setTimeout( handler, 100 );
+                 }
+             }
+
+	     timeout = setTimeout( handler, 100 );
+             target.bind({
+                 mousemove: track,
+                 mouseout: clear
+             });
+         }
+};\n".

@@ -23,7 +23,7 @@ ajaxify_demo_body -->
 	html([
 	    h1('Ajaxify Demo'),
 	    p('This paragraph was loaded normally'),
-	    p([\ajaxify(utils:wl_opts([timer(5000), id(demoajax)]),
+	    p([\ajaxify(utils:wl_opts([timer(2000), id(demoajax)]),
 			p(\server_time))]),
 		     % well that was dumber than a dirt sandwich!
 		     % guess I better just document it
@@ -34,30 +34,28 @@ ajaxify_demo_body -->
 		 ]),
 	    h1('Uppercase'),
 	    \ajaxify_contents(demotext, ajaxsender),
-	    \ajaxify(utils:wl_opts([id(demotext)]), p(\show_text))
+	    \ajaxify(utils:wl_opts([timer(2000), id(demotext)]), p(\show_text))
 	]).
 
 show_text -->
 	{
 	     http_current_request(Request),
              http_parameters(Request, [
-			ajaxsender(Val, [ optional(true) ])
+			ajaxsender(Val, [ optional(true),
+                                          default('') ])
 			     ]),
              upcase_atom(Val, UVal)
         },
 	html([p(UVal)]).
 
-
-
-
 server_time -->
 	{
 	     http_current_request(Request),
              http_parameters(Request, [
-			ajaxsender(Val, [ optional(true) ])
+			ajaxsender(Val, [ optional(true),
+                                          default('') ])
 			     ]),
              get_time(T),
 	     format_time(atom(Time), '%A, %B %e, %I:%M:%3S', T)
         },
 	html([p(Time), p(Val)]).
-
